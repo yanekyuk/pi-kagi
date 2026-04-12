@@ -61,6 +61,8 @@
 
 | # | Type | Step | Verdict | File |
 |---|------|------|---------|------|
+| R001 | plan | Step 1 | ✅ Proceed | .reviews/R001-plan-step1.md |
+| R001 | code | Step 1 | REVISE → fixed | .reviews/R001-code-step1.md |
 
 ---
 
@@ -85,3 +87,4 @@
 
 *None*
 | 2026-04-12 18:05 | Review R001 | plan Step 1: UNKNOWN |
+| 2026-04-12 18:12 | Review R001 | code Step 1: REVISE |

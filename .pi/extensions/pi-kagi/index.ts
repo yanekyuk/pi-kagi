@@ -6,7 +6,7 @@
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { KagiClient } from "./src/kagi-client.ts";
-import { resolveConfig, validateConfig, KagiConfigError } from "./src/config.ts";
+import { resolveConfig, validateConfig } from "./src/config.ts";
 import { registerSearchTool } from "./src/tools/search.ts";
 
 export { KagiClient, KAGI_SMALLWEB_BASE_URL } from "./src/kagi-client.ts";
@@ -42,8 +42,8 @@ export default function (pi: ExtensionAPI) {
 		}
 	});
 
-	// Register tools
-	registerSearchTool(pi, getClient());
+	// Register tools — pass getter so config resolution is deferred until tool invocation
+	registerSearchTool(pi, getClient);
 
 	// Show extension info
 	pi.registerCommand("kagi-about", {

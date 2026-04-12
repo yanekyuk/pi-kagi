@@ -5,7 +5,7 @@
  * citation-friendly text for LLM consumption with numbered references.
  */
 
-import type { SearchResponse, SearchItem, SmallWebResponse } from "../types.ts";
+import type { SearchResponse, SmallWebResponse } from "../types.ts";
 
 // ─── Search / Enrich Result Formatting ────────────────────────────
 

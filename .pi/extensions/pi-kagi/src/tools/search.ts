@@ -5,7 +5,7 @@
  * Costs ~$0.025 per query.
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@mariozechner/pi-coding-agent";
 import { KagiClient } from "../kagi-client.ts";
@@ -16,9 +16,12 @@ import { formatSearchResponse, countResults, truncationNotice } from "../formatt
  * Register the kagi_search tool with the pi extension API.
  *
  * @param pi - Extension API for registering tools
- * @param client - Shared KagiClient instance
+ * @param getClient - Lazy getter for the shared KagiClient instance.
+ *                    Called inside execute() so config resolution is deferred
+ *                    until the tool is actually invoked, avoiding hard failures
+ *                    during extension bootstrap.
  */
-export function registerSearchTool(pi: ExtensionAPI, client: KagiClient): void {
+export function registerSearchTool(pi: ExtensionAPI, getClient: () => KagiClient): void {
 	pi.registerTool({
 		name: "kagi_search",
 		label: "Kagi Search",
@@ -37,6 +40,8 @@ export function registerSearchTool(pi: ExtensionAPI, client: KagiClient): void {
 			if (signal?.aborted) {
 				throw new Error("Search request was cancelled");
 			}
+
+			const client = getClient();
 
 			try {
 				const response = await client.search(params.query, params.limit);
@@ -59,7 +64,9 @@ export function registerSearchTool(pi: ExtensionAPI, client: KagiClient): void {
 				let result = truncation.content;
 
 				if (truncation.truncated) {
-					result += truncationNotice(totalResults, totalResults);
+					// Count how many citation lines survived truncation
+					const shownResults = (truncation.content.match(/^\[\d+\]\(/gm) || []).length;
+					result += truncationNotice(shownResults, totalResults);
 				}
 
 				return {
