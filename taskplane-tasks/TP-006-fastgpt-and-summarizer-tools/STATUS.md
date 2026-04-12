@@ -1,10 +1,10 @@
 # TP-006: Implement FastGPT and Summarizer Tools — Status
 
-**Current Step:** Step 3: Register tools and UX guidance
+**Current Step:** Step 4: Testing & Verification
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 7
+**Review Counter:** 8
 **Iteration:** 1
 **Size:** M
 
@@ -44,10 +44,10 @@
 ---
 
 ### Step 4: Testing & Verification
-**Status:** ⬜ Not Started
-- [ ] Constraint + mapping tests added
+**Status:** 🟨 In Progress
+- [ ] FastGPT/Summarizer tests cover constraints, mapping, and truncation behavior
 - [ ] `npm --prefix .pi/extensions/pi-kagi test` passes
-- [ ] Smoke checks logged
+- [ ] Smoke check results logged (live if API key is available)
 
 ---
 
@@ -69,6 +69,7 @@
 | 5 | Plan | 2 | UNAVAILABLE | reviewer tool returned no output |
 | 6 | Code | 2 | UNAVAILABLE | reviewer tool returned no output |
 | 7 | Plan | 3 | UNAVAILABLE | reviewer tool returned no output |
+| 8 | Code | 3 | UNAVAILABLE | reviewer tool returned no output |
 
 ---
 
@@ -115,6 +116,8 @@
 | 2026-04-12 23:25 | Prompt guidance added | Both tools now advertise prompt snippets/guidelines that distinguish synthesized web answers from direct URL/text summaries. |
 | 2026-04-12 23:25 | Compactness validated | Targeted formatter/execute tests confirm FastGPT and Summarizer outputs stay within Pi limits while preserving token metadata. |
 | 2026-04-12 23:26 | Step 3 completed | Extension wiring and tool-selection guidance are ready for step-level review. |
+| 2026-04-12 23:27 | Review R008 | Step 3 code review was unavailable, so the next step will rely on full test verification. |
+| 2026-04-12 23:27 | Step 4 started | Hydrated verification around targeted coverage, full-suite execution, and smoke-check logging. |
 
 ---
 
