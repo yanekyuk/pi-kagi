@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 8
+**Review Counter:** 9
 **Iteration:** 1
 **Size:** M
 
@@ -45,9 +45,9 @@
 
 ### Step 4: Testing & Verification
 **Status:** 🟨 In Progress
-- [ ] FastGPT/Summarizer tests cover constraints, mapping, and truncation behavior
-- [ ] `npm --prefix .pi/extensions/pi-kagi test` passes
-- [ ] Smoke check results logged (live if API key is available)
+- [ ] FastGPT/Summarizer tests cover constraints, mapping, and 50KB/2000-line truncation behavior
+- [ ] `cd .pi/extensions/pi-kagi && bun test` passes
+- [ ] Smoke check results log reference/token preservation (live if API key is available)
 
 ---
 
@@ -70,6 +70,7 @@
 | 6 | Code | 2 | UNAVAILABLE | reviewer tool returned no output |
 | 7 | Plan | 3 | UNAVAILABLE | reviewer tool returned no output |
 | 8 | Code | 3 | UNAVAILABLE | reviewer tool returned no output |
+| 9 | Plan | 4 | REVISE | `.reviews/R009-plan-step4.md` |
 
 ---
 
@@ -118,6 +119,7 @@
 | 2026-04-12 23:26 | Step 3 completed | Extension wiring and tool-selection guidance are ready for step-level review. |
 | 2026-04-12 23:27 | Review R008 | Step 3 code review was unavailable, so the next step will rely on full test verification. |
 | 2026-04-12 23:27 | Step 4 started | Hydrated verification around targeted coverage, full-suite execution, and smoke-check logging. |
+| 2026-04-12 23:28 | Review R009 | Step 4 plan revised to use `bun test`, explicitly cover Pi truncation limits, and log reference/token preservation during smoke checks. |
 
 ---
 
@@ -125,3 +127,4 @@
 
 *None*
 | 2026-04-12 19:37 | Review R003 | code Step 1: REVISE |
+| 2026-04-12 20:25 | Review R009 | plan Step 4: REVISE |
