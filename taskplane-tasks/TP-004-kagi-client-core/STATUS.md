@@ -98,6 +98,9 @@
 | 2026-04-12 17:28 | Review R004 | CODE Step 2: APPROVE |
 | 2026-04-12 17:32 | Review R005 | CODE Step 3: REVISE (fixed 5 bugs) |
 | 2026-04-12 17:50 | All 5 steps completed | 85 tests passing, core client implemented |
+| 2026-04-12 17:51 | Agent reply | TP-004 task is fully complete. All 5 steps finished: /  / - **Step 0**: Preflight verified (existing TP-002 scaffold and TP-003 architecture docs present) / - **Step 1**: Project structure + config co |
+| 2026-04-12 17:51 | Worker iter 1 | done in 4469s, tools: 153 |
+| 2026-04-12 17:51 | Task complete | .DONE created |
 
 ---
 
