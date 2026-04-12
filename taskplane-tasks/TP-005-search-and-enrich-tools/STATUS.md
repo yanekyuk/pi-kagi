@@ -47,10 +47,10 @@
 ---
 
 ### Step 4: Testing & Verification
-**Status:** 🟨 In Progress
-- [ ] Mapping and registration metadata tests added
-- [ ] `npm --prefix .pi/extensions/pi-kagi test` passes
-- [ ] Smoke check completed and logged
+**Status:** ✅ Complete
+- [x] Mapping and registration metadata tests added
+- [x] `npm --prefix .pi/extensions/pi-kagi test` passes
+- [x] Smoke check completed and logged
 
 ---
 
@@ -74,7 +74,9 @@
 
 ## Notes
 
-- Step 4 should add a lightweight registration test for TP-005 `promptSnippet`/`promptGuidelines` metadata (review suggestion from R001 code Step 3).
+- Step 4 added a registration metadata test for TP-005 `promptSnippet`/`promptGuidelines` via captured `registerTool()` definitions.
+- Smoke (deterministic) passed: `cd .pi/extensions/pi-kagi && bun -e 'const { default: extension } = await import("./index.ts"); ...'` registered 4 TP-005 tools and `/kagi-about` returned aligned help text.
+- Smoke (live API) skipped: `KAGI_API_KEY` was not set in the worker environment, so no authenticated Kagi API call was attempted.
 
 ---
 
@@ -98,6 +100,7 @@
 | 2026-04-12 18:xx | Review R001 | plan Step 3 approved with qualifications: focus on prompt metadata, registration audit, and truncation regression check |
 | 2026-04-12 18:xx | Review R001 | code Step 3 requested fixes: keep final truncated output within limits and avoid duplicated kagi-about metadata |
 | 2026-04-12 18:xx | Review R001 | code Step 3 approved after review fixes |
+| 2026-04-12 21:xx | Smoke check | Deterministic extension-load smoke passed; live API smoke skipped because KAGI_API_KEY was unset |
 
 ---
 
@@ -110,3 +113,4 @@
 | 2026-04-12 18:27 | Review R001 | plan Step 3: UNKNOWN |
 | 2026-04-12 18:36 | Review R001 | code Step 3: REVISE |
 | 2026-04-12 18:46 | Review R001 | code Step 3: APPROVE |
+| 2026-04-12 18:51 | Review R001 | plan Step 4: UNKNOWN |
