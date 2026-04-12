@@ -1,10 +1,10 @@
 # TP-006: Implement FastGPT and Summarizer Tools — Status
 
-**Current Step:** Step 1: Implement FastGPT tool
+**Current Step:** Step 2: Implement Summarizer tool
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 3
+**Review Counter:** 4
 **Iteration:** 1
 **Size:** M
 
@@ -28,10 +28,10 @@
 ---
 
 ### Step 2: Implement Summarizer tool
-**Status:** ⬜ Not Started
-- [ ] URL/text exclusivity enforced
-- [ ] Engine/summary/language/cache options implemented
-- [ ] Constraint errors made actionable
+**Status:** 🟨 In Progress
+- [ ] Summarizer tool schema enforces `url`/`text` exclusivity and keeps text submissions POST-oriented
+- [ ] Summarizer execution passes engine, `summary_type`, `target_language`, and `cache` options into standard tool output/details
+- [ ] Summarizer validation returns actionable errors for exclusivity, 1MB text limit, and supported option constraints
 
 ---
 
@@ -65,6 +65,7 @@
 | 1 | Plan | 1 | APPROVE w/ qualifications | `.reviews/R001-plan-step1.md` |
 | 2 | Code | 1 | REVISE | `.reviews/R002-code-step1.md` |
 | 3 | Code | 1 | REVISE | `.reviews/R003-code-step1.md` |
+| 4 | Code | 1 | UNAVAILABLE | reviewer tool returned no output |
 
 ---
 
@@ -97,6 +98,8 @@
 | 2026-04-12 22:45 | FastGPT truncation revised | Truncation now preserves cited source indices (including high-index citations like `[3000]`) and targeted tests cover the regression. |
 | 2026-04-12 22:48 | Review R003 | Follow-up code review requested fixes for uncited-source fallback sizing and pathological single-reference overflows. |
 | 2026-04-12 22:58 | FastGPT fallback hardened | Uncited-source truncation now keeps concise answers, sanitizes pathological reference labels, and stays within Pi limits in targeted regression tests. |
+| 2026-04-12 22:59 | Review R004 | Code re-review was unavailable, so Step 1 proceeds with targeted regression coverage and prior review findings addressed. |
+| 2026-04-12 23:00 | Step 2 started | Hydrated Summarizer work around exclusivity, option mapping, and actionable constraint errors. |
 
 ---
 
