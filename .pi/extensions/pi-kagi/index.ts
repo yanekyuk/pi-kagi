@@ -5,7 +5,9 @@
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { resolveConfig, validateConfig } from "./src/config.ts";
+import { KagiClient } from "./src/kagi-client.ts";
+import { resolveConfig, validateConfig, KagiConfigError } from "./src/config.ts";
+import { registerSearchTool } from "./src/tools/search.ts";
 
 export { KagiClient, KAGI_SMALLWEB_BASE_URL } from "./src/kagi-client.ts";
 export { resolveConfig, validateConfig, KagiConfigError, KAGI_API_BASE_URL, TIMEOUTS, RETRY, type RetryConfig } from "./src/config.ts";
@@ -14,6 +16,17 @@ export { KagiError, KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryabl
 const VERSION = "0.1.0";
 
 export default function (pi: ExtensionAPI) {
+	// Create the KagiClient lazily — resolved when first needed
+	let client: KagiClient | null = null;
+
+	function getClient(): KagiClient {
+		if (!client) {
+			const config = resolveConfig();
+			client = new KagiClient(config);
+		}
+		return client;
+	}
+
 	// Validate config on session start — gives early feedback if key is missing
 	pi.on("session_start", async (_event, ctx) => {
 		const result = validateConfig();
@@ -29,6 +42,9 @@ export default function (pi: ExtensionAPI) {
 		}
 	});
 
+	// Register tools
+	registerSearchTool(pi, getClient());
+
 	// Show extension info
 	pi.registerCommand("kagi-about", {
 		description: "Show information about the pi-kagi extension",
@@ -38,8 +54,8 @@ export default function (pi: ExtensionAPI) {
 			ctx.ui.notify(
 				`pi-kagi v${VERSION} — Pi skill for using Kagi API\n` +
 					`API key: ${keyStatus}\n` +
-					"Endpoints: search, fastgpt, summarize, enrich/web, enrich/news, smallweb\n" +
-					"Status: core client ready, tools will be added in subsequent tasks",
+					"Tools: kagi_search\n" +
+					"Endpoints: search, enrich/web, enrich/news, fastgpt, summarize, smallweb",
 				"info",
 			);
 		},

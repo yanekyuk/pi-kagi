@@ -1,6 +1,6 @@
 # TP-005: Implement Search, Enrich, and SmallWeb Tools — Status
 
-**Current Step:** Step 0: Preflight
+**Current Step:** Step 2: Implement Enrich + SmallWeb tools
 **Status:** ✅ Complete
 **Last Updated:** 2026-04-12
 **Current Step:** Step 1: Implement Search API tool
@@ -17,12 +17,12 @@
 ---
 
 ### Step 1: Implement Search API tool
-**Status:** 🟨 In Progress
-- [ ] Create src/tools/search.ts with kagi_search tool definition
-- [ ] Create src/formatters/results.ts with shared formatting logic
-- [ ] Implement search response formatter: numbered citation list with title/snippet/url/date
-- [ ] Handle related searches in formatter without overwhelming context
-- [ ] Apply truncation using truncateHead for large result sets
+**Status:** ✅ Complete
+- [x] Create src/tools/search.ts with kagi_search tool definition
+- [x] Create src/formatters/results.ts with shared formatting logic
+- [x] Implement search response formatter: numbered citation list with title/snippet/url/date
+- [x] Handle related searches in formatter without overwhelming context
+- [x] Apply truncation using truncateHead for large result sets
 
 ---
 
@@ -84,3 +84,4 @@
 ## Blockers
 
 *None*
+| 2026-04-12 18:05 | Review R001 | plan Step 1: UNKNOWN |
