@@ -1,18 +1,19 @@
 # TP-006: Implement FastGPT and Summarizer Tools — Status
 
-**Current Step:** Not Started
-**Status:** 🔵 Ready for Execution
+**Current Step:** Step 0: Preflight
+**Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
 **Review Counter:** 0
-**Iteration:** 0
+**Iteration:** 1
 **Size:** M
 
 ---
 
 ### Step 0: Preflight
-**Status:** ⬜ Not Started
-- [ ] TP-004 compatibility and API constraints verified
+**Status:** 🟨 In Progress
+- [ ] TP-004 client methods validated for `POST /fastgpt` and `GET`/`POST /summarize`
+- [ ] FastGPT and Summarizer parameter constraints validated from docs
 
 ---
 
@@ -74,6 +75,8 @@
 | Timestamp | Action | Outcome |
 |-----------|--------|---------|
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
+| 2026-04-12 19:07 | Task started | Runtime V2 lane-runner execution |
+| 2026-04-12 19:07 | Step 0 started | Preflight |
 
 ---
 
