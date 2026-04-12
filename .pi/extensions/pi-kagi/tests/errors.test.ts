@@ -10,6 +10,7 @@ import {
 	isRetryableStatus,
 	statusToUserMessage,
 } from "../src/errors.ts";
+import { KagiError, KagiConfigError } from "../src/config.ts";
 
 describe("errors", () => {
 	describe("isRetryableStatus", () => {
@@ -177,6 +178,32 @@ describe("errors", () => {
 			const resp = err.toResponse();
 			expect(resp.status).toBe(0);
 			expect(resp.retryable).toBe(true);
+		});
+	});
+
+	describe("KagiError base class", () => {
+		it("KagiConfigError inherits from KagiError", () => {
+			const err = new KagiConfigError("test");
+			expect(err).toBeInstanceOf(KagiError);
+			expect(err).toBeInstanceOf(Error);
+		});
+
+		it("KagiApiError inherits from KagiError", () => {
+			const err = new KagiApiError(500, "Server Error");
+			expect(err).toBeInstanceOf(KagiError);
+			expect(err).toBeInstanceOf(Error);
+		});
+
+		it("KagiNetworkError inherits from KagiError", () => {
+			const err = new KagiNetworkError("Network error");
+			expect(err).toBeInstanceOf(KagiError);
+			expect(err).toBeInstanceOf(Error);
+		});
+
+		it("KagiTimeoutError inherits from KagiError", () => {
+			const err = new KagiTimeoutError("Timeout", 30000);
+			expect(err).toBeInstanceOf(KagiError);
+			expect(err).toBeInstanceOf(Error);
 		});
 	});
 });

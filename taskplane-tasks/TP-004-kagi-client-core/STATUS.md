@@ -4,7 +4,7 @@
 **Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 3
+**Review Counter:** 5
 **Iteration:** 1
 **Size:** M
 
@@ -38,10 +38,12 @@
 ### Step 3: Add unit tests for client foundation
 **Status:** ✅ Complete
 - [x] Config resolution tests (resolveConfig with env var, missing key, validateConfig)
-- [x] Request construction tests (auth header, URL building, params)
-- [x] Response/error mapping tests (KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryable)
-- [x] Response normalization tests (null snippet to "", t discriminator, smallweb parsing)
-- [x] Retry/backoff tests (429 retry logic, max retries, network retry)
+- [x] Request construction tests (auth header, URL building, params, Content-Type)
+- [x] Response/error mapping tests (KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryable, KagiError base)
+- [x] Response normalization tests (null snippet, t discriminator, smallweb formats, kagiError base) 
+- [x] Retry/backoff tests (429+5xx retry, max retries, non-retryable immediate throw, network retry)
+- [x] Code review fixes: smallweb baseUrl override (no mutation), isRetryableStatus for retry, KagiError base class, try/finally for clearTimeout
+- [x] Added tests for: 5xx retry, non-retryable immediate-throw, unknown t discriminator, null data, Content-Type/GET headers, KagiError instanceof, smallweb no mutation
 
 ---
 
@@ -89,3 +91,5 @@
 | 2026-04-12 16:45 | Review R001 | plan Step 1: APPROVE |
 | 2026-04-12 16:58 | Review R002 | plan Step 2: APPROVE |
 | 2026-04-12 17:08 | Review R003 | plan Step 3: APPROVE |
+| 2026-04-12 17:28 | Review R004 | code Step 2: APPROVE |
+| 2026-04-12 17:32 | Review R005 | code Step 3: UNKNOWN |

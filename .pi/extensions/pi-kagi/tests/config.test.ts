@@ -7,6 +7,7 @@ import {
 	resolveConfig,
 	validateConfig,
 	KagiConfigError,
+	KagiError,
 	KAGI_API_BASE_URL,
 	TIMEOUTS,
 	RETRY,
@@ -88,6 +89,16 @@ describe("config", () => {
 		it("throws KagiConfigError when KAGI_API_KEY is whitespace only", () => {
 			process.env.KAGI_API_KEY = "   ";
 			expect(() => resolveConfig()).toThrow(KagiConfigError);
+		});
+
+		it("KagiConfigError inherits from KagiError", () => {
+			process.env.KAGI_API_KEY = "  test  ";
+			const config = resolveConfig();
+			expect(config.apiKey).toBe("test");
+			// KagiConfigError should be instanceof both KagiError and Error
+			const err = new KagiConfigError("test message");
+			expect(err).toBeInstanceOf(KagiError);
+			expect(err).toBeInstanceOf(Error);
 		});
 	});
 

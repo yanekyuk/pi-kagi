@@ -83,8 +83,16 @@ export function validateConfig(): { valid: true; config: KagiConfig } | { valid:
 	}
 }
 
+/** Base error class for all Kagi API errors */
+export class KagiError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "KagiError";
+	}
+}
+
 /** Error thrown when Kagi configuration is missing or invalid */
-export class KagiConfigError extends Error {
+export class KagiConfigError extends KagiError {
 	constructor(message: string) {
 		super(message);
 		this.name = "KagiConfigError";

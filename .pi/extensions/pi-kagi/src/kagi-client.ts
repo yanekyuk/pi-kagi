@@ -2,7 +2,7 @@
  * Kagi API client — the single source of truth for all HTTP communication
  * with the Kagi API.
  *
- * Handles authentication, timeouts, retries on 429, and response normalization.
+ * Handles authentication, timeouts, retries on retryable status codes, and response normalization.
  */
 
 import {
@@ -17,6 +17,7 @@ import {
 	KagiApiError,
 	KagiNetworkError,
 	KagiTimeoutError,
+	isRetryableStatus,
 	statusToUserMessage,
 } from "./errors.ts";
 
@@ -34,6 +35,9 @@ import type {
 	SummarizeResponse,
 } from "./types.ts";
 
+/** Small Web API uses v1, not v0 */
+export const KAGI_SMALLWEB_BASE_URL = "https://kagi.com/api/v1";
+
 // ─── Helpers ─────────────────────────────────────────────────────
 
 /** Sleep for a given number of milliseconds */
@@ -50,7 +54,7 @@ function normalizeSearchItem(raw: RawSearchObject): SearchItem {
 		};
 	}
 
-	// t === 0 (default / search result)
+	// t === 0 (default / search result) — also handles unknown t values safely
 	return {
 		type: "result",
 		data: {
@@ -87,7 +91,7 @@ export class KagiClient {
 	// ─── Core Request Helper ────────────────────────────────────
 
 	/**
-	 * Make an authenticated request to the Kagi API with retry on 429.
+	 * Make an authenticated request to the Kagi API with retry on retryable status codes.
 	 *
 	 * @param path API path (e.g. "/search")
 	 * @param options Request options
@@ -100,12 +104,16 @@ export class KagiClient {
 			params?: Record<string, string | number | boolean | undefined>;
 			body?: Record<string, unknown>;
 			timeout?: number;
+			baseUrlOverride?: string;
 		} = {},
 	): Promise<T> {
-		const { method = "GET", params, body, timeout } = options;
+		const { method = "GET", params, body, timeout, baseUrlOverride } = options;
+
+		// Use override base URL if provided (e.g., for Small Web v1), otherwise use client default
+		const effectiveBaseUrl = (baseUrlOverride ?? this.baseUrl).replace(/\/+$/, "");
 
 		// Build URL
-		const url = new URL(this.baseUrl + path);
+		const url = new URL(effectiveBaseUrl + path);
 		if (params) {
 			for (const [key, value] of Object.entries(params)) {
 				if (value !== undefined) {
@@ -125,13 +133,14 @@ export class KagiClient {
 			requestBody = JSON.stringify(body);
 		}
 
-		// Retry loop (for 429 rate limiting)
+		// Retry loop (for retryable status codes: 429, 5xx)
 		let lastError: KagiApiError | KagiNetworkError | KagiTimeoutError | undefined;
 
 		for (let attempt = 0; attempt <= this.retryConfig.maxRetries; attempt++) {
+			let timeoutId: ReturnType<typeof setTimeout> | undefined;
 			try {
 				const controller = new AbortController();
-				const timeoutId = setTimeout(() => controller.abort(), timeout ?? TIMEOUTS.default);
+				timeoutId = setTimeout(() => controller.abort(), timeout ?? TIMEOUTS.default);
 
 				const response = await fetch(url.toString(), {
 					method,
@@ -140,14 +149,12 @@ export class KagiClient {
 					signal: controller.signal,
 				});
 
-				clearTimeout(timeoutId);
-
 				// Handle HTTP error statuses
 				if (!response.ok) {
 					const responseBody = await response.text().catch(() => "");
 
-					// Retry on 429
-					if (response.status === 429 && attempt < this.retryConfig.maxRetries) {
+					// Retry on retryable status codes (429, 5xx)
+					if (isRetryableStatus(response.status) && attempt < this.retryConfig.maxRetries) {
 						const delay = backoffDelay(attempt, this.retryConfig);
 						await sleep(delay);
 						continue;
@@ -164,7 +171,7 @@ export class KagiClient {
 				const data = await response.json();
 				return data as T;
 			} catch (err) {
-				// Re-throw our own errors (but retry on 429 already handled above)
+				// Re-throw our own errors (non-retryable API errors)
 				if (err instanceof KagiApiError) {
 					throw err;
 				}
@@ -196,6 +203,10 @@ export class KagiClient {
 					`Unexpected error during request to ${path}: ${err instanceof Error ? err.message : String(err)}`,
 					err instanceof Error ? err : undefined,
 				);
+			} finally {
+				if (timeoutId !== undefined) {
+					clearTimeout(timeoutId);
+				}
 			}
 		}
 
@@ -355,28 +366,16 @@ export class KagiClient {
 	 * Endpoint: GET /smallweb/feed/ (note: v1 API)
 	 *
 	 * Small Web uses a different base URL path (/api/v1 instead of /api/v0).
+	 * The baseUrlOverride is used to avoid mutating shared state.
 	 */
 	async smallweb(limit?: number): Promise<SmallWebResponse> {
-		// Small Web is on v1 API
-		const smallWebBaseUrl = this.baseUrl.replace("/api/v0", "/api/v1");
-		const originalBaseUrl = this.baseUrl;
+		const response = await this.request<unknown>("/smallweb/feed/", {
+			params: { limit },
+			timeout: TIMEOUTS.default,
+			baseUrlOverride: KAGI_SMALLWEB_BASE_URL,
+		});
 
-		// Temporarily swap base URL for this request
-		this.baseUrl = smallWebBaseUrl;
-
-		try {
-			// Small Web may return JSON or feed format; try JSON first
-			const response = await this.request<unknown>("/smallweb/feed/", {
-				params: { limit },
-				timeout: TIMEOUTS.default,
-			});
-
-			// Parse response — smallweb format needs runtime confirmation
-			// For now, handle both array-in-data and direct-array patterns
-			return normalizeSmallWebResponse(response);
-		} finally {
-			this.baseUrl = originalBaseUrl;
-		}
+		return normalizeSmallWebResponse(response);
 	}
 }
 

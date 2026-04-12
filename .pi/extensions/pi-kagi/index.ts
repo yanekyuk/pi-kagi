@@ -7,9 +7,9 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { resolveConfig, validateConfig } from "./src/config.ts";
 
-export { KagiClient } from "./src/kagi-client.ts";
+export { KagiClient, KAGI_SMALLWEB_BASE_URL } from "./src/kagi-client.ts";
 export { resolveConfig, validateConfig, KagiConfigError, KAGI_API_BASE_URL, TIMEOUTS, RETRY, type RetryConfig } from "./src/config.ts";
-export { KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryableStatus, statusToUserMessage } from "./src/errors.ts";
+export { KagiError, KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryableStatus, statusToUserMessage } from "./src/errors.ts";
 
 const VERSION = "0.1.0";
 

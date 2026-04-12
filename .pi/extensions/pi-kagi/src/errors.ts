@@ -5,6 +5,8 @@
  * including HTTP status mapping, retry policy, and user-facing messages.
  */
 
+import { KagiError } from "./config.ts";
+
 /** Standardized error metadata for any Kagi API failure */
 export interface KagiErrorResponse {
 	status: number;
@@ -49,8 +51,16 @@ export function statusToUserMessage(status: number, body?: string): string {
 	}
 }
 
-/** Base error class for all Kagi API errors */
-export class KagiApiError extends Error {
+/** Base error class for all Kagi errors (config, API, network, timeout) */
+export class KagiApiBaseError extends KagiError {
+	constructor(message: string) {
+		super(message);
+		this.name = "KagiError";
+	}
+}
+
+/** Error thrown for HTTP status errors from the Kagi API */
+export class KagiApiError extends KagiApiBaseError {
 	/** HTTP status code from the API response */
 	readonly status: number;
 	/** Whether the request can be retried */
@@ -78,7 +88,7 @@ export class KagiApiError extends Error {
 }
 
 /** Error thrown when a network request fails (no HTTP response) */
-export class KagiNetworkError extends Error {
+export class KagiNetworkError extends KagiApiBaseError {
 	readonly retryable = true;
 
 	constructor(
@@ -99,7 +109,7 @@ export class KagiNetworkError extends Error {
 }
 
 /** Error thrown when a request times out */
-export class KagiTimeoutError extends Error {
+export class KagiTimeoutError extends KagiApiBaseError {
 	readonly retryable = true;
 
 	constructor(
