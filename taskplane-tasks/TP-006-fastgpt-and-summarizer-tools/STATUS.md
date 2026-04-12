@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 1
+**Review Counter:** 2
 **Iteration:** 1
 **Size:** M
 
@@ -18,10 +18,11 @@
 ---
 
 ### Step 1: Implement FastGPT tool
-**Status:** ✅ Complete
+**Status:** 🟨 In Progress
 - [x] FastGPT tool schema added with query/cache parameters and `web_search=true` caveat handling (no user-facing `web_search=false` path)
 - [x] FastGPT execution maps `output`, `references`, and `tokens` into the standard tool `content`/`details` shape
 - [x] FastGPT formatter preserves inline citation ordering while truncating answer text compactly and keeping sources/token metadata intact
+- [ ] FastGPT truncation keeps retained inline citations aligned with the preserved source list during overflow cases
 
 ---
 
@@ -61,6 +62,7 @@
 | # | Type | Step | Verdict | File |
 |---|------|------|---------|------|
 | 1 | Plan | 1 | APPROVE w/ qualifications | `.reviews/R001-plan-step1.md` |
+| 2 | Code | 1 | REVISE | `.reviews/R002-code-step1.md` |
 
 ---
 
@@ -89,10 +91,10 @@
 | 2026-04-12 22:28 | FastGPT mapping added | Tool execution now returns standard `content`/`details` data with `tokens`, `references`, `referenceCount`, and `meta`; targeted tests still pass. |
 | 2026-04-12 22:34 | FastGPT formatting completed | Added `src/formatters/answers.ts`, preserved citation ordering under truncation, and kept source/token sections intact in targeted tests. |
 | 2026-04-12 22:34 | Step 1 completed | FastGPT tool implementation and targeted tests are ready for code review. |
+| 2026-04-12 22:35 | Review R002 | Code review requested truncation fixes so retained answer citations always keep matching source entries. |
 
 ---
 
 ## Blockers
 
 *None*
-| 2026-04-12 19:14 | Review R001 | plan Step 1: UNKNOWN |
