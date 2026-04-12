@@ -17,10 +17,13 @@
 ---
 
 ### Step 1: Extract API capabilities
-**Status:** ⬜ Not Started
-- [ ] Endpoint matrix documented
-- [ ] Availability/pricing/caching caveats documented
-- [ ] Auth/error contract documented
+**Status:** 🟨 In Progress
+- [ ] ⚠️ Hydrate: expand Step 1 checkboxes based on doc review
+- [ ] Create `docs/kagi-api-capability-map.md` with endpoint matrix
+- [ ] Document availability, pricing, caching, and beta caveats
+- [ ] Document auth/header contract and shared error handling
+- [ ] Document response shape types (Search Object, FastGPT Answer, Summarization Object, etc.)
+- [ ] Validate capability map against all six reference docs
 
 ---
 
