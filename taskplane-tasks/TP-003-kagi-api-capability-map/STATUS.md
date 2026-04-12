@@ -28,10 +28,12 @@
 ---
 
 ### Step 2: Define pi-kagi architecture contract
-**Status:** ⬜ Not Started
-- [ ] Module layout and normalized contracts defined
-- [ ] Smart routing rules defined
-- [ ] Output/citation/truncation rules defined
+**Status:** 🟨 In Progress
+- [ ] ⚠️ Hydrate: define module layout and internal file structure
+- [ ] Define normalized TypeScript type contracts for all 7 endpoints
+- [ ] Define smart routing rules (Search vs Enrich vs FastGPT vs Summarizer vs SmallWeb)
+- [ ] Define output requirements: citations, compact summaries, truncation strategy
+- [ ] Create `docs/pi-kagi-architecture.md`
 
 ---
 
