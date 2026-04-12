@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 1
-**Review Counter:** 1
+**Review Counter:** 2
 **Iteration:** 1
 **Size:** S
 
@@ -28,12 +28,12 @@
 ---
 
 ### Step 2: Define pi-kagi architecture contract
-**Status:** 🟨 In Progress
-- [ ] ⚠️ Hydrate: define module layout and internal file structure
-- [ ] Define normalized TypeScript type contracts for all 7 endpoints
-- [ ] Define smart routing rules (Search vs Enrich vs FastGPT vs Summarizer vs SmallWeb)
-- [ ] Define output requirements: citations, compact summaries, truncation strategy
-- [ ] Create `docs/pi-kagi-architecture.md`
+**Status:** ✅ Complete
+- [x] ⚠️ Hydrate: define module layout and internal file structure
+- [x] Define normalized TypeScript type contracts for all 7 endpoints
+- [x] Define smart routing rules (Search vs Enrich vs FastGPT vs Summarizer vs SmallWeb)
+- [x] Define output requirements: citations, compact summaries, truncation strategy
+- [x] Create `docs/pi-kagi-architecture.md`
 
 ---
 
@@ -79,3 +79,4 @@
 
 *None*
 | 2026-04-12 16:14 | Review R001 | plan Step 1: APPROVE |
+| 2026-04-12 16:25 | Review R002 | plan Step 2: APPROVE |
