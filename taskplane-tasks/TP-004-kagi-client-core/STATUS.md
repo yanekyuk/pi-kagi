@@ -1,6 +1,6 @@
 # TP-004: Implement Core Kagi Client, Config, and Error Handling — Status
 
-**Current Step:** Step 2: Implement core client
+**Current Step:** Step 3: Add unit tests for client foundation
 **Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
@@ -36,10 +36,12 @@
 ---
 
 ### Step 3: Add unit tests for client foundation
-**Status:** ⬜ Not Started
-- [ ] Config tests added
-- [ ] Request/response mapping tests added
-- [ ] Retry boundary tests added (if applicable)
+**Status:** 🟨 In Progress
+- [ ] Config resolution tests (resolveConfig with env var, missing key, validateConfig)
+- [ ] Request construction tests (auth header, URL building, params)
+- [ ] Response/error mapping tests (KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryable)
+- [ ] Response normalization tests (null snippet to "", t discriminator, smallweb parsing)
+- [ ] Retry/backoff tests (429 retry logic, max retries, network retry)
 
 ---
 
