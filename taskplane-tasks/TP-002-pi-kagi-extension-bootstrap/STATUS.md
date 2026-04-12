@@ -1,11 +1,11 @@
 # TP-002: Bootstrap `pi-kagi` Extension and Capture Extension Authoring Notes — Status
 
-**Current Step:** Not Started
-**Status:** 🔵 Ready for Execution
+**Current Step:** Step 1: Research and summarize extension creation flow
+**Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 1
 **Review Counter:** 0
-**Iteration:** 0
+**Iteration:** 1
 **Size:** S
 
 > **Hydration:** Checkboxes represent meaningful outcomes. Expand only where runtime discovery requires it.
@@ -13,11 +13,11 @@
 ---
 
 ### Step 0: Preflight
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 
-- [ ] Task folder and writable paths verified
-- [ ] `.pi/extensions/` availability confirmed
-- [ ] Required description string locked: `Pi skill for using Kagi API`
+- [x] Task folder and writable paths verified
+- [x] `.pi/extensions/` availability confirmed
+- [x] Required description string locked: `Pi skill for using Kagi API`
 
 ---
 
@@ -77,6 +77,8 @@
 | Timestamp | Action | Outcome |
 |-----------|--------|---------|
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
+| 2026-04-12 15:51 | Task started | Runtime V2 lane-runner execution |
+| 2026-04-12 15:51 | Step 0 started | Preflight |
 
 ---
 
