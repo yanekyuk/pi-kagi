@@ -1,6 +1,6 @@
 # TP-005: Implement Search, Enrich, and SmallWeb Tools — Status
 
-**Current Step:** Step 3: Register tools and prompt metadata
+**Current Step:** Step 4: Testing & Verification
 **Iteration:** 2
 **Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
@@ -47,8 +47,8 @@
 ---
 
 ### Step 4: Testing & Verification
-**Status:** ⬜ Not Started
-- [ ] Mapping tests added
+**Status:** 🟨 In Progress
+- [ ] Mapping and registration metadata tests added
 - [ ] `npm --prefix .pi/extensions/pi-kagi test` passes
 - [ ] Smoke check completed and logged
 
@@ -68,7 +68,7 @@
 | R001 | plan | Step 1 | ✅ Proceed | .reviews/R001-plan-step1.md |
 | R001 | code | Step 1 | REVISE → fixed | .reviews/R001-code-step1.md |
 | R001 | plan | Step 3 | ✅ Proceed with qualifications | .reviews/R001-plan-step3.md |
-| R001 | code | Step 3 | REVISE | .reviews/R001-code-step3.md |
+| R001 | code | Step 3 | REVISE → fixed → APPROVE | .reviews/R001-code-step3.md |
 
 ---
 
@@ -97,6 +97,7 @@
 | 2026-04-12 18:21 | Step 3 started | Register tools and prompt metadata |
 | 2026-04-12 18:xx | Review R001 | plan Step 3 approved with qualifications: focus on prompt metadata, registration audit, and truncation regression check |
 | 2026-04-12 18:xx | Review R001 | code Step 3 requested fixes: keep final truncated output within limits and avoid duplicated kagi-about metadata |
+| 2026-04-12 18:xx | Review R001 | code Step 3 approved after review fixes |
 
 ---
 
@@ -108,3 +109,4 @@
 | 2026-04-12 18:17 | Review R001 | plan Step 2: UNKNOWN |
 | 2026-04-12 18:27 | Review R001 | plan Step 3: UNKNOWN |
 | 2026-04-12 18:36 | Review R001 | code Step 3: REVISE |
+| 2026-04-12 18:46 | Review R001 | code Step 3: APPROVE |
