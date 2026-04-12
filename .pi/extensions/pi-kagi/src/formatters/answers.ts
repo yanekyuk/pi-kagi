@@ -272,11 +272,29 @@ export function formatSummarizeResponse(response: SummarizeResponse): string {
 }
 
 /**
- * Summaries are already condensed, so a single head truncation pass is sufficient.
+ * Summaries are already condensed, but token metadata still needs to survive truncation.
  */
 export function truncateSummarizeOutput(response: SummarizeResponse): string {
-	return truncateHead(formatSummarizeResponse(response), {
-		maxLines: DEFAULT_MAX_LINES,
-		maxBytes: DEFAULT_MAX_BYTES,
-	}).content;
+	const summary = response.output.trim() || "Kagi Summarizer returned an empty summary.";
+	const metadata = `[Tokens processed: ${response.tokens}]`;
+	const full = joinSections(summary, metadata);
+	if (isWithinPiLimits(full)) {
+		return full;
+	}
+
+	let maxLines = DEFAULT_MAX_LINES;
+	let maxBytes = DEFAULT_MAX_BYTES;
+
+	for (let attempt = 0; attempt < 4; attempt++) {
+		const truncation = truncateHead(summary, { maxLines, maxBytes });
+		const candidate = joinSections(truncation.content.trimEnd(), metadata);
+		if (isWithinPiLimits(candidate)) {
+			return candidate;
+		}
+
+		maxLines = Math.max(1, maxLines - Math.max(1, countLines(candidate) - DEFAULT_MAX_LINES));
+		maxBytes = Math.max(1, maxBytes - Math.max(1, countBytes(candidate) - DEFAULT_MAX_BYTES));
+	}
+
+	return metadata;
 }

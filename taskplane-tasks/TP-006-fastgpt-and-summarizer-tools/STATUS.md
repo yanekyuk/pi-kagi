@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 6
+**Review Counter:** 7
 **Iteration:** 1
 **Size:** M
 
@@ -36,10 +36,10 @@
 ---
 
 ### Step 3: Register tools and UX guidance
-**Status:** 🟨 In Progress
-- [ ] FastGPT and Summarizer tools are registered in the extension entrypoint
-- [ ] Prompt snippets/guidelines help the model choose FastGPT vs Summarizer appropriately
-- [ ] Registered tool output remains compact while preserving answer/summary metadata in tests
+**Status:** ✅ Complete
+- [x] FastGPT and Summarizer tools are registered in the extension entrypoint
+- [x] Prompt snippets/guidelines help the model choose FastGPT vs Summarizer appropriately
+- [x] Registered tool output remains compact while preserving answer/summary metadata in tests
 
 ---
 
@@ -68,6 +68,7 @@
 | 4 | Code | 1 | UNAVAILABLE | reviewer tool returned no output |
 | 5 | Plan | 2 | UNAVAILABLE | reviewer tool returned no output |
 | 6 | Code | 2 | UNAVAILABLE | reviewer tool returned no output |
+| 7 | Plan | 3 | UNAVAILABLE | reviewer tool returned no output |
 
 ---
 
@@ -109,6 +110,11 @@
 | 2026-04-12 23:16 | Step 2 completed | Summarizer implementation is ready for registration work and step-level review. |
 | 2026-04-12 23:18 | Review R006 | Step 2 code review was unavailable, so work proceeds with targeted coverage and documented constraints. |
 | 2026-04-12 23:19 | Step 3 started | Hydrated registration work around entrypoint wiring, tool-choice guidance, and compact output validation. |
+| 2026-04-12 23:19 | Review R007 | Step 3 plan review was unavailable, so implementation proceeds from the current entrypoint/tool patterns. |
+| 2026-04-12 23:25 | Tool registration completed | Root `index.ts` now imports/registers `kagi_fastgpt` and `kagi_summarize`, and extension registration tests include both tools. |
+| 2026-04-12 23:25 | Prompt guidance added | Both tools now advertise prompt snippets/guidelines that distinguish synthesized web answers from direct URL/text summaries. |
+| 2026-04-12 23:25 | Compactness validated | Targeted formatter/execute tests confirm FastGPT and Summarizer outputs stay within Pi limits while preserving token metadata. |
+| 2026-04-12 23:26 | Step 3 completed | Extension wiring and tool-selection guidance are ready for step-level review. |
 
 ---
 

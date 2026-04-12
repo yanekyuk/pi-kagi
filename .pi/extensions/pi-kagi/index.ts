@@ -9,6 +9,8 @@ import { KagiClient } from "./src/kagi-client.ts";
 import { resolveConfig, validateConfig } from "./src/config.ts";
 import { registerSearchTool } from "./src/tools/search.ts";
 import { registerEnrichWebTool, registerEnrichNewsTool } from "./src/tools/enrich.ts";
+import { registerFastGPTTool } from "./src/tools/fastgpt.ts";
+import { registerSummarizerTool } from "./src/tools/summarizer.ts";
 import { registerSmallWebTool } from "./src/tools/smallweb.ts";
 
 export { KagiClient, KAGI_SMALLWEB_BASE_URL } from "./src/kagi-client.ts";
@@ -57,6 +59,8 @@ export default function (pi: ExtensionAPI) {
 	registerSearchTool(pi, getClient);
 	registerEnrichWebTool(pi, getClient);
 	registerEnrichNewsTool(pi, getClient);
+	registerFastGPTTool(pi, getClient);
+	registerSummarizerTool(pi, getClient);
 	registerSmallWebTool(pi, getClient);
 
 	// Show extension info

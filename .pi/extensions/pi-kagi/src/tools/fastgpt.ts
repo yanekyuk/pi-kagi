@@ -23,6 +23,11 @@ export function registerFastGPTTool(pi: ExtensionAPI, getClient: () => KagiClien
 			"from Kagi's web-backed model. Web search grounding is always enabled by the API, so this " +
 			"tool only exposes the question and optional cache flag. Costs ~$0.015 per query " +
 			"(cached responses free).",
+		promptSnippet: "Get a grounded answer with inline citations for a web research question.",
+		promptGuidelines: [
+			"Use this when the user wants a synthesized answer or explanation backed by web citations.",
+			"Prefer kagi_summarize when the user supplies a specific URL or pasted document that needs condensing.",
+		],
 		parameters: Type.Object(
 			{
 				query: Type.String({ description: "Question to answer with a search-grounded LLM response" }),

@@ -123,6 +123,11 @@ export function registerSummarizerTool(pi: ExtensionAPI, getClient: () => KagiCl
 			"engine, summary type, target language, and cache options. Text submissions are " +
 			"sent through POST requests to avoid URL length limits. Costs $0.03-$1 per call " +
 			"depending on engine.",
+		promptSnippet: "Summarize a specific URL or pasted text into concise prose or takeaways.",
+		promptGuidelines: [
+			"Use this when the user provides a URL or body of text to condense rather than asking a broad web question.",
+			"Prefer kagi_fastgpt when the user wants a synthesized answer grounded in multiple web results instead of a direct summary.",
+		],
 		parameters: Type.Object(
 			{
 				url: Type.Optional(

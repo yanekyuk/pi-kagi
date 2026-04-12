@@ -43,6 +43,7 @@ mock.module("@sinclair/typebox", () => ({
 			...options,
 		}),
 		String: (options?: Record<string, unknown>) => ({ type: "string", ...options }),
+		Number: (options?: Record<string, unknown>) => ({ type: "number", ...options }),
 		Boolean: (options?: Record<string, unknown>) => ({ type: "boolean", ...options }),
 		Optional: (schema: Record<string, unknown>) => ({ ...schema, optional: true }),
 	},
@@ -52,6 +53,7 @@ mock.module("@mariozechner/pi-ai", () => ({
 	StringEnum: (values: readonly string[]) => ({ type: "string", enum: [...values] }),
 }));
 
+const { default: extension } = await import("../index.ts");
 const { registerFastGPTTool } = await import("../src/tools/fastgpt.ts");
 const { registerSummarizerTool } = await import("../src/tools/summarizer.ts");
 const {
@@ -59,11 +61,14 @@ const {
 	formatFastGPTResponse,
 	formatSummarizeResponse,
 	truncateFastGPTOutput,
+	truncateSummarizeOutput,
 } = await import("../src/formatters/answers.ts");
 
 interface RegisteredToolDefinition {
 	name: string;
 	description: string;
+	promptSnippet?: string;
+	promptGuidelines?: string[];
 	parameters: {
 		type: string;
 		properties: Record<string, unknown>;
@@ -74,14 +79,29 @@ interface RegisteredToolDefinition {
 
 function createPiStub() {
 	const tools: RegisteredToolDefinition[] = [];
+	const commands = new Map<string, { description?: string; handler: (...args: any[]) => Promise<any> }>();
 
 	const api = {
 		registerTool(definition: RegisteredToolDefinition) {
 			tools.push(definition);
 		},
+		registerCommand(name: string, definition: { description?: string; handler: (...args: any[]) => Promise<any> }) {
+			commands.set(name, definition);
+		},
+		on() {
+			// Event hooks are not exercised in this test file.
+		},
+		getAllTools() {
+			return tools.map((tool) => ({
+				name: tool.name,
+				description: tool.description,
+				parameters: tool.parameters,
+				sourceInfo: { source: "extension", path: "<test>", scope: "top-level", origin: "test" },
+			}));
+		},
 	};
 
-	return { api: api as any, tools };
+	return { api: api as any, tools, commands };
 }
 
 function getRegisteredTool(tools: RegisteredToolDefinition[], name: string): RegisteredToolDefinition {
@@ -272,6 +292,33 @@ describe("TP-006 FastGPT execute path", () => {
 	});
 });
 
+describe("TP-006 extension registration and guidance", () => {
+	it("registers FastGPT and Summarizer tools with disambiguating prompt guidance", () => {
+		const { api, tools } = createPiStub();
+		extension(api);
+
+		const registeredNames = tools.map((tool) => tool.name).sort();
+		expect(registeredNames).toContain("kagi_fastgpt");
+		expect(registeredNames).toContain("kagi_summarize");
+
+		const fastgptTool = getRegisteredTool(tools, "kagi_fastgpt");
+		expect(fastgptTool.promptSnippet).toBe(
+			"Get a grounded answer with inline citations for a web research question.",
+		);
+		expect(fastgptTool.promptGuidelines).toContain(
+			"Prefer kagi_summarize when the user supplies a specific URL or pasted document that needs condensing.",
+		);
+
+		const summarizerTool = getRegisteredTool(tools, "kagi_summarize");
+		expect(summarizerTool.promptSnippet).toBe(
+			"Summarize a specific URL or pasted text into concise prose or takeaways.",
+		);
+		expect(summarizerTool.promptGuidelines).toContain(
+			"Prefer kagi_fastgpt when the user wants a synthesized answer grounded in multiple web results instead of a direct summary.",
+		);
+	});
+});
+
 describe("TP-006 Summarizer schema and validation", () => {
 	it("registers url/text options with typed summary controls", () => {
 		const { api, tools } = createPiStub();
@@ -392,5 +439,22 @@ describe("TP-006 Summarizer schema and validation", () => {
 				undefined,
 			),
 		).rejects.toThrow("`url` must be an absolute URL");
+	});
+
+	it("keeps long summaries compact while preserving token metadata", () => {
+		const longSummary = Array.from(
+			{ length: MAX_TEST_LINES + 50 },
+			(_, index) => `Summary line ${index + 1} — ${"Y".repeat(40)}`,
+		).join("\n");
+		const truncated = truncateSummarizeOutput({
+			meta: { id: "meta-id", node: "us-east4", ms: 30 },
+			output: longSummary,
+			tokens: 999,
+		});
+
+		expect(countLines(truncated)).toBeLessThanOrEqual(MAX_TEST_LINES);
+		expect(countBytes(truncated)).toBeLessThanOrEqual(MAX_TEST_BYTES);
+		expect(truncated).toContain("Summary line 1");
+		expect(truncated).toContain("[Tokens processed: 999]");
 	});
 });
