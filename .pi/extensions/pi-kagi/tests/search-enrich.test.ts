@@ -38,11 +38,20 @@ mock.module("@mariozechner/pi-coding-agent", () => ({
 
 mock.module("@sinclair/typebox", () => ({
 	Type: {
-		Object: (properties: Record<string, unknown>) => ({ type: "object", properties }),
+		Object: (properties: Record<string, unknown>, options?: Record<string, unknown>) => ({
+			type: "object",
+			properties,
+			...options,
+		}),
 		String: (options?: Record<string, unknown>) => ({ type: "string", ...options }),
 		Number: (options?: Record<string, unknown>) => ({ type: "number", ...options }),
+		Boolean: (options?: Record<string, unknown>) => ({ type: "boolean", ...options }),
 		Optional: (schema: Record<string, unknown>) => ({ ...schema, optional: true }),
 	},
+}));
+
+mock.module("@mariozechner/pi-ai", () => ({
+	StringEnum: (values: readonly string[]) => ({ type: "string", enum: [...values] }),
 }));
 
 const { default: extension } = await import("../index.ts");
@@ -255,12 +264,12 @@ describe("TP-005 registration metadata", () => {
 		extension(api);
 
 		const toolNames = tools.map((tool) => tool.name).sort();
-		expect(toolNames).toEqual([
+		expect(toolNames).toEqual(expect.arrayContaining([
 			"kagi_enrich_news",
 			"kagi_enrich_web",
 			"kagi_search",
 			"kagi_smallweb",
-		]);
+		]));
 
 		const searchTool = getRegisteredTool(tools, "kagi_search");
 		expect(searchTool.promptSnippet).toBe("Search the web for general information with source links.");

@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 9
+**Review Counter:** 10
 **Iteration:** 1
 **Size:** M
 
@@ -44,10 +44,10 @@
 ---
 
 ### Step 4: Testing & Verification
-**Status:** 🟨 In Progress
-- [ ] FastGPT/Summarizer tests cover constraints, mapping, and 50KB/2000-line truncation behavior
-- [ ] `cd .pi/extensions/pi-kagi && bun test` passes
-- [ ] Smoke check results log reference/token preservation (live if API key is available)
+**Status:** ✅ Complete
+- [x] FastGPT/Summarizer tests cover constraints, mapping, and 50KB/2000-line truncation behavior
+- [x] `cd .pi/extensions/pi-kagi && bun test` passes
+- [x] Smoke check results log reference/token preservation (live if API key is available)
 
 ---
 
@@ -71,6 +71,7 @@
 | 7 | Plan | 3 | UNAVAILABLE | reviewer tool returned no output |
 | 8 | Code | 3 | UNAVAILABLE | reviewer tool returned no output |
 | 9 | Plan | 4 | REVISE | `.reviews/R009-plan-step4.md` |
+| 10 | Plan | 4 | APPROVE | reviewer tool approved revised test plan |
 
 ---
 
@@ -120,6 +121,11 @@
 | 2026-04-12 23:27 | Review R008 | Step 3 code review was unavailable, so the next step will rely on full test verification. |
 | 2026-04-12 23:27 | Step 4 started | Hydrated verification around targeted coverage, full-suite execution, and smoke-check logging. |
 | 2026-04-12 23:28 | Review R009 | Step 4 plan revised to use `bun test`, explicitly cover Pi truncation limits, and log reference/token preservation during smoke checks. |
+| 2026-04-12 23:28 | Review R010 | Revised Step 4 plan approved; proceeding with targeted and full-suite verification using Bun. |
+| 2026-04-12 23:29 | Targeted verification passed | `bun test tests/fastgpt-summarizer.test.ts` passed with 13 assertions groups covering constraints, mapping, guidance, and truncation limits. |
+| 2026-04-12 23:33 | Full suite passed | `cd .pi/extensions/pi-kagi && bun test` passed after updating shared test mocks/expectations for the new FastGPT + Summarizer registrations. |
+| 2026-04-12 23:34 | Smoke checks logged | Live smoke skipped because `KAGI_API_KEY` is unset; dry-smoke evidence comes from execute-path tests that preserve FastGPT references/tokens and Summarizer token metadata under truncation. |
+| 2026-04-12 23:34 | Step 4 completed | Verification gate passed; remaining work is documentation and delivery. |
 
 ---
 
@@ -128,3 +134,4 @@
 *None*
 | 2026-04-12 19:37 | Review R003 | code Step 1: REVISE |
 | 2026-04-12 20:25 | Review R009 | plan Step 4: REVISE |
+| 2026-04-12 20:31 | Review R010 | plan Step 4: APPROVE |
