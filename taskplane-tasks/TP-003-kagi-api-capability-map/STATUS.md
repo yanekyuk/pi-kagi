@@ -1,7 +1,7 @@
 # TP-003: Build Kagi API Capability Map for pi-kagi — Status
 
-**Current Step:** Step 0: Preflight
-**Status:** 🟡 In Progress
+**Current Step:** Step 4: Documentation & Delivery
+**Status:** ✅ Complete
 **Last Updated:** 2026-04-12
 **Review Level:** 1
 **Review Counter:** 2
@@ -39,7 +39,7 @@
 
 ### Step 3: Testing & Verification
 **Status:** ✅ Complete
-- [ ] ⚠️ Hydrate: expand verification checklist
+- [x] ⚠️ Hydrate: expand verification checklist
 - [x] Verify capability map is internally consistent
 - [x] Verify architecture doc aligns with capability map
 - [x] Verify downstream tasks (TP-004 to TP-009) can reference contracts without ambiguity
@@ -48,9 +48,9 @@
 ---
 
 ### Step 4: Documentation & Delivery
-**Status:** ⬜ Not Started
-- [ ] Checklist added
-- [ ] Discoveries logged
+**Status:** ✅ Complete
+- [x] Verify implementation-ready checklist in architecture doc
+- [x] Log key discoveries in STATUS.md
 
 ---
 
@@ -58,6 +58,8 @@
 
 | # | Type | Step | Verdict | File |
 |---|------|------|---------|------|
+| R001 | plan | Step 1 | APPROVE | .reviews/R001-plan-step1.md |
+| R002 | plan | Step 2 | APPROVE | .reviews/R002-plan-step2.md |
 
 ---
 
@@ -65,6 +67,13 @@
 
 | Discovery | Disposition | Location |
 |-----------|-------------|----------|
+| FastGPT `web_search` param forced true; passing false causes error | Documented as caveat | kagi-api-capability-map.md §3.3, pi-kagi-architecture.md TP-006 checklist |
+| Summarizer `daphne` engine is deprecated alias for `agnes` | Added to type contract | pi-kagi-architecture.md §2.4, tool params |
+| Small Web uses `/api/v1` (not `/api/v0`) | Documented as note | kagi-api-capability-map.md §1, §2.5, §7 |
+| Search API is closed beta (invite-only) | Documented as caveat | kagi-api-capability-map.md §3.3 |
+| Enrich APIs only bill on non-zero results | Documented as pricing note | kagi-api-capability-map.md §3.1 |
+| Kagi API responses have `api_balance` only for /search | Documented in types | kagi-api-capability-map.md §2.1, §2.2 |
+| Small Web feed response format unknown (needs runtime testing) | Flagged for TP-005 | pi-kagi-architecture.md §2.5 |
 
 ---
 
@@ -75,11 +84,11 @@
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
 | 2026-04-12 16:07 | Task started | Runtime V2 lane-runner execution |
 | 2026-04-12 16:07 | Step 0 started | Preflight |
+| 2026-04-12 16:14 | Review R001 | plan Step 1: APPROVE |
+| 2026-04-12 16:25 | Review R002 | plan Step 2: APPROVE |
 
 ---
 
 ## Blockers
 
 *None*
-| 2026-04-12 16:14 | Review R001 | plan Step 1: APPROVE |
-| 2026-04-12 16:25 | Review R002 | plan Step 2: APPROVE |
