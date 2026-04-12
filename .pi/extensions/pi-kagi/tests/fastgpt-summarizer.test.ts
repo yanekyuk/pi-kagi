@@ -48,10 +48,16 @@ mock.module("@sinclair/typebox", () => ({
 	},
 }));
 
+mock.module("@mariozechner/pi-ai", () => ({
+	StringEnum: (values: readonly string[]) => ({ type: "string", enum: [...values] }),
+}));
+
 const { registerFastGPTTool } = await import("../src/tools/fastgpt.ts");
+const { registerSummarizerTool } = await import("../src/tools/summarizer.ts");
 const {
 	formatFastGPTReference,
 	formatFastGPTResponse,
+	formatSummarizeResponse,
 	truncateFastGPTOutput,
 } = await import("../src/formatters/answers.ts");
 
@@ -263,5 +269,128 @@ describe("TP-006 FastGPT execute path", () => {
 			references: response.references,
 			meta: response.meta,
 		});
+	});
+});
+
+describe("TP-006 Summarizer schema and validation", () => {
+	it("registers url/text options with typed summary controls", () => {
+		const { api, tools } = createPiStub();
+
+		registerSummarizerTool(api, () => ({ summarize: async () => { throw new Error("not used"); } }) as any);
+		const tool = getRegisteredTool(tools, "kagi_summarize");
+
+		expect(tool.parameters.type).toBe("object");
+		expect(tool.parameters.additionalProperties).toBe(false);
+		expect(Object.keys(tool.parameters.properties)).toEqual([
+			"url",
+			"text",
+			"engine",
+			"summary_type",
+			"target_language",
+			"cache",
+		]);
+		expect((tool.parameters.properties.engine as any).enum).toEqual(["cecil", "agnes", "daphne", "muriel"]);
+		expect((tool.parameters.properties.summary_type as any).enum).toEqual(["summary", "takeaway"]);
+		expect(tool.description).toContain("Text submissions are sent through POST requests");
+	});
+
+	it("rejects missing or conflicting url/text inputs with an actionable error", async () => {
+		const { api, tools } = createPiStub();
+		registerSummarizerTool(api, () => ({ summarize: async () => ({}) }) as any);
+		const tool = getRegisteredTool(tools, "kagi_summarize");
+
+		expect(
+			tool.execute("tool-call-id", { url: "https://example.com", text: "duplicate" }, undefined, undefined, undefined),
+		).rejects.toThrow("Provide exactly one of `url` or `text`");
+		expect(
+			tool.execute("tool-call-id", {}, undefined, undefined, undefined),
+		).rejects.toThrow("Provide exactly one of `url` or `text`");
+	});
+
+	it("formats summarizer output and maps option details into the tool result", async () => {
+		const { api, tools } = createPiStub();
+		const response = {
+			meta: { id: "meta-id", node: "us-east4", ms: 25 },
+			output: "• Key takeaway one\n• Key takeaway two",
+			tokens: 500,
+		};
+		let capturedParams: Record<string, unknown> | undefined;
+
+		registerSummarizerTool(api, () => ({
+			summarize: async (params: Record<string, unknown>) => {
+				capturedParams = params;
+				return response;
+			},
+		}) as any);
+		const tool = getRegisteredTool(tools, "kagi_summarize");
+
+		expect(formatSummarizeResponse(response as any)).toContain("[Tokens processed: 500]");
+
+		const result = await tool.execute(
+			"tool-call-id",
+			{
+				url: "https://example.com/article",
+				engine: "agnes",
+				summary_type: "takeaway",
+				target_language: "en",
+				cache: false,
+			},
+			undefined,
+			undefined,
+			undefined,
+		);
+
+		expect(capturedParams).toEqual({
+			url: "https://example.com/article",
+			engine: "agnes",
+			summary_type: "takeaway",
+			target_language: "EN",
+			cache: false,
+		});
+		expect(result.content[0].text).toContain("• Key takeaway one");
+		expect(result.content[0].text).toContain("[Tokens processed: 500]");
+		expect(result.details).toEqual({
+			input: { type: "url", value: "https://example.com/article" },
+			engine: "agnes",
+			summary_type: "takeaway",
+			target_language: "EN",
+			cache: false,
+			tokens: 500,
+			meta: response.meta,
+		});
+	});
+
+	it("rejects unsupported languages, oversized text, and invalid URLs with actionable guidance", async () => {
+		const { api, tools } = createPiStub();
+		registerSummarizerTool(api, () => ({ summarize: async () => ({}) }) as any);
+		const tool = getRegisteredTool(tools, "kagi_summarize");
+
+		expect(
+			tool.execute(
+				"tool-call-id",
+				{ url: "https://example.com", target_language: "xx" },
+				undefined,
+				undefined,
+				undefined,
+			),
+		).rejects.toThrow("Unsupported `target_language`");
+		expect(
+			tool.execute(
+				"tool-call-id",
+				{ text: "A".repeat(1_000_001) },
+				undefined,
+				undefined,
+				undefined,
+			),
+		).rejects.toThrow("Provide a URL instead or shorten the pasted text.");
+		expect(
+			tool.execute(
+				"tool-call-id",
+				{ url: "not-a-url" },
+				undefined,
+				undefined,
+				undefined,
+			),
+		).rejects.toThrow("`url` must be an absolute URL");
 	});
 });

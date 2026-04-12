@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 4
+**Review Counter:** 5
 **Iteration:** 1
 **Size:** M
 
@@ -28,10 +28,10 @@
 ---
 
 ### Step 2: Implement Summarizer tool
-**Status:** 🟨 In Progress
-- [ ] Summarizer tool schema enforces `url`/`text` exclusivity and keeps text submissions POST-oriented
-- [ ] Summarizer execution passes engine, `summary_type`, `target_language`, and `cache` options into standard tool output/details
-- [ ] Summarizer validation returns actionable errors for exclusivity, 1MB text limit, and supported option constraints
+**Status:** ✅ Complete
+- [x] Summarizer tool schema enforces `url`/`text` exclusivity and keeps text submissions POST-oriented
+- [x] Summarizer execution passes engine, `summary_type`, `target_language`, and `cache` options into standard tool output/details
+- [x] Summarizer validation returns actionable errors for exclusivity, 1MB text limit, and supported option constraints
 
 ---
 
@@ -66,6 +66,7 @@
 | 2 | Code | 1 | REVISE | `.reviews/R002-code-step1.md` |
 | 3 | Code | 1 | REVISE | `.reviews/R003-code-step1.md` |
 | 4 | Code | 1 | UNAVAILABLE | reviewer tool returned no output |
+| 5 | Plan | 2 | UNAVAILABLE | reviewer tool returned no output |
 
 ---
 
@@ -100,6 +101,11 @@
 | 2026-04-12 22:58 | FastGPT fallback hardened | Uncited-source truncation now keeps concise answers, sanitizes pathological reference labels, and stays within Pi limits in targeted regression tests. |
 | 2026-04-12 22:59 | Review R004 | Code re-review was unavailable, so Step 1 proceeds with targeted regression coverage and prior review findings addressed. |
 | 2026-04-12 23:00 | Step 2 started | Hydrated Summarizer work around exclusivity, option mapping, and actionable constraint errors. |
+| 2026-04-12 23:00 | Review R005 | Step 2 plan review was unavailable, so implementation proceeds cautiously from the documented constraints and TP-005 tool patterns. |
+| 2026-04-12 23:09 | Summarizer schema added | Created `src/tools/summarizer.ts` with url/text exclusivity validation, POST-oriented text handling, and passing schema tests in `bun test tests/fastgpt-summarizer.test.ts`. |
+| 2026-04-12 23:12 | Summarizer mapping added | Summarizer responses now include token metadata in content plus option/input details for engine, summary type, language, cache, and source input kind. |
+| 2026-04-12 23:16 | Summarizer validation hardened | Added actionable URL/language/1MB text errors and normalization for target language codes; targeted Summarizer tests remain green. |
+| 2026-04-12 23:16 | Step 2 completed | Summarizer implementation is ready for registration work and step-level review. |
 
 ---
 

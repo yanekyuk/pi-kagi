@@ -6,7 +6,7 @@
  */
 
 import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@mariozechner/pi-coding-agent";
-import type { Citation, FastGPTResponse } from "../types.ts";
+import type { Citation, FastGPTResponse, SummarizeResponse } from "../types.ts";
 
 interface IndexedReference {
 	index: number;
@@ -261,4 +261,22 @@ export function truncateFastGPTOutput(response: FastGPTResponse): string {
 	}
 
 	return buildOutputWithCompactedUncitedSources("", response, allReferences, true);
+}
+
+/**
+ * Format summarizer output with token metadata.
+ */
+export function formatSummarizeResponse(response: SummarizeResponse): string {
+	const summary = response.output.trim() || "Kagi Summarizer returned an empty summary.";
+	return joinSections(summary, `[Tokens processed: ${response.tokens}]`);
+}
+
+/**
+ * Summaries are already condensed, so a single head truncation pass is sufficient.
+ */
+export function truncateSummarizeOutput(response: SummarizeResponse): string {
+	return truncateHead(formatSummarizeResponse(response), {
+		maxLines: DEFAULT_MAX_LINES,
+		maxBytes: DEFAULT_MAX_BYTES,
+	}).content;
 }
