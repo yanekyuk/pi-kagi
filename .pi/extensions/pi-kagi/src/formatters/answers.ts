@@ -8,11 +8,15 @@
 import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@mariozechner/pi-coding-agent";
 import type { Citation, FastGPTResponse } from "../types.ts";
 
+interface IndexedReference {
+	index: number;
+	reference: Citation;
+}
+
 const utf8Encoder = new TextEncoder();
 const FASTGPT_ANSWER_TRUNCATION_NOTICE =
 	"[FastGPT answer truncated to fit Pi output limits; sources and token metadata preserved.]";
-const FASTGPT_SOURCE_TRUNCATION_NOTICE =
-	"[Showing the first references that fit within Pi output limits.]";
+const SOURCE_ENTRY_PATTERN = /^\[\d+\](?:\(| )/gm;
 
 function countLines(text: string): number {
 	return text === "" ? 0 : text.split("\n").length;
@@ -30,6 +34,41 @@ function joinSections(...sections: Array<string | undefined>): string {
 	return sections.filter((section): section is string => Boolean(section && section.trim())).join("\n\n");
 }
 
+function allIndexedReferences(references: Citation[]): IndexedReference[] {
+	return references.map((reference, index) => ({ index: index + 1, reference }));
+}
+
+function extractCitationNumbers(answer: string): number[] {
+	const seen = new Set<number>();
+	const numbers: number[] = [];
+
+	for (const match of answer.matchAll(/\[(\d+)\]/g)) {
+		const index = Number.parseInt(match[1], 10);
+		if (Number.isFinite(index) && index > 0 && !seen.has(index)) {
+			seen.add(index);
+			numbers.push(index);
+		}
+	}
+
+	return numbers;
+}
+
+function citedIndexedReferences(answer: string, references: Citation[]): IndexedReference[] {
+	const numbers = extractCitationNumbers(answer);
+	if (numbers.length === 0) {
+		return [];
+	}
+
+	const indexed: IndexedReference[] = [];
+	for (const index of numbers) {
+		const reference = references[index - 1];
+		if (reference) {
+			indexed.push({ index, reference });
+		}
+	}
+	return indexed;
+}
+
 function fallbackSourceLabel(reference: Partial<Citation>, index: number): string {
 	const title = reference.title?.trim();
 	const url = reference.url?.trim();
@@ -37,7 +76,7 @@ function fallbackSourceLabel(reference: Partial<Citation>, index: number): strin
 }
 
 /**
- * Format a single FastGPT reference while preserving the reference array order.
+ * Format a single FastGPT reference while preserving the original citation number.
  */
 export function formatFastGPTReference(reference: Partial<Citation>, index: number): string {
 	const label = fallbackSourceLabel(reference, index);
@@ -45,23 +84,34 @@ export function formatFastGPTReference(reference: Partial<Citation>, index: numb
 	return url ? `[${index}](${url}) — ${label}` : `[${index}] ${label}`;
 }
 
-/**
- * Format the FastGPT references list as a compact `Sources:` section.
- */
-export function formatFastGPTSources(references: Citation[]): string {
-	if (references.length === 0) {
+function formatIndexedSources(indexedReferences: IndexedReference[]): string {
+	if (indexedReferences.length === 0) {
 		return "";
 	}
 
-	const lines = references.map((reference, index) => formatFastGPTReference(reference, index + 1));
+	const lines = indexedReferences.map(({ reference, index }) => formatFastGPTReference(reference, index));
 	return `Sources:\n${lines.join("\n")}`;
+}
+
+/**
+ * Format the full FastGPT reference list as a compact `Sources:` section.
+ */
+export function formatFastGPTSources(references: Citation[]): string {
+	return formatIndexedSources(allIndexedReferences(references));
 }
 
 /**
  * Format token/reference metadata for FastGPT responses.
  */
-export function formatFastGPTMetadata(response: Pick<FastGPTResponse, "tokens" | "references">): string {
-	return `[Tokens processed: ${response.tokens} | Sources: ${response.references.length}]`;
+export function formatFastGPTMetadata(
+	response: Pick<FastGPTResponse, "tokens" | "references">,
+	displayedSources = response.references.length,
+): string {
+	if (displayedSources === response.references.length) {
+		return `[Tokens processed: ${response.tokens} | Sources: ${response.references.length}]`;
+	}
+
+	return `[Tokens processed: ${response.tokens} | Sources shown: ${displayedSources} of ${response.references.length}]`;
 }
 
 /**
@@ -69,54 +119,71 @@ export function formatFastGPTMetadata(response: Pick<FastGPTResponse, "tokens" |
  */
 export function formatFastGPTResponse(response: FastGPTResponse): string {
 	const answer = response.output.trim() || "Kagi FastGPT returned an empty answer.";
-	const sourcesSection = formatFastGPTSources(response.references);
-	const metadataSection = formatFastGPTMetadata(response);
-	return joinSections(answer, sourcesSection, metadataSection);
+	return joinSections(answer, formatFastGPTSources(response.references), formatFastGPTMetadata(response));
 }
 
-function truncateSourcesSection(sourcesSection: string, totalReferences: number, metadataSection: string): string {
-	let maxLines = Math.max(1, DEFAULT_MAX_LINES - countLines(metadataSection) - 2);
-	let maxBytes = Math.max(128, DEFAULT_MAX_BYTES - countBytes(metadataSection) - 256);
+function buildFastGPTOutput(
+	answer: string | undefined,
+	response: Pick<FastGPTResponse, "tokens" | "references">,
+	indexedReferences: IndexedReference[],
+	includeTruncationNotice: boolean,
+): string {
+	return joinSections(
+		answer,
+		includeTruncationNotice ? FASTGPT_ANSWER_TRUNCATION_NOTICE : undefined,
+		formatIndexedSources(indexedReferences),
+		formatFastGPTMetadata(response as FastGPTResponse, indexedReferences.length),
+	);
+}
 
-	for (let attempt = 0; attempt < 4; attempt++) {
-		const truncation = truncateHead(sourcesSection, { maxLines, maxBytes });
-		if (!truncation.truncated) {
-			return truncation.content.trimEnd();
-		}
+function countShownSources(section: string): number {
+	return (section.match(SOURCE_ENTRY_PATTERN) || []).length;
+}
 
-		const candidate = joinSections(
-			truncation.content.trimEnd(),
-			FASTGPT_SOURCE_TRUNCATION_NOTICE,
-			metadataSection,
-		);
-		if (isWithinPiLimits(candidate)) {
-			return joinSections(truncation.content.trimEnd(), FASTGPT_SOURCE_TRUNCATION_NOTICE);
+function truncateUncitedSources(
+	response: Pick<FastGPTResponse, "tokens" | "references">,
+	indexedReferences: IndexedReference[],
+): { section: string; shownCount: number } {
+	const fullSection = formatIndexedSources(indexedReferences);
+	if (!fullSection) {
+		return { section: "", shownCount: 0 };
+	}
+
+	let maxLines = DEFAULT_MAX_LINES;
+	let maxBytes = DEFAULT_MAX_BYTES;
+
+	for (let attempt = 0; attempt < 5; attempt++) {
+		const truncation = truncateHead(fullSection, { maxLines, maxBytes });
+		const shownCount = countShownSources(truncation.content);
+		const notice = truncation.truncated
+			? `[Showing first ${shownCount} of ${indexedReferences.length} sources to fit Pi output limits.]`
+			: undefined;
+		const section = joinSections(truncation.content.trimEnd(), notice);
+		const candidate = joinSections(section, formatFastGPTMetadata(response as FastGPTResponse, shownCount));
+		if (shownCount > 0 && isWithinPiLimits(candidate)) {
+			return { section, shownCount };
 		}
 
 		maxLines = Math.max(1, maxLines - Math.max(1, countLines(candidate) - DEFAULT_MAX_LINES));
-		maxBytes = Math.max(128, maxBytes - Math.max(128, countBytes(candidate) - DEFAULT_MAX_BYTES));
+		maxBytes = Math.max(1, maxBytes - Math.max(1, countBytes(candidate) - DEFAULT_MAX_BYTES));
 	}
 
-	const fallback = truncateHead(sourcesSection, { maxLines: 1, maxBytes: Math.max(128, maxBytes) });
-	return joinSections(fallback.content.trimEnd(), `[Showing references 1-${Math.min(totalReferences, 1)}.]`);
+	const first = indexedReferences[0];
+	const section = joinSections(
+		`Sources:\n${formatFastGPTReference(first.reference, first.index)}`,
+		`[Showing first 1 of ${indexedReferences.length} sources to fit Pi output limits.]`,
+	);
+	return { section, shownCount: 1 };
 }
 
 /**
- * Truncate FastGPT output while preserving the source list and token metadata.
+ * Truncate FastGPT output while preserving source entries for the citations that
+ * remain in the retained answer body.
  */
 export function truncateFastGPTOutput(response: FastGPTResponse): string {
 	const answer = response.output.trim() || "Kagi FastGPT returned an empty answer.";
-	const metadataSection = formatFastGPTMetadata(response);
-	let sourcesSection = formatFastGPTSources(response.references);
-
-	if (sourcesSection) {
-		const suffixOnly = joinSections(sourcesSection, metadataSection);
-		if (!isWithinPiLimits(suffixOnly)) {
-			sourcesSection = truncateSourcesSection(sourcesSection, response.references.length, metadataSection);
-		}
-	}
-
-	const full = joinSections(answer, sourcesSection, metadataSection);
+	const allReferences = allIndexedReferences(response.references);
+	const full = buildFastGPTOutput(answer, response, allReferences, false);
 	if (isWithinPiLimits(full)) {
 		return full;
 	}
@@ -124,15 +191,12 @@ export function truncateFastGPTOutput(response: FastGPTResponse): string {
 	let maxLines = DEFAULT_MAX_LINES;
 	let maxBytes = DEFAULT_MAX_BYTES;
 
-	for (let attempt = 0; attempt < 6; attempt++) {
+	for (let attempt = 0; attempt < 8; attempt++) {
 		const truncation = truncateHead(answer, { maxLines, maxBytes });
 		const truncatedAnswer = truncation.content.trimEnd();
-		const candidate = joinSections(
-			truncatedAnswer,
-			FASTGPT_ANSWER_TRUNCATION_NOTICE,
-			sourcesSection,
-			metadataSection,
-		);
+		const citedReferences = citedIndexedReferences(truncatedAnswer, response.references);
+		const displayedReferences = citedReferences.length > 0 ? citedReferences : allReferences;
+		const candidate = buildFastGPTOutput(truncatedAnswer, response, displayedReferences, true);
 
 		if (isWithinPiLimits(candidate)) {
 			return candidate;
@@ -142,13 +206,10 @@ export function truncateFastGPTOutput(response: FastGPTResponse): string {
 		maxBytes = Math.max(1, maxBytes - Math.max(1, countBytes(candidate) - DEFAULT_MAX_BYTES));
 	}
 
-	const suffix = joinSections(FASTGPT_ANSWER_TRUNCATION_NOTICE, sourcesSection, metadataSection);
-	if (isWithinPiLimits(suffix)) {
-		return suffix;
-	}
-
+	const compactSources = truncateUncitedSources(response, allReferences);
 	return joinSections(
-		truncateSourcesSection(formatFastGPTSources(response.references), response.references.length, metadataSection),
-		metadataSection,
+		FASTGPT_ANSWER_TRUNCATION_NOTICE,
+		compactSources.section,
+		formatFastGPTMetadata(response, compactSources.shownCount),
 	);
 }

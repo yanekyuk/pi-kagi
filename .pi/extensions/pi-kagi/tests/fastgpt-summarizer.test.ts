@@ -156,6 +156,27 @@ describe("TP-006 FastGPT formatters", () => {
 		expect(truncated).toContain("[Tokens processed: 1200 | Sources: 2]");
 		expect(truncated).not.toContain(`Answer line ${MAX_TEST_LINES + 120}`);
 	});
+
+	it("keeps cited high-index references when the full source list would overflow Pi limits", () => {
+		const references = Array.from({ length: 3000 }, (_, index) => ({
+			title: `Reference ${index + 1}`,
+			snippet: `Snippet ${index + 1}`,
+			url: `https://example.com/${index + 1}`,
+		}));
+		const truncated = truncateFastGPTOutput({
+			meta: { id: "meta-id", node: "us-east4", ms: 42 },
+			output: "Conclusion supported by [3000].",
+			tokens: 2048,
+			references,
+		});
+
+		expect(countLines(truncated)).toBeLessThanOrEqual(MAX_TEST_LINES);
+		expect(countBytes(truncated)).toBeLessThanOrEqual(MAX_TEST_BYTES);
+		expect(truncated).toContain("Conclusion supported by [3000].");
+		expect(truncated).toContain("Sources:\n[3000](https://example.com/3000) — Reference 3000");
+		expect(truncated).toContain("[Tokens processed: 2048 | Sources shown: 1 of 3000]");
+		expect(truncated).not.toContain("[1](https://example.com/1) — Reference 1");
+	});
 });
 
 describe("TP-006 FastGPT execute path", () => {
