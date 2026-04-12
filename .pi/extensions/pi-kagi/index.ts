@@ -8,6 +8,8 @@ import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { KagiClient } from "./src/kagi-client.ts";
 import { resolveConfig, validateConfig } from "./src/config.ts";
 import { registerSearchTool } from "./src/tools/search.ts";
+import { registerEnrichWebTool, registerEnrichNewsTool } from "./src/tools/enrich.ts";
+import { registerSmallWebTool } from "./src/tools/smallweb.ts";
 
 export { KagiClient, KAGI_SMALLWEB_BASE_URL } from "./src/kagi-client.ts";
 export { resolveConfig, validateConfig, KagiConfigError, KAGI_API_BASE_URL, TIMEOUTS, RETRY, type RetryConfig } from "./src/config.ts";
@@ -44,6 +46,9 @@ export default function (pi: ExtensionAPI) {
 
 	// Register tools — pass getter so config resolution is deferred until tool invocation
 	registerSearchTool(pi, getClient);
+	registerEnrichWebTool(pi, getClient);
+	registerEnrichNewsTool(pi, getClient);
+	registerSmallWebTool(pi, getClient);
 
 	// Show extension info
 	pi.registerCommand("kagi-about", {
@@ -54,7 +59,7 @@ export default function (pi: ExtensionAPI) {
 			ctx.ui.notify(
 				`pi-kagi v${VERSION} — Pi skill for using Kagi API\n` +
 					`API key: ${keyStatus}\n` +
-					"Tools: kagi_search\n" +
+					"Tools: kagi_search, kagi_enrich_web, kagi_enrich_news, kagi_smallweb\n" +
 					"Endpoints: search, enrich/web, enrich/news, fastgpt, summarize, smallweb",
 				"info",
 			);

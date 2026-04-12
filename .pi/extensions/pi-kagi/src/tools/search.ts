@@ -52,6 +52,18 @@ export function registerSearchTool(pi: ExtensionAPI, getClient: () => KagiClient
 				}
 
 				const totalResults = countResults(response);
+
+				// Handle empty results with a friendly message
+				if (totalResults === 0) {
+					return {
+						content: [{
+							type: "text" as const,
+							text: `No search results found for "${params.query}".`,
+						}],
+						details: { query: params.query, totalResults: 0, meta: response.meta },
+					};
+				}
+
 				const formatted = formatSearchResponse(response);
 
 				// Apply truncation — search results are ordered by relevance,
