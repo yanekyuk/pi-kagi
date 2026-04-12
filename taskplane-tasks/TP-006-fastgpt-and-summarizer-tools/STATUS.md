@@ -1,6 +1,6 @@
 # TP-006: Implement FastGPT and Summarizer Tools — Status
 
-**Current Step:** Step 0: Preflight
+**Current Step:** Step 1: Implement FastGPT tool
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
@@ -18,10 +18,10 @@
 ---
 
 ### Step 1: Implement FastGPT tool
-**Status:** ⬜ Not Started
-- [ ] Tool schema added
-- [ ] Response mapping added
-- [ ] Citation-friendly references formatting added
+**Status:** 🟨 In Progress
+- [ ] FastGPT tool schema added with query/cache parameters and `web_search=true` caveat handling
+- [ ] FastGPT execution maps `output`, `references`, and `tokens` from the client response
+- [ ] FastGPT formatter renders compact answer text with citation-friendly source entries and token metadata
 
 ---
 
@@ -82,6 +82,7 @@
 | 2026-04-12 22:14 | TP-004 client compatibility verified | `bun test tests/client.test.ts` passed; confirmed `POST /fastgpt` mapping and POST-first `/summarize` transport support. |
 | 2026-04-12 22:15 | Constraint preflight completed | Reviewed `docs/fastgpt.md` and `docs/summarizer.md`; captured `web_search=true`, `url`/`text` exclusivity, POST-for-text guidance, and 1MB text limit. |
 | 2026-04-12 22:15 | Step 0 completed | Preflight findings logged; ready to implement FastGPT tool. |
+| 2026-04-12 22:16 | Step 1 started | Hydrated FastGPT outcomes around schema/caveat handling, mapping, and citation formatting. |
 
 ---
 
