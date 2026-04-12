@@ -1,8 +1,8 @@
 # TP-005: Implement Search, Enrich, and SmallWeb Tools — Status
 
-**Current Step:** Step 4: Testing & Verification
+**Current Step:** Step 5: Documentation & Delivery
 **Iteration:** 2
-**Status:** 🟨 In Progress
+**Status:** ✅ Complete
 **Last Updated:** 2026-04-12
 
 ---
@@ -55,9 +55,9 @@
 ---
 
 ### Step 5: Documentation & Delivery
-**Status:** ⬜ Not Started
-- [ ] README updated
-- [ ] API caveats documented
+**Status:** ✅ Complete
+- [x] README updated
+- [x] API caveats documented
 
 ---
 
@@ -69,6 +69,8 @@
 | R001 | code | Step 1 | REVISE → fixed | .reviews/R001-code-step1.md |
 | R001 | plan | Step 3 | ✅ Proceed with qualifications | .reviews/R001-plan-step3.md |
 | R001 | code | Step 3 | REVISE → fixed → APPROVE | .reviews/R001-code-step3.md |
+| R001 | plan | Step 4 | ✅ Proceed with qualifications | .reviews/R001-plan-step4.md |
+| R001 | code | Step 4 | ✅ APPROVE | — |
 
 ---
 
@@ -101,16 +103,10 @@
 | 2026-04-12 18:xx | Review R001 | code Step 3 requested fixes: keep final truncated output within limits and avoid duplicated kagi-about metadata |
 | 2026-04-12 18:xx | Review R001 | code Step 3 approved after review fixes |
 | 2026-04-12 21:xx | Smoke check | Deterministic extension-load smoke passed; live API smoke skipped because KAGI_API_KEY was unset |
+| 2026-04-12 21:xx | Step 5 completed | README updated with TP-005 tool list, usage examples, and API caveats |
 
 ---
 
 ## Blockers
 
 *None*
-| 2026-04-12 18:05 | Review R001 | plan Step 1: UNKNOWN |
-| 2026-04-12 18:12 | Review R001 | code Step 1: REVISE |
-| 2026-04-12 18:17 | Review R001 | plan Step 2: UNKNOWN |
-| 2026-04-12 18:27 | Review R001 | plan Step 3: UNKNOWN |
-| 2026-04-12 18:36 | Review R001 | code Step 3: REVISE |
-| 2026-04-12 18:46 | Review R001 | code Step 3: APPROVE |
-| 2026-04-12 18:51 | Review R001 | plan Step 4: UNKNOWN |
