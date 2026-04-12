@@ -1,5 +1,3 @@
-
-
 # Taskplane runtime artifacts (machine-specific, do not commit)
 .pi/batch-state.json
 .pi/batch-history.json
@@ -15,3 +13,11 @@
 
 # Pi project-local packages (if using pi install -l)
 .pi/npm/
+
+# External API reference docs (fetched; do not commit)
+docs/enrich.md
+docs/fastgpt.md
+docs/overview.md
+docs/search.md
+docs/smallweb.md
+docs/summarizer.md
