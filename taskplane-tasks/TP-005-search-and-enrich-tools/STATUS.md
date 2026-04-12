@@ -27,10 +27,12 @@
 ---
 
 ### Step 2: Implement Enrich + SmallWeb tools
-**Status:** ⬜ Not Started
-- [ ] Enrich web/news tools added
-- [ ] SmallWeb feed tool added
-- [ ] Shared output shape applied
+**Status:** 🟨 In Progress
+- [ ] Create src/tools/enrich.ts with kagi_enrich_web and kagi_enrich_news tools
+- [ ] Create src/tools/smallweb.ts with kagi_smallweb tool
+- [ ] Share formatSearchResponse between search and enrich tools (includeRank option)
+- [ ] Apply truncation to enrich and smallweb outputs
+- [ ] Register enrich and smallweb tools in index.ts
 
 ---
 
