@@ -1,18 +1,18 @@
 # TP-003: Build Kagi API Capability Map for pi-kagi — Status
 
-**Current Step:** Not Started
-**Status:** 🔵 Ready for Execution
+**Current Step:** Step 0: Preflight
+**Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 1
 **Review Counter:** 0
-**Iteration:** 0
+**Iteration:** 1
 **Size:** S
 
 ---
 
 ### Step 0: Preflight
-**Status:** ⬜ Not Started
-- [ ] References and dependencies verified
+**Status:** ✅ Complete
+- [x] References and dependencies verified
 
 ---
 
@@ -65,6 +65,8 @@
 | Timestamp | Action | Outcome |
 |-----------|--------|---------|
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
+| 2026-04-12 16:07 | Task started | Runtime V2 lane-runner execution |
+| 2026-04-12 16:07 | Step 0 started | Preflight |
 
 ---
 
