@@ -1,7 +1,7 @@
 # TP-002: Bootstrap `pi-kagi` Extension and Capture Extension Authoring Notes — Status
 
 **Current Step:** Step 4: Documentation &amp; Delivery
-**Status:** 🟡 In Progress
+**Status:** ✅ Complete
 **Last Updated:** 2026-04-12
 **Review Level:** 1
 **Review Counter:** 2
@@ -50,11 +50,11 @@
 ---
 
 ### Step 4: Documentation & Delivery
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 
-- [ ] Notes doc aligned with implementation
-- [ ] Extension identity/description consistent across files
-- [ ] Discoveries and limitations logged
+- [x] Notes doc aligned with implementation
+- [x] Extension identity/description consistent across files
+- [x] Discoveries and limitations logged
 
 ---
 
@@ -69,6 +69,8 @@
 
 | Discovery | Disposition | Location |
 |-----------|-------------|----------|
+| node_modules not in .gitignore but not needed yet (extension has only peerDeps) | Note for future: add to .gitignore when real deps are added | .gitignore |
+| Kagi API is v0 beta (documented in CONTEXT.md) | Build defensively, expect breaking changes | docs/pi-extension-creation-notes.md |
 
 ---
 
