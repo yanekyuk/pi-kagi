@@ -32,6 +32,14 @@ export const RETRY = {
 	maxBackoffMs: 30_000,
 } as const;
 
+/** Type for retry configuration overrides */
+export interface RetryConfig {
+	maxRetries: number;
+	initialBackoffMs: number;
+	backoffMultiplier: number;
+	maxBackoffMs: number;
+}
+
 /** Resolved configuration for the Kagi client */
 export interface KagiConfig {
 	apiKey: string;

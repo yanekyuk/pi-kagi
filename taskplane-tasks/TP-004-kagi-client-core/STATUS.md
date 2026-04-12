@@ -4,7 +4,7 @@
 **Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 2
+**Review Counter:** 3
 **Iteration:** 1
 **Size:** M
 
@@ -36,12 +36,12 @@
 ---
 
 ### Step 3: Add unit tests for client foundation
-**Status:** 🟨 In Progress
-- [ ] Config resolution tests (resolveConfig with env var, missing key, validateConfig)
-- [ ] Request construction tests (auth header, URL building, params)
-- [ ] Response/error mapping tests (KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryable)
-- [ ] Response normalization tests (null snippet to "", t discriminator, smallweb parsing)
-- [ ] Retry/backoff tests (429 retry logic, max retries, network retry)
+**Status:** ✅ Complete
+- [x] Config resolution tests (resolveConfig with env var, missing key, validateConfig)
+- [x] Request construction tests (auth header, URL building, params)
+- [x] Response/error mapping tests (KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryable)
+- [x] Response normalization tests (null snippet to "", t discriminator, smallweb parsing)
+- [x] Retry/backoff tests (429 retry logic, max retries, network retry)
 
 ---
 
@@ -88,3 +88,4 @@
 *None*
 | 2026-04-12 16:45 | Review R001 | plan Step 1: APPROVE |
 | 2026-04-12 16:58 | Review R002 | plan Step 2: APPROVE |
+| 2026-04-12 17:08 | Review R003 | plan Step 3: APPROVE |

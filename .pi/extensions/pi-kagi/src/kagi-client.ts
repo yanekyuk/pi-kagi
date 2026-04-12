@@ -7,6 +7,7 @@
 
 import {
 	type KagiConfig,
+	type RetryConfig,
 	resolveConfig,
 	TIMEOUTS,
 	RETRY,
@@ -16,7 +17,6 @@ import {
 	KagiApiError,
 	KagiNetworkError,
 	KagiTimeoutError,
-	isRetryableStatus,
 	statusToUserMessage,
 } from "./errors.ts";
 
@@ -65,9 +65,9 @@ function normalizeSearchItem(raw: RawSearchObject): SearchItem {
 }
 
 /** Calculate exponential backoff delay */
-function backoffDelay(attempt: number): number {
-	const delay = RETRY.initialBackoffMs * Math.pow(RETRY.backoffMultiplier, attempt);
-	return Math.min(delay, RETRY.maxBackoffMs);
+function backoffDelay(attempt: number, config: RetryConfig = RETRY): number {
+	const delay = config.initialBackoffMs * Math.pow(config.backoffMultiplier, attempt);
+	return Math.min(delay, config.maxBackoffMs);
 }
 
 // ─── KagiClient ──────────────────────────────────────────────────
@@ -75,11 +75,13 @@ function backoffDelay(attempt: number): number {
 export class KagiClient {
 	private apiKey: string;
 	private baseUrl: string;
+	private retryConfig: RetryConfig;
 
-	constructor(config?: KagiConfig) {
+	constructor(config?: KagiConfig & { retry?: RetryConfig }) {
 		const resolved = config ?? resolveConfig();
 		this.apiKey = resolved.apiKey;
 		this.baseUrl = resolved.baseUrl.replace(/\/+$/, ""); // strip trailing slashes
+		this.retryConfig = (config as { retry?: RetryConfig } | undefined)?.retry ?? RETRY;
 	}
 
 	// ─── Core Request Helper ────────────────────────────────────
@@ -126,7 +128,7 @@ export class KagiClient {
 		// Retry loop (for 429 rate limiting)
 		let lastError: KagiApiError | KagiNetworkError | KagiTimeoutError | undefined;
 
-		for (let attempt = 0; attempt <= RETRY.maxRetries; attempt++) {
+		for (let attempt = 0; attempt <= this.retryConfig.maxRetries; attempt++) {
 			try {
 				const controller = new AbortController();
 				const timeoutId = setTimeout(() => controller.abort(), timeout ?? TIMEOUTS.default);
@@ -145,8 +147,8 @@ export class KagiClient {
 					const responseBody = await response.text().catch(() => "");
 
 					// Retry on 429
-					if (response.status === 429 && attempt < RETRY.maxRetries) {
-						const delay = backoffDelay(attempt);
+					if (response.status === 429 && attempt < this.retryConfig.maxRetries) {
+						const delay = backoffDelay(attempt, this.retryConfig);
 						await sleep(delay);
 						continue;
 					}
@@ -181,8 +183,8 @@ export class KagiClient {
 						`Network error connecting to ${path}: ${err.message}`,
 						err,
 					);
-					if (attempt < RETRY.maxRetries) {
-						const delay = backoffDelay(attempt);
+					if (attempt < this.retryConfig.maxRetries) {
+						const delay = backoffDelay(attempt, this.retryConfig);
 						await sleep(delay);
 						continue;
 					}
