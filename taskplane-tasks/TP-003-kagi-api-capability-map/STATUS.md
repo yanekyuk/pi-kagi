@@ -86,6 +86,9 @@
 | 2026-04-12 16:07 | Step 0 started | Preflight |
 | 2026-04-12 16:14 | Review R001 | plan Step 1: APPROVE |
 | 2026-04-12 16:25 | Review R002 | plan Step 2: APPROVE |
+| 2026-04-12 16:36 | Agent reply | TP-003 is complete. All 5 steps (0-4) finished: /  / - **Step 0:** Preflight — verified 6 Kagi reference docs exist, TP-002 scaffold present / - **Step 1:** Extracted API capabilities — created `docs/ |
+| 2026-04-12 16:36 | Worker iter 1 | done in 1708s, tools: 81 |
+| 2026-04-12 16:36 | Task complete | .DONE created |
 
 ---
 
