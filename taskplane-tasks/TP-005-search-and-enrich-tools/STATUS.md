@@ -37,10 +37,12 @@
 ---
 
 ### Step 3: Register tools and prompt metadata
-**Status:** ✅ Complete
+**Status:** 🟨 In Progress
 - [x] Audit tool registration wiring and keep extension entrypoint messaging aligned
 - [x] Add concise prompt snippets/guidelines to TP-005 tool definitions
 - [x] Verify truncation remains applied across search, enrich, and smallweb outputs
+- [ ] Bound shared truncation helpers so final output (including notices) stays within pi limits
+- [ ] Derive `kagi-about` tool help from registered tool metadata to avoid drift
 
 ---
 
@@ -66,6 +68,13 @@
 | R001 | plan | Step 1 | ✅ Proceed | .reviews/R001-plan-step1.md |
 | R001 | code | Step 1 | REVISE → fixed | .reviews/R001-code-step1.md |
 | R001 | plan | Step 3 | ✅ Proceed with qualifications | .reviews/R001-plan-step3.md |
+| R001 | code | Step 3 | REVISE | .reviews/R001-code-step3.md |
+
+---
+
+## Notes
+
+- Step 4 should add a lightweight registration test for TP-005 `promptSnippet`/`promptGuidelines` metadata (review suggestion from R001 code Step 3).
 
 ---
 
@@ -87,6 +96,7 @@
 | 2026-04-12 18:21 | Worker iter 1 | done in 1817s, tools: 75 |
 | 2026-04-12 18:21 | Step 3 started | Register tools and prompt metadata |
 | 2026-04-12 18:xx | Review R001 | plan Step 3 approved with qualifications: focus on prompt metadata, registration audit, and truncation regression check |
+| 2026-04-12 18:xx | Review R001 | code Step 3 requested fixes: keep final truncated output within limits and avoid duplicated kagi-about metadata |
 
 ---
 
@@ -97,3 +107,4 @@
 | 2026-04-12 18:12 | Review R001 | code Step 1: REVISE |
 | 2026-04-12 18:17 | Review R001 | plan Step 2: UNKNOWN |
 | 2026-04-12 18:27 | Review R001 | plan Step 3: UNKNOWN |
+| 2026-04-12 18:36 | Review R001 | code Step 3: REVISE |
