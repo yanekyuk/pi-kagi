@@ -7,10 +7,9 @@
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
-import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@mariozechner/pi-coding-agent";
 import { KagiClient } from "../kagi-client.ts";
 import { KagiError } from "../config.ts";
-import { formatSearchResponse, countResults, truncationNotice } from "../formatters/results.ts";
+import { formatSearchResponse, countResults, truncateSearchOutput } from "../formatters/results.ts";
 
 /**
  * Register the kagi_search tool with the pi extension API.
@@ -29,6 +28,11 @@ export function registerSearchTool(pi: ExtensionAPI, getClient: () => KagiClient
 			"Search the web using Kagi's premium search API. Returns a numbered list of results " +
 			"with title, snippet, URL, and publication date. Also includes related search queries " +
 			"when available. Costs ~$0.025 per query.",
+		promptSnippet: "Search the web for general information with source links.",
+		promptGuidelines: [
+			"Use this as the default web lookup when the user needs broad coverage or direct citations.",
+			"Prefer kagi_enrich_web for independent/community perspectives and kagi_enrich_news for recent news or current discussions.",
+		],
 		parameters: Type.Object({
 			query: Type.String({ description: "Search query" }),
 			limit: Type.Optional(
@@ -66,20 +70,8 @@ export function registerSearchTool(pi: ExtensionAPI, getClient: () => KagiClient
 
 				const formatted = formatSearchResponse(response);
 
-				// Apply truncation — search results are ordered by relevance,
-				// so truncating from the head (keeping the most relevant) is correct
-				const truncation = truncateHead(formatted, {
-					maxLines: DEFAULT_MAX_LINES,
-					maxBytes: DEFAULT_MAX_BYTES,
-				});
-
-				let result = truncation.content;
-
-				if (truncation.truncated) {
-					// Count how many citation lines survived truncation
-					const shownResults = (truncation.content.match(/^\[\d+\]\(/gm) || []).length;
-					result += truncationNotice(shownResults, totalResults);
-				}
+				// Search results are ordered by relevance, so we keep the head of the list
+				const result = truncateSearchOutput(formatted, totalResults);
 
 				return {
 					content: [{ type: "text" as const, text: result }],

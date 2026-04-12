@@ -7,10 +7,9 @@
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
-import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@mariozechner/pi-coding-agent";
 import { KagiClient } from "../kagi-client.ts";
 import { KagiError } from "../config.ts";
-import { formatSearchResponse, countResults, truncationNotice } from "../formatters/results.ts";
+import { formatSearchResponse, countResults, truncateSearchOutput } from "../formatters/results.ts";
 
 /**
  * Register the kagi_enrich_web tool.
@@ -25,6 +24,11 @@ export function registerEnrichWebTool(pi: ExtensionAPI, getClient: () => KagiCli
 			"Search non-commercial web content using Kagi's Teclis index. " +
 			"Finds blogs, discussions, and perspectives from the independent web. " +
 			"Costs ~$0.002 per query (free if no results returned).",
+		promptSnippet: "Find non-commercial web sources, blogs, and community discussions.",
+		promptGuidelines: [
+			"Use this when the user wants blogs, forums, indie sites, or non-mainstream perspectives.",
+			"If coverage is sparse or the user needs broader results, follow up with kagi_search.",
+		],
 		parameters: Type.Object({
 			query: Type.String({ description: "Query for non-commercial web content" }),
 		}),
@@ -56,18 +60,7 @@ export function registerEnrichWebTool(pi: ExtensionAPI, getClient: () => KagiCli
 				}
 
 				const formatted = formatSearchResponse(response, { includeRank: true });
-
-				const truncation = truncateHead(formatted, {
-					maxLines: DEFAULT_MAX_LINES,
-					maxBytes: DEFAULT_MAX_BYTES,
-				});
-
-				let result = truncation.content;
-
-				if (truncation.truncated) {
-					const shownResults = (truncation.content.match(/^\[\d+\]\(/gm) || []).length;
-					result += truncationNotice(shownResults, totalResults);
-				}
+				const result = truncateSearchOutput(formatted, totalResults);
 
 				return {
 					content: [{ type: "text" as const, text: result }],
@@ -100,6 +93,11 @@ export function registerEnrichNewsTool(pi: ExtensionAPI, getClient: () => KagiCl
 			"Search non-commercial news and discussions using Kagi's TinyGem index. " +
 			"Finds interesting discussions and news from typically non-mainstream sources. " +
 			"Costs ~$0.002 per query (free if no results returned).",
+		promptSnippet: "Find recent news and current discussions from varied sources.",
+		promptGuidelines: [
+			"Use this for latest, recent, news, or current-events requests.",
+			"If the user needs broader background or evergreen sources, supplement with kagi_search.",
+		],
 		parameters: Type.Object({
 			query: Type.String({ description: "Query for non-commercial news and discussions" }),
 		}),
@@ -130,18 +128,7 @@ export function registerEnrichNewsTool(pi: ExtensionAPI, getClient: () => KagiCl
 				}
 
 				const formatted = formatSearchResponse(response, { includeRank: true });
-
-				const truncation = truncateHead(formatted, {
-					maxLines: DEFAULT_MAX_LINES,
-					maxBytes: DEFAULT_MAX_BYTES,
-				});
-
-				let result = truncation.content;
-
-				if (truncation.truncated) {
-					const shownResults = (truncation.content.match(/^\[\d+\]\(/gm) || []).length;
-					result += truncationNotice(shownResults, totalResults);
-				}
+				const result = truncateSearchOutput(formatted, totalResults);
 
 				return {
 					content: [{ type: "text" as const, text: result }],

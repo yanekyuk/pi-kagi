@@ -16,6 +16,12 @@ export { resolveConfig, validateConfig, KagiConfigError, KAGI_API_BASE_URL, TIME
 export { KagiError, KagiApiError, KagiNetworkError, KagiTimeoutError, isRetryableStatus, statusToUserMessage } from "./src/errors.ts";
 
 const VERSION = "0.1.0";
+const AVAILABLE_TOOLS = [
+	{ name: "kagi_search", summary: "General web search with numbered citations" },
+	{ name: "kagi_enrich_web", summary: "Independent web/blog/community sources" },
+	{ name: "kagi_enrich_news", summary: "Recent news and current discussions" },
+	{ name: "kagi_smallweb", summary: "Curated Small Web discovery feed" },
+] as const;
 
 export default function (pi: ExtensionAPI) {
 	// Create the KagiClient lazily — resolved when first needed
@@ -56,11 +62,13 @@ export default function (pi: ExtensionAPI) {
 		handler: async (_args, ctx) => {
 			const result = validateConfig();
 			const keyStatus = result.valid ? "✅ configured" : "❌ not set";
+			const toolList = AVAILABLE_TOOLS.map((tool) => `- ${tool.name}: ${tool.summary}`).join("\n");
 			ctx.ui.notify(
 				`pi-kagi v${VERSION} — Pi skill for using Kagi API\n` +
 					`API key: ${keyStatus}\n` +
-					"Tools: kagi_search, kagi_enrich_web, kagi_enrich_news, kagi_smallweb\n" +
-					"Endpoints: search, enrich/web, enrich/news, fastgpt, summarize, smallweb",
+					"Available tools:\n" +
+					`${toolList}\n` +
+					"Planned later: fastgpt, summarize",
 				"info",
 			);
 		},

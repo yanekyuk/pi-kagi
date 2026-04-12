@@ -7,10 +7,9 @@
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
-import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@mariozechner/pi-coding-agent";
 import { KagiClient } from "../kagi-client.ts";
 import { KagiError } from "../config.ts";
-import { formatSmallWebResponse } from "../formatters/results.ts";
+import { formatSmallWebResponse, truncateSmallWebOutput } from "../formatters/results.ts";
 
 /**
  * Register the kagi_smallweb tool.
@@ -26,6 +25,11 @@ export function registerSmallWebTool(pi: ExtensionAPI, getClient: () => KagiClie
 			"Browse Kagi's Small Web feed — a curated selection of recent content from " +
 			"personal blogs and independent websites. Free to use. Great for discovering " +
 			"interesting, non-commercial content from around the web.",
+		promptSnippet: "Browse curated Small Web posts from independent sites.",
+		promptGuidelines: [
+			"Use this for browsing, discovery, and serendipitous exploration rather than exhaustive search.",
+			"Do not rely on it for breaking news or comprehensive coverage.",
+		],
 		parameters: Type.Object({
 			limit: Type.Optional(
 				Type.Number({ description: "Max entries to return (1-50)", minimum: 1, maximum: 50 }),
@@ -46,19 +50,7 @@ export function registerSmallWebTool(pi: ExtensionAPI, getClient: () => KagiClie
 				}
 
 				const formatted = formatSmallWebResponse(response);
-
-				const truncation = truncateHead(formatted, {
-					maxLines: DEFAULT_MAX_LINES,
-					maxBytes: DEFAULT_MAX_BYTES,
-				});
-
-				let result = truncation.content;
-
-				if (truncation.truncated) {
-					const totalEntries = response.entries.length;
-					const shownEntries = (truncation.content.match(/^• /gm) || []).length;
-					result += `\n\n[Showing ${shownEntries} of ${totalEntries} Small Web entries.]`;
-				}
+				const result = truncateSmallWebOutput(formatted, response.entries.length);
 
 				return {
 					content: [{ type: "text" as const, text: result }],

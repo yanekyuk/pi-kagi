@@ -37,10 +37,10 @@
 ---
 
 ### Step 3: Register tools and prompt metadata
-**Status:** 🟨 In Progress
-- [ ] Audit tool registration wiring and keep extension entrypoint messaging aligned
-- [ ] Add concise prompt snippets/guidelines to TP-005 tool definitions
-- [ ] Verify truncation remains applied across search, enrich, and smallweb outputs
+**Status:** ✅ Complete
+- [x] Audit tool registration wiring and keep extension entrypoint messaging aligned
+- [x] Add concise prompt snippets/guidelines to TP-005 tool definitions
+- [x] Verify truncation remains applied across search, enrich, and smallweb outputs
 
 ---
 

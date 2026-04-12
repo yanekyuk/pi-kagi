@@ -5,6 +5,7 @@
  * citation-friendly text for LLM consumption with numbered references.
  */
 
+import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@mariozechner/pi-coding-agent";
 import type { SearchResponse, SmallWebResponse } from "../types.ts";
 
 // ─── Search / Enrich Result Formatting ────────────────────────────
@@ -154,4 +155,38 @@ export function countResults(response: SearchResponse): number {
  */
 export function truncationNotice(shown: number, total: number): string {
 	return `\n\n[Showing ${shown} of ${total} results. Use a more specific query to narrow results.]`;
+}
+
+/**
+ * Apply the standard head-truncation strategy for search/enrich result text.
+ */
+export function truncateSearchOutput(formatted: string, totalResults: number): string {
+	const truncation = truncateHead(formatted, {
+		maxLines: DEFAULT_MAX_LINES,
+		maxBytes: DEFAULT_MAX_BYTES,
+	});
+
+	if (!truncation.truncated) {
+		return truncation.content;
+	}
+
+	const shownResults = (truncation.content.match(/^\[\d+\]\(/gm) || []).length;
+	return truncation.content + truncationNotice(shownResults, totalResults);
+}
+
+/**
+ * Apply the standard head-truncation strategy for Small Web output.
+ */
+export function truncateSmallWebOutput(formatted: string, totalEntries: number): string {
+	const truncation = truncateHead(formatted, {
+		maxLines: DEFAULT_MAX_LINES,
+		maxBytes: DEFAULT_MAX_BYTES,
+	});
+
+	if (!truncation.truncated) {
+		return truncation.content;
+	}
+
+	const shownEntries = (truncation.content.match(/^• /gm) || []).length;
+	return truncation.content + `\n\n[Showing ${shownEntries} of ${totalEntries} Small Web entries.]`;
 }
