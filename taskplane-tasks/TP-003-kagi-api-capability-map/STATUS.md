@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 1
-**Review Counter:** 0
+**Review Counter:** 1
 **Iteration:** 1
 **Size:** S
 
@@ -17,13 +17,13 @@
 ---
 
 ### Step 1: Extract API capabilities
-**Status:** 🟨 In Progress
-- [ ] ⚠️ Hydrate: expand Step 1 checkboxes based on doc review
-- [ ] Create `docs/kagi-api-capability-map.md` with endpoint matrix
-- [ ] Document availability, pricing, caching, and beta caveats
-- [ ] Document auth/header contract and shared error handling
-- [ ] Document response shape types (Search Object, FastGPT Answer, Summarization Object, etc.)
-- [ ] Validate capability map against all six reference docs
+**Status:** ✅ Complete
+- [x] ⚠️ Hydrate: expand Step 1 checkboxes based on doc review
+- [x] Create `docs/kagi-api-capability-map.md` with endpoint matrix
+- [x] Document availability, pricing, caching, and beta caveats
+- [x] Document auth/header contract and shared error handling
+- [x] Document response shape types (Search Object, FastGPT Answer, Summarization Object, etc.)
+- [x] Validate capability map against all six reference docs
 
 ---
 
@@ -76,3 +76,4 @@
 ## Blockers
 
 *None*
+| 2026-04-12 16:14 | Review R001 | plan Step 1: APPROVE |
