@@ -1,18 +1,18 @@
 # TP-004: Implement Core Kagi Client, Config, and Error Handling — Status
 
-**Current Step:** Not Started
-**Status:** 🔵 Ready for Execution
+**Current Step:** Step 0: Preflight
+**Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
 **Review Counter:** 0
-**Iteration:** 0
+**Iteration:** 1
 **Size:** M
 
 ---
 
 ### Step 0: Preflight
-**Status:** ⬜ Not Started
-- [ ] Dependencies and scaffold verified
+**Status:** ✅ Complete
+- [x] Dependencies and scaffold verified
 
 ---
 
@@ -73,6 +73,8 @@
 | Timestamp | Action | Outcome |
 |-----------|--------|---------|
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
+| 2026-04-12 16:36 | Task started | Runtime V2 lane-runner execution |
+| 2026-04-12 16:36 | Step 0 started | Preflight |
 
 ---
 
