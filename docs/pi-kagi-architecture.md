@@ -13,8 +13,15 @@
 ├── index.ts              # Extension entry point — registers all tools
 ├── package.json          # Package manifest with "pi" config
 ├── README.md             # Extension documentation
-├── client.ts             # Kagi API client (HTTP, auth, errors, retry)
-├── types.ts               # Normalized TypeScript type contracts
+├── src/
+│   ├── config.ts          # Configuration resolver (KAGI_API_KEY, base URL, timeouts, retry)
+│   ├── kagi-client.ts     # KagiClient class — HTTP client with auth, retry, normalization
+│   ├── types.ts            # Normalized TypeScript type contracts
+│   └── errors.ts          # Error class hierarchy (KagiError, KagiApiError, etc.)
+├── tests/
+│   ├── config.test.ts     # Config resolver tests
+│   ├── errors.test.ts     # Error class and mapping tests
+│   └── client.test.ts     # Client request/response/retry tests
 ├── tools/
 │   ├── search.ts          # kagi_search tool
 │   ├── enrich-web.ts      # kagi_enrich_web tool
@@ -29,10 +36,12 @@
 
 **Key principles:**
 - **One tool per file** — each tool is self-contained with its own `registerTool` call
-- **`client.ts`** is the single source of truth for all Kagi API communication
-- **`types.ts`** normalizes raw API responses into consistent internal types
+- **`src/kagi-client.ts`** is the single source of truth for all Kagi API communication
+- **`src/types.ts`** normalizes raw API responses into consistent internal types
+- **`src/errors.ts`** provides a `KagiError` base class with `KagiApiError`, `KagiNetworkError`, `KagiTimeoutError`, and `KagiConfigError`
+- **`src/config.ts`** resolves `KAGI_API_KEY` and `KAGI_API_BASE_URL` with helpful error messages
 - **`routing.ts`** contains the intent-to-endpoint mapping logic
-- **`index.ts`** imports and registers all tools; handles `session_start` for API key init
+- **`index.ts`** imports and registers all tools; handles `session_start` for API key validation
 
 ---
 
@@ -400,11 +409,14 @@ class KagiClient {
 
 1. **Auth header:** Every request includes `Authorization: Bot ${apiKey}`
 2. **Timeout:** 30s for search/enrich, 60s for FastGPT, 60s for summarize
-3. **Retry logic:** Exponential backoff on 429 (1s → 2s → 4s → 8s, max 3 retries)
-4. **Error normalization:** All HTTP errors mapped to `KagiError` with `retryable` flag
-5. **Response normalization:** Raw API responses mapped to typed contracts in `types.ts`
-6. **Null safety:** API `snippet: null` becomes `snippet: ""`
-7. **Type discriminator:** API `t: 0/1` mapped to discriminated union `{ type: "result" } | { type: "related" }`
+3. **Retry logic:** Exponential backoff on 429 and 5xx (1s → 2s → 4s → 8s, max 3 retries, 30s max backoff)
+4. **Error hierarchy:** `KagiError` base class with `KagiApiError`, `KagiNetworkError`, `KagiTimeoutError`, `KagiConfigError` — all inherit from `KagiError`
+5. **Error normalization:** All HTTP errors mapped to `KagiApiError` with `retryable` flag; 429 and 5xx are retryable, 401/402/403/404 are not
+6. **Response normalization:** Raw API responses mapped to typed contracts in `types.ts`
+7. **Null safety:** API `snippet: null` becomes `snippet: ""`; unknown `t` values default to result type
+8. **Type discriminator:** API `t: 0/1` mapped to discriminated union `{ type: "result" } | { type: "related" }`
+9. **Small Web URL:** Uses `KAGI_SMALLWEB_BASE_URL` constant (`https://kagi.com/api/v1`) via per-call `baseUrlOverride` — no shared state mutation
+10. **Timeout cleanup:** `clearTimeout` called in `finally` block to prevent resource leaks
 
 ### 6.3 API Key Resolution
 
@@ -466,14 +478,14 @@ For now, tools log estimated cost after each call in their output:
 This checklist guides downstream tasks (TP-004 through TP-007). Each item should be verified at implementation time.
 
 ### TP-004: Kagi Client Core
-- [ ] Implement `KagiClient` class with auth header injection
-- [ ] Implement all 7 endpoint methods (search, enrichWeb, enrichNews, fastgpt, summarize, smallweb)
-- [ ] Implement request timeout configuration (30s/60s defaults)
-- [ ] Implement exponential backoff retry on 429
-- [ ] Implement error normalization (HTTP status → KagiError with retryable flag)
-- [ ] Implement response normalization (null safety, type discriminator mapping)
-- [ ] Implement API key resolution (KAGI_API_KEY env var first)
-- [ ] Write unit tests for client methods with mocked HTTP responses
+- [x] Implement `KagiClient` class with auth header injection
+- [x] Implement all 7 endpoint methods (search, enrichWeb, enrichNews, fastgpt, summarize, smallweb)
+- [x] Implement request timeout configuration (30s/60s defaults)
+- [x] Implement exponential backoff retry on 429 and 5xx
+- [x] Implement error normalization (HTTP status → KagiError with retryable flag)
+- [x] Implement response normalization (null safety, type discriminator mapping)
+- [x] Implement API key resolution (KAGI_API_KEY env var first)
+- [x] Write unit tests for client methods with mocked HTTP responses
 - [ ] Write integration smoke test (optional, requires API key)
 
 ### TP-005: Search / Enrich / SmallWeb Tools

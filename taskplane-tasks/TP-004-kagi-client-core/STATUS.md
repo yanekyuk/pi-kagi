@@ -1,6 +1,6 @@
 # TP-004: Implement Core Kagi Client, Config, and Error Handling — Status
 
-**Current Step:** Step 4: Testing & Verification
+**Current Step:** Step 5: Documentation & Delivery
 **Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
@@ -55,9 +55,9 @@
 ---
 
 ### Step 5: Documentation & Delivery
-**Status:** ⬜ Not Started
-- [ ] README updated
-- [ ] Error contract documented
+**Status:** ✅ Complete
+- [x] README updated with config requirements, error classes, architecture, and test coverage
+- [x] Error contract documented (error hierarchy, retry behavior, error messages)
 
 ---
 
