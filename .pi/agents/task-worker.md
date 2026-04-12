@@ -5,30 +5,30 @@ name: task-worker
 # standalone: true
 ---
 
-<!-- ═══════════════════════════════════════════════════════════════════
-  Project-Specific Worker Guidance
+## Project: pi-kagi
 
-  This file is COMPOSED with the base task-worker prompt shipped in the
-  taskplane package. Your content here is appended after the base prompt.
+### Tech Stack
+- **Language:** TypeScript
+- **Runtime:** Bun (for tests/scripts) + pi's jiti (for extension loading at runtime)
+- **Test runner:** `bun test` — write tests as `*.test.ts`, run `bun test` from repo root
+- **Package manager:** `bun` — `bun add`, `bun install`
 
-  The base prompt (maintained by taskplane) handles:
-  - STATUS.md-first workflow and checkpoint discipline
-  - Multi-step execution (worker handles all remaining steps per invocation)
-  - Iteration recovery (context limit → next invocation resumes from STATUS.md)
-  - Git commit conventions (per-step commits) and .DONE file creation
-  - Review protocol (inline reviews via review_step tool when available)
-  - Review response handling
-  - Test execution strategy (targeted tests during steps, full suite at gate)
-  - File reading strategy (grep-first for large files, context budget awareness)
+### Testing
+- Run targeted tests during steps: `bun test <path>`
+- Run full suite at gate steps: `bun test`
+- Extension source is `.ts` loaded by jiti — no build step needed for the extension itself
+- If a `package.json` with test scripts exists, prefer `bun test` directly
 
-  Add project-specific rules below. Common examples:
-  - Preferred package manager (pnpm, yarn, bun)
-  - Test commands (make test, npm run test:unit)
-  - Coding standards (linting, formatting)
-  - Framework-specific patterns
-  - Environment or deployment constraints
+### Pi Extension Conventions
+- Entry point: `export default function (pi: ExtensionAPI) { ... }`
+- Register tools with `pi.registerTool()` or `defineTool()` from `@mariozechner/pi-coding-agent`
+- Use `StringEnum` from `@mariozechner/pi-ai` for string enums (not `Type.Union`/`Type.Literal`)
+- Use `Type` from `@sinclair/typebox` for parameter schemas
+- Truncate tool output to 50KB/2000 lines using `truncateHead`/`truncateTail`
+- Pi-bundled packages (`@mariozechner/pi-ai`, `@sinclair/typebox`, etc.) go in `peerDependencies` only
 
-  To override frontmatter values (tools, model), uncomment and edit above.
-  To use this file as a FULLY STANDALONE prompt (ignoring the base),
-  uncomment `standalone: true` above and write the complete prompt below.
-═══════════════════════════════════════════════════════════════════ -->
+### Kagi API
+- Base URL: `https://kagi.com/api/v0`
+- Auth: `Authorization: Bot $TOKEN` header
+- API key env var: `KAGI_API_KEY`
+- API is v0 beta — build defensively, expect breaking changes

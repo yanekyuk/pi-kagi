@@ -5,23 +5,21 @@ name: task-merger
 # standalone: true
 ---
 
-<!-- ═══════════════════════════════════════════════════════════════════
-  Project-Specific Merger Guidance
+## Project: pi-kagi
 
-  This file is COMPOSED with the base task-merger prompt shipped in the
-  taskplane package. Your content here is appended after the base prompt.
+### Post-Merge Verification
+After merging a lane branch, run:
+```bash
+bun test
+```
 
-  The base prompt (maintained by taskplane) handles:
-  - Branch merge workflow (fast-forward, 3-way, conflict resolution)
-  - Post-merge verification command execution
-  - Result file JSON format and writing conventions
+### Tech Stack
+- **Language:** TypeScript
+- **Runtime:** Bun (tests/scripts) + pi's jiti (extension loading)
+- **Package manager:** `bun`
+- **No build step** — pi loads `.ts` extensions directly via jiti
 
-  Add project-specific merge rules below. Common examples:
-  - Post-merge verification commands (build, lint, test)
-  - Conflict resolution preferences
-  - Protected files that should never be auto-merged
-
-  To override frontmatter values (tools, model), uncomment and edit above.
-  To use this file as a FULLY STANDALONE prompt (ignoring the base),
-  uncomment `standalone: true` above and write the complete prompt below.
-═══════════════════════════════════════════════════════════════════ -->
+### Merge Notes
+- Extension files are `.ts` — no transpilation needed
+- If `package.json` exists in the extension dir, run `bun install` after merge if lockfile changed
+- Check that `peerDependencies` does NOT include pi-bundled packages that are already available at runtime
