@@ -108,7 +108,8 @@ interface Citation {
 ### 2.4 Summarizer
 
 ```typescript
-type SummarizerEngine = "cecil" | "agnes" | "muriel";
+type SummarizerEngine = "cecil" | "agnes" | "daphne" | "muriel";
+// daphne is deprecated (alias for agnes), included for backward compatibility
 type SummaryType = "summary" | "takeaway";
 
 interface SummarizeResponse {
@@ -255,7 +256,7 @@ Each tool uses `Type.Object()` from `@sinclair/typebox` for parameters, with `St
 {
   url: Type.Optional(Type.String({ description: "URL to summarize (mutually exclusive with text)" })),
   text: Type.Optional(Type.String({ description: "Text to summarize (mutually exclusive with url)" })),
-  engine: Type.Optional(StringEnum(["cecil", "agnes", "muriel"] as const)),
+  engine: Type.Optional(StringEnum(["cecil", "agnes", "daphne", "muriel"] as const)),  // daphne deprecated; alias for agnes
   summary_type: Type.Optional(StringEnum(["summary", "takeaway"] as const)),
   target_language: Type.Optional(Type.String({ description: "ISO 639-1 language code (e.g., 'EN', 'ES')" })),
   cache: Type.Optional(Type.Boolean({ description: "Allow cached responses (default: true)" })),

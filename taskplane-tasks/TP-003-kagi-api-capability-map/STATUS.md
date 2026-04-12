@@ -38,12 +38,12 @@
 ---
 
 ### Step 3: Testing & Verification
-**Status:** 🟨 In Progress
+**Status:** ✅ Complete
 - [ ] ⚠️ Hydrate: expand verification checklist
-- [ ] Verify capability map is internally consistent
-- [ ] Verify architecture doc aligns with capability map
-- [ ] Verify downstream tasks (TP-004 to TP-009) can reference contracts without ambiguity
-- [ ] Check all endpoint params/types match source docs exactly
+- [x] Verify capability map is internally consistent
+- [x] Verify architecture doc aligns with capability map
+- [x] Verify downstream tasks (TP-004 to TP-009) can reference contracts without ambiguity
+- [x] Check all endpoint params/types match source docs exactly (found missing daphne engine, added)
 
 ---
 
