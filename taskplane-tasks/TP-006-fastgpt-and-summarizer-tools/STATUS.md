@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 2
+**Review Counter:** 3
 **Iteration:** 1
 **Size:** M
 
@@ -18,11 +18,12 @@
 ---
 
 ### Step 1: Implement FastGPT tool
-**Status:** ✅ Complete
+**Status:** 🟨 In Progress
 - [x] FastGPT tool schema added with query/cache parameters and `web_search=true` caveat handling (no user-facing `web_search=false` path)
 - [x] FastGPT execution maps `output`, `references`, and `tokens` into the standard tool `content`/`details` shape
 - [x] FastGPT formatter preserves inline citation ordering while truncating answer text compactly and keeping sources/token metadata intact
 - [x] FastGPT truncation keeps retained inline citations aligned with the preserved source list during overflow cases
+- [ ] FastGPT uncited-source fallback preserves concise answers and still enforces Pi output limits for pathological references
 
 ---
 
@@ -63,6 +64,7 @@
 |---|------|------|---------|------|
 | 1 | Plan | 1 | APPROVE w/ qualifications | `.reviews/R001-plan-step1.md` |
 | 2 | Code | 1 | REVISE | `.reviews/R002-code-step1.md` |
+| 3 | Code | 1 | REVISE | `.reviews/R003-code-step1.md` |
 
 ---
 
@@ -93,9 +95,11 @@
 | 2026-04-12 22:34 | Step 1 completed | FastGPT tool implementation and targeted tests are ready for code review. |
 | 2026-04-12 22:35 | Review R002 | Code review requested truncation fixes so retained answer citations always keep matching source entries. |
 | 2026-04-12 22:45 | FastGPT truncation revised | Truncation now preserves cited source indices (including high-index citations like `[3000]`) and targeted tests cover the regression. |
+| 2026-04-12 22:48 | Review R003 | Follow-up code review requested fixes for uncited-source fallback sizing and pathological single-reference overflows. |
 
 ---
 
 ## Blockers
 
 *None*
+| 2026-04-12 19:37 | Review R003 | code Step 1: REVISE |
