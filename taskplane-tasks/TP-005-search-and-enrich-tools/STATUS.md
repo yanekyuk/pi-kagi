@@ -77,7 +77,7 @@
 ## Notes
 
 - Step 4 added a registration metadata test for TP-005 `promptSnippet`/`promptGuidelines` via captured `registerTool()` definitions.
-- Smoke (deterministic) passed: `cd .pi/extensions/pi-kagi && bun -e 'const { default: extension } = await import("./index.ts"); ...'` registered 4 TP-005 tools and `/kagi-about` returned aligned help text.
+- Smoke (deterministic) passed: `cd .pi/extensions/pi-kagi && bun -e 'const { default: extension } = await import("./index.ts"); const tools = []; const commands = new Map(); const api = { registerTool(def) { tools.push(def); }, registerCommand(name, def) { commands.set(name, def); }, on() {}, getAllTools() { return tools.map((tool) => ({ name: tool.name, description: tool.description, parameters: tool.parameters, sourceInfo: { source: "extension", path: "<smoke>", scope: "top-level", origin: "smoke" } })); } }; extension(api); const notifications = []; await commands.get("kagi-about").handler("", { ui: { notify(message, level) { notifications.push({ message, level }); } } }); console.log(JSON.stringify({ toolNames: tools.map((tool) => tool.name), commandNames: Array.from(commands.keys()), about: notifications[0] }, null, 2));'` registered 4 TP-005 tools and `/kagi-about` returned aligned help text.
 - Smoke (live API) skipped: `KAGI_API_KEY` was not set in the worker environment, so no authenticated Kagi API call was attempted.
 
 ---
