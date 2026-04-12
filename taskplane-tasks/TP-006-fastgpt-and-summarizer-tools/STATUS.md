@@ -18,10 +18,10 @@
 ---
 
 ### Step 1: Implement FastGPT tool
-**Status:** 🟨 In Progress
-- [ ] FastGPT tool schema added with query/cache parameters and `web_search=true` caveat handling (no user-facing `web_search=false` path)
-- [ ] FastGPT execution maps `output`, `references`, and `tokens` into the standard tool `content`/`details` shape
-- [ ] FastGPT formatter preserves inline citation ordering while truncating answer text compactly and keeping sources/token metadata intact
+**Status:** ✅ Complete
+- [x] FastGPT tool schema added with query/cache parameters and `web_search=true` caveat handling (no user-facing `web_search=false` path)
+- [x] FastGPT execution maps `output`, `references`, and `tokens` into the standard tool `content`/`details` shape
+- [x] FastGPT formatter preserves inline citation ordering while truncating answer text compactly and keeping sources/token metadata intact
 
 ---
 
@@ -85,6 +85,10 @@
 | 2026-04-12 22:15 | Step 0 completed | Preflight findings logged; ready to implement FastGPT tool. |
 | 2026-04-12 22:16 | Step 1 started | Hydrated FastGPT outcomes around schema/caveat handling, mapping, and citation formatting. |
 | 2026-04-12 22:17 | Step 1 plan review | Reviewer approved with qualifications: keep `web_search` internal, preserve citation/source sections under truncation, and use standard tool `details` shape. |
+| 2026-04-12 22:26 | FastGPT schema added | Created `src/tools/fastgpt.ts` with query/cache-only schema, documented the forced `web_search=true` caveat, and passed `bun test tests/fastgpt-summarizer.test.ts`. |
+| 2026-04-12 22:28 | FastGPT mapping added | Tool execution now returns standard `content`/`details` data with `tokens`, `references`, `referenceCount`, and `meta`; targeted tests still pass. |
+| 2026-04-12 22:34 | FastGPT formatting completed | Added `src/formatters/answers.ts`, preserved citation ordering under truncation, and kept source/token sections intact in targeted tests. |
+| 2026-04-12 22:34 | Step 1 completed | FastGPT tool implementation and targeted tests are ready for code review. |
 
 ---
 
