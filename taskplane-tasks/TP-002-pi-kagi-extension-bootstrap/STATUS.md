@@ -86,6 +86,8 @@
 | 2026-04-12 | Step 2 completed | ✅ pi-kagi scaffold created: package.json, index.ts, README.md |
 | 2026-04-12 | Step 3 validation | ✅ bun build --no-bundle transpiles successfully; braces/parens balanced; default export and APIs correct |
 | 2026-04-12 | Step 3 smoke test | ✅ No test suite yet (greenfield). bun transpiles TS to valid JS; package.json description exact match confirmed |
+| 2026-04-12 16:06 | Worker iter 1 | done in 909s, tools: 80 |
+| 2026-04-12 16:06 | Task complete | .DONE created |
 
 ---
 
