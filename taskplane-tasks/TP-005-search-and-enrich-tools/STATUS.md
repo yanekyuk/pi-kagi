@@ -1,18 +1,18 @@
 # TP-005: Implement Search, Enrich, and SmallWeb Tools — Status
 
-**Current Step:** Not Started
-**Status:** 🔵 Ready for Execution
+**Current Step:** Step 0: Preflight
+**Status:** ✅ Complete
 **Last Updated:** 2026-04-12
-**Review Level:** 2
-**Review Counter:** 0
-**Iteration:** 0
-**Size:** M
+**Current Step:** Step 1: Implement Search API tool
 
 ---
 
 ### Step 0: Preflight
-**Status:** ⬜ Not Started
-- [ ] TP-004 interfaces and output contracts verified
+**Status:** ✅ Complete
+- [x] Verify KagiClient.search/enrichWeb/enrichNews/smallweb methods match expected contracts
+- [x] Verify normalized types (SearchResponse, SearchItem, SmallWebResponse) are as documented
+- [x] Verify extension entry point structure (index.ts) and package.json setup
+- [x] Confirm pi-coding-agent tool registration API (registerTool, defineTool, truncateHead, etc.)
 
 ---
 
@@ -74,6 +74,8 @@
 | Timestamp | Action | Outcome |
 |-----------|--------|---------|
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
+| 2026-04-12 17:51 | Task started | Runtime V2 lane-runner execution |
+| 2026-04-12 17:51 | Step 0 started | Preflight |
 
 ---
 
