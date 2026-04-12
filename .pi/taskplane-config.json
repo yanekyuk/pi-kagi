@@ -9,7 +9,10 @@
       "tasks": "taskplane-tasks"
     },
     "testing": {
-      "commands": {}
+      "commands": {
+        "test": "bun test",
+        "test:target": "bun test {path}"
+      }
     },
     "taskAreas": {
       "general": {
