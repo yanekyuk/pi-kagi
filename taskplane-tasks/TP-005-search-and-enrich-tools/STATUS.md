@@ -104,6 +104,8 @@
 | 2026-04-12 18:xx | Review R001 | code Step 3 approved after review fixes |
 | 2026-04-12 21:xx | Smoke check | Deterministic extension-load smoke passed; live API smoke skipped because KAGI_API_KEY was unset |
 | 2026-04-12 21:xx | Step 5 completed | README updated with TP-005 tool list, usage examples, and API caveats |
+| 2026-04-12 19:07 | Worker iter 2 | done in 2742s, tools: 137 |
+| 2026-04-12 19:07 | Task complete | .DONE created |
 
 ---
 
