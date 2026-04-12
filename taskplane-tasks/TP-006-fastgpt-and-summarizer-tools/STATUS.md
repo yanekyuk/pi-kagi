@@ -11,9 +11,9 @@
 ---
 
 ### Step 0: Preflight
-**Status:** 🟨 In Progress
-- [ ] TP-004 client methods validated for `POST /fastgpt` and `GET`/`POST /summarize`
-- [ ] FastGPT and Summarizer parameter constraints validated from docs
+**Status:** ✅ Complete
+- [x] TP-004 client methods validated for `POST /fastgpt` and `GET`/`POST /summarize`
+- [x] FastGPT and Summarizer parameter constraints validated from docs
 
 ---
 
@@ -67,6 +67,8 @@
 
 | Discovery | Disposition | Location |
 |-----------|-------------|----------|
+| `KagiClient.fastgpt()` already POSTs `query` + optional `cache`, forces `web_search=true`, and `request()` supports arbitrary HTTP methods/params so `/summarize` can stay POST-first while remaining transport-compatible with GET semantics. | Verified via code inspection and `bun test tests/client.test.ts` before tool work. | `.pi/extensions/pi-kagi/src/kagi-client.ts`, `.pi/extensions/pi-kagi/tests/client.test.ts` |
+| FastGPT must never send `web_search=false`; Summarizer must accept exactly one of `url`/`text`, prefers POST for `text`, caps total request size at 1MB, and exposes `engine`, `summary_type`, `target_language`, and `cache` options that need actionable validation. | Carry these constraints into TP-006 tool-layer validation and docs/tests. | `docs/fastgpt.md`, `docs/summarizer.md` |
 
 ---
 
@@ -77,6 +79,9 @@
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
 | 2026-04-12 19:07 | Task started | Runtime V2 lane-runner execution |
 | 2026-04-12 19:07 | Step 0 started | Preflight |
+| 2026-04-12 22:14 | TP-004 client compatibility verified | `bun test tests/client.test.ts` passed; confirmed `POST /fastgpt` mapping and POST-first `/summarize` transport support. |
+| 2026-04-12 22:15 | Constraint preflight completed | Reviewed `docs/fastgpt.md` and `docs/summarizer.md`; captured `web_search=true`, `url`/`text` exclusivity, POST-for-text guidance, and 1MB text limit. |
+| 2026-04-12 22:15 | Step 0 completed | Preflight findings logged; ready to implement FastGPT tool. |
 
 ---
 
