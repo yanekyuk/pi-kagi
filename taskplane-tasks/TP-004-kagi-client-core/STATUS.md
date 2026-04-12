@@ -1,10 +1,10 @@
 # TP-004: Implement Core Kagi Client, Config, and Error Handling — Status
 
-**Current Step:** Step 1: Project structure + config contract
+**Current Step:** Step 2: Implement core client
 **Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 1
+**Review Counter:** 2
 **Iteration:** 1
 **Size:** M
 
@@ -28,10 +28,10 @@
 ---
 
 ### Step 2: Implement core client
-**Status:** ⬜ Not Started
-- [ ] Authenticated request helper implemented
-- [ ] Typed raw endpoint methods implemented
-- [ ] Error mapping implemented
+**Status:** 🟨 In Progress
+- [x] Authenticated request helper implemented (in kagi-client.ts — request() method)
+- [x] Typed raw endpoint methods implemented (search, enrichWeb, enrichNews, fastgpt, summarize, smallweb)
+- [x] Error mapping implemented (KagiApiError, KagiNetworkError, KagiTimeoutError)
 
 ---
 
@@ -85,3 +85,4 @@
 
 *None*
 | 2026-04-12 16:45 | Review R001 | plan Step 1: APPROVE |
+| 2026-04-12 16:58 | Review R002 | plan Step 2: APPROVE |
