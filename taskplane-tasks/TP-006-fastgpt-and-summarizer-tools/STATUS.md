@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 0
+**Review Counter:** 1
 **Iteration:** 1
 **Size:** M
 
@@ -19,9 +19,9 @@
 
 ### Step 1: Implement FastGPT tool
 **Status:** 🟨 In Progress
-- [ ] FastGPT tool schema added with query/cache parameters and `web_search=true` caveat handling
-- [ ] FastGPT execution maps `output`, `references`, and `tokens` from the client response
-- [ ] FastGPT formatter renders compact answer text with citation-friendly source entries and token metadata
+- [ ] FastGPT tool schema added with query/cache parameters and `web_search=true` caveat handling (no user-facing `web_search=false` path)
+- [ ] FastGPT execution maps `output`, `references`, and `tokens` into the standard tool `content`/`details` shape
+- [ ] FastGPT formatter preserves inline citation ordering while truncating answer text compactly and keeping sources/token metadata intact
 
 ---
 
@@ -60,6 +60,7 @@
 
 | # | Type | Step | Verdict | File |
 |---|------|------|---------|------|
+| 1 | Plan | 1 | APPROVE w/ qualifications | `.reviews/R001-plan-step1.md` |
 
 ---
 
@@ -83,9 +84,11 @@
 | 2026-04-12 22:15 | Constraint preflight completed | Reviewed `docs/fastgpt.md` and `docs/summarizer.md`; captured `web_search=true`, `url`/`text` exclusivity, POST-for-text guidance, and 1MB text limit. |
 | 2026-04-12 22:15 | Step 0 completed | Preflight findings logged; ready to implement FastGPT tool. |
 | 2026-04-12 22:16 | Step 1 started | Hydrated FastGPT outcomes around schema/caveat handling, mapping, and citation formatting. |
+| 2026-04-12 22:17 | Step 1 plan review | Reviewer approved with qualifications: keep `web_search` internal, preserve citation/source sections under truncation, and use standard tool `details` shape. |
 
 ---
 
 ## Blockers
 
 *None*
+| 2026-04-12 19:14 | Review R001 | plan Step 1: UNKNOWN |
