@@ -38,9 +38,12 @@
 ---
 
 ### Step 3: Testing & Verification
-**Status:** ⬜ Not Started
-- [ ] Consistency check complete
-- [ ] Downstream-readiness check complete
+**Status:** 🟨 In Progress
+- [ ] ⚠️ Hydrate: expand verification checklist
+- [ ] Verify capability map is internally consistent
+- [ ] Verify architecture doc aligns with capability map
+- [ ] Verify downstream tasks (TP-004 to TP-009) can reference contracts without ambiguity
+- [ ] Check all endpoint params/types match source docs exactly
 
 ---
 
