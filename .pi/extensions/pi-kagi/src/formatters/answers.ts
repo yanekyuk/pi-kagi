@@ -17,6 +17,8 @@ const utf8Encoder = new TextEncoder();
 const FASTGPT_ANSWER_TRUNCATION_NOTICE =
 	"[FastGPT answer truncated to fit Pi output limits; sources and token metadata preserved.]";
 const SOURCE_ENTRY_PATTERN = /^\[\d+\](?:\(| )/gm;
+const MAX_REFERENCE_LABEL_BYTES = 320;
+const MAX_REFERENCE_URL_BYTES = 2048;
 
 function countLines(text: string): number {
 	return text === "" ? 0 : text.split("\n").length;
@@ -69,9 +71,26 @@ function citedIndexedReferences(answer: string, references: Citation[]): Indexed
 	return indexed;
 }
 
+function normalizeInlineText(value?: string): string {
+	return value?.replace(/\s+/g, " ").trim() ?? "";
+}
+
+function truncateInlineText(value: string, maxBytes: number): string {
+	if (countBytes(value) <= maxBytes) {
+		return value;
+	}
+
+	const ellipsis = "…";
+	let truncated = value;
+	while (truncated.length > 0 && countBytes(truncated + ellipsis) > maxBytes) {
+		truncated = truncated.slice(0, -1);
+	}
+	return truncated ? truncated + ellipsis : ellipsis;
+}
+
 function fallbackSourceLabel(reference: Partial<Citation>, index: number): string {
-	const title = reference.title?.trim();
-	const url = reference.url?.trim();
+	const title = normalizeInlineText(reference.title);
+	const url = normalizeInlineText(reference.url);
 	return title || url || `Source ${index}`;
 }
 
@@ -79,9 +98,10 @@ function fallbackSourceLabel(reference: Partial<Citation>, index: number): strin
  * Format a single FastGPT reference while preserving the original citation number.
  */
 export function formatFastGPTReference(reference: Partial<Citation>, index: number): string {
-	const label = fallbackSourceLabel(reference, index);
-	const url = reference.url?.trim();
-	return url ? `[${index}](${url}) — ${label}` : `[${index}] ${label}`;
+	const label = truncateInlineText(fallbackSourceLabel(reference, index), MAX_REFERENCE_LABEL_BYTES);
+	const url = normalizeInlineText(reference.url);
+	const safeUrl = url ? truncateInlineText(url, MAX_REFERENCE_URL_BYTES) : "";
+	return safeUrl ? `[${index}](${safeUrl}) — ${label}` : `[${index}] ${label}`;
 }
 
 function formatIndexedSources(indexedReferences: IndexedReference[]): string {
@@ -140,28 +160,35 @@ function countShownSources(section: string): number {
 	return (section.match(SOURCE_ENTRY_PATTERN) || []).length;
 }
 
-function truncateUncitedSources(
+function buildOutputWithCompactedUncitedSources(
+	answer: string | undefined,
 	response: Pick<FastGPTResponse, "tokens" | "references">,
 	indexedReferences: IndexedReference[],
-): { section: string; shownCount: number } {
+	includeTruncationNotice: boolean,
+): string {
 	const fullSection = formatIndexedSources(indexedReferences);
 	if (!fullSection) {
-		return { section: "", shownCount: 0 };
+		return buildFastGPTOutput(answer, response, [], includeTruncationNotice);
 	}
 
 	let maxLines = DEFAULT_MAX_LINES;
 	let maxBytes = DEFAULT_MAX_BYTES;
 
-	for (let attempt = 0; attempt < 5; attempt++) {
+	for (let attempt = 0; attempt < 6; attempt++) {
 		const truncation = truncateHead(fullSection, { maxLines, maxBytes });
 		const shownCount = countShownSources(truncation.content);
 		const notice = truncation.truncated
 			? `[Showing first ${shownCount} of ${indexedReferences.length} sources to fit Pi output limits.]`
 			: undefined;
-		const section = joinSections(truncation.content.trimEnd(), notice);
-		const candidate = joinSections(section, formatFastGPTMetadata(response as FastGPTResponse, shownCount));
+		const sourcesSection = joinSections(truncation.content.trimEnd(), notice);
+		const candidate = joinSections(
+			answer,
+			includeTruncationNotice ? FASTGPT_ANSWER_TRUNCATION_NOTICE : undefined,
+			sourcesSection,
+			formatFastGPTMetadata(response, shownCount),
+		);
 		if (shownCount > 0 && isWithinPiLimits(candidate)) {
-			return { section, shownCount };
+			return candidate;
 		}
 
 		maxLines = Math.max(1, maxLines - Math.max(1, countLines(candidate) - DEFAULT_MAX_LINES));
@@ -169,11 +196,37 @@ function truncateUncitedSources(
 	}
 
 	const first = indexedReferences[0];
-	const section = joinSections(
+	const sourcesSection = joinSections(
 		`Sources:\n${formatFastGPTReference(first.reference, first.index)}`,
 		`[Showing first 1 of ${indexedReferences.length} sources to fit Pi output limits.]`,
 	);
-	return { section, shownCount: 1 };
+	let compactAnswer = answer ?? "";
+	let candidate = joinSections(
+		compactAnswer,
+		includeTruncationNotice ? FASTGPT_ANSWER_TRUNCATION_NOTICE : undefined,
+		sourcesSection,
+		formatFastGPTMetadata(response, 1),
+	);
+
+	while (compactAnswer && !isWithinPiLimits(candidate)) {
+		compactAnswer = compactAnswer.slice(0, -1).trimEnd();
+		candidate = joinSections(
+			compactAnswer,
+			includeTruncationNotice ? FASTGPT_ANSWER_TRUNCATION_NOTICE : undefined,
+			sourcesSection,
+			formatFastGPTMetadata(response, 1),
+		);
+	}
+
+	if (isWithinPiLimits(candidate)) {
+		return candidate;
+	}
+
+	return joinSections(
+		includeTruncationNotice ? FASTGPT_ANSWER_TRUNCATION_NOTICE : undefined,
+		sourcesSection,
+		formatFastGPTMetadata(response, 1),
+	);
 }
 
 /**
@@ -195,8 +248,9 @@ export function truncateFastGPTOutput(response: FastGPTResponse): string {
 		const truncation = truncateHead(answer, { maxLines, maxBytes });
 		const truncatedAnswer = truncation.content.trimEnd();
 		const citedReferences = citedIndexedReferences(truncatedAnswer, response.references);
-		const displayedReferences = citedReferences.length > 0 ? citedReferences : allReferences;
-		const candidate = buildFastGPTOutput(truncatedAnswer, response, displayedReferences, true);
+		const candidate = citedReferences.length > 0
+			? buildFastGPTOutput(truncatedAnswer, response, citedReferences, true)
+			: buildOutputWithCompactedUncitedSources(truncatedAnswer, response, allReferences, true);
 
 		if (isWithinPiLimits(candidate)) {
 			return candidate;
@@ -206,10 +260,5 @@ export function truncateFastGPTOutput(response: FastGPTResponse): string {
 		maxBytes = Math.max(1, maxBytes - Math.max(1, countBytes(candidate) - DEFAULT_MAX_BYTES));
 	}
 
-	const compactSources = truncateUncitedSources(response, allReferences);
-	return joinSections(
-		FASTGPT_ANSWER_TRUNCATION_NOTICE,
-		compactSources.section,
-		formatFastGPTMetadata(response, compactSources.shownCount),
-	);
+	return buildOutputWithCompactedUncitedSources("", response, allReferences, true);
 }

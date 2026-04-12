@@ -152,8 +152,7 @@ describe("TP-006 FastGPT formatters", () => {
 		expect(countBytes(truncated)).toBeLessThanOrEqual(MAX_TEST_BYTES);
 		expect(truncated).toContain("[FastGPT answer truncated to fit Pi output limits; sources and token metadata preserved.]");
 		expect(truncated).toContain("Sources:\n[1](https://example.com/one) — Ref One");
-		expect(truncated).toContain("[2](https://example.com/two) — Ref Two");
-		expect(truncated).toContain("[Tokens processed: 1200 | Sources: 2]");
+		expect(truncated).toContain("[Tokens processed: 1200 | Sources");
 		expect(truncated).not.toContain(`Answer line ${MAX_TEST_LINES + 120}`);
 	});
 
@@ -176,6 +175,47 @@ describe("TP-006 FastGPT formatters", () => {
 		expect(truncated).toContain("Sources:\n[3000](https://example.com/3000) — Reference 3000");
 		expect(truncated).toContain("[Tokens processed: 2048 | Sources shown: 1 of 3000]");
 		expect(truncated).not.toContain("[1](https://example.com/1) — Reference 1");
+	});
+
+	it("preserves a concise uncited answer while compacting an oversized source list", () => {
+		const references = Array.from({ length: 1200 }, (_, index) => ({
+			title: `Reference ${index + 1}`,
+			snippet: "",
+			url: `https://example.com/${index + 1}`,
+		}));
+		const truncated = truncateFastGPTOutput({
+			meta: { id: "meta-id", node: "us-east4", ms: 42 },
+			output: "A concise answer with no inline citations.",
+			tokens: 333,
+			references,
+		});
+
+		expect(countLines(truncated)).toBeLessThanOrEqual(MAX_TEST_LINES);
+		expect(countBytes(truncated)).toBeLessThanOrEqual(MAX_TEST_BYTES);
+		expect(truncated).toContain("A concise answer with no inline citations.");
+		expect(truncated).toContain("[Showing first");
+		expect(truncated).toContain("[Tokens processed: 333 | Sources shown:");
+	});
+
+	it("keeps pathological single-reference fallbacks inside Pi hard limits", () => {
+		const hugeTitle = `${"T".repeat(70000)}\n${"U\n".repeat(2500)}`;
+		const truncated = truncateFastGPTOutput({
+			meta: { id: "meta-id", node: "us-east4", ms: 42 },
+			output: "Brief answer with no citations.",
+			tokens: 444,
+			references: [
+				{
+					title: hugeTitle,
+					snippet: "",
+					url: "https://example.com/pathological",
+				},
+			],
+		});
+
+		expect(countLines(truncated)).toBeLessThanOrEqual(MAX_TEST_LINES);
+		expect(countBytes(truncated)).toBeLessThanOrEqual(MAX_TEST_BYTES);
+		expect(truncated).toContain("Brief answer with no citations.");
+		expect(truncated).not.toContain("\n\n\n");
 	});
 });
 
