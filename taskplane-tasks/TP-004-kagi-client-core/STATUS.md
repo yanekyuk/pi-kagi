@@ -1,6 +1,6 @@
 # TP-004: Implement Core Kagi Client, Config, and Error Handling — Status
 
-**Current Step:** Step 3: Add unit tests for client foundation
+**Current Step:** Step 4: Testing & Verification
 **Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
@@ -48,9 +48,9 @@
 ---
 
 ### Step 4: Testing & Verification
-**Status:** ⬜ Not Started
-- [ ] `npm --prefix .pi/extensions/pi-kagi test` passes
-- [ ] Extension load smoke validation passes
+**Status:** ✅ Complete
+- [x] `npm --prefix .pi/extensions/pi-kagi test` passes (85 tests, 0 failures)
+- [x] Extension load smoke validation passes (bun build compiles clean)
 
 ---
 
