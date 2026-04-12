@@ -1,10 +1,10 @@
 # TP-006: Implement FastGPT and Summarizer Tools — Status
 
-**Current Step:** Step 4: Testing & Verification
-**Status:** 🟡 In Progress
+**Current Step:** Step 5: Documentation & Delivery
+**Status:** ✅ Complete
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 10
+**Review Counter:** 11
 **Iteration:** 1
 **Size:** M
 
@@ -52,9 +52,9 @@
 ---
 
 ### Step 5: Documentation & Delivery
-**Status:** ⬜ Not Started
-- [ ] README updated
-- [ ] Known caveats documented
+**Status:** ✅ Complete
+- [x] README updated
+- [x] Known caveats documented
 
 ---
 
@@ -72,6 +72,7 @@
 | 8 | Code | 3 | UNAVAILABLE | reviewer tool returned no output |
 | 9 | Plan | 4 | REVISE | `.reviews/R009-plan-step4.md` |
 | 10 | Plan | 4 | APPROVE | reviewer tool approved revised test plan |
+| 11 | Code | 4 | APPROVE | reviewer tool approved verification changes |
 
 ---
 
@@ -126,6 +127,11 @@
 | 2026-04-12 23:33 | Full suite passed | `cd .pi/extensions/pi-kagi && bun test` passed after updating shared test mocks/expectations for the new FastGPT + Summarizer registrations. |
 | 2026-04-12 23:34 | Smoke checks logged | Live smoke skipped because `KAGI_API_KEY` is unset; dry-smoke evidence comes from execute-path tests that preserve FastGPT references/tokens and Summarizer token metadata under truncation. |
 | 2026-04-12 23:34 | Step 4 completed | Verification gate passed; remaining work is documentation and delivery. |
+| 2026-04-12 23:35 | Step 5 started | Updating README coverage, examples, and caveats for FastGPT + Summarizer delivery. |
+| 2026-04-12 23:40 | README updated | Documented FastGPT/Summarizer tools, selection guidance, examples, output shape, architecture paths, and Bun-based test commands/coverage. |
+| 2026-04-12 23:41 | Caveats documented | README now calls out FastGPT's forced `web_search=true`, Summarizer exclusivity/1MB limit, target language codes, and `daphne` compatibility status. |
+| 2026-04-12 23:41 | Review R011 | Step 4 code review approved the verification updates. |
+| 2026-04-12 23:41 | Task completed | All TP-006 steps are checked off and documented. |
 
 ---
 
@@ -135,3 +141,4 @@
 | 2026-04-12 19:37 | Review R003 | code Step 1: REVISE |
 | 2026-04-12 20:25 | Review R009 | plan Step 4: REVISE |
 | 2026-04-12 20:31 | Review R010 | plan Step 4: APPROVE |
+| 2026-04-12 20:41 | Review R011 | code Step 4: APPROVE |
