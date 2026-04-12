@@ -1,0 +1,20 @@
+{
+  "batchId": "20260412T184523",
+  "agentId": "orch-yanek-lane-1-worker",
+  "role": "worker",
+  "laneNumber": 1,
+  "taskId": "TP-007",
+  "repoId": "default",
+  "pid": 2298976,
+  "parentPid": 2006695,
+  "startedAt": 1776026744130,
+  "status": "running",
+  "cwd": "/home/yanek/Projects/pi-kagi/.worktrees/yanek-20260412T184523/lane-1",
+  "packet": {
+    "promptPath": "/home/yanek/Projects/pi-kagi/.worktrees/yanek-20260412T184523/lane-1/taskplane-tasks/TP-007-smart-web-access-orchestrator/PROMPT.md",
+    "statusPath": "/home/yanek/Projects/pi-kagi/.worktrees/yanek-20260412T184523/lane-1/taskplane-tasks/TP-007-smart-web-access-orchestrator/STATUS.md",
+    "donePath": "/home/yanek/Projects/pi-kagi/.worktrees/yanek-20260412T184523/lane-1/taskplane-tasks/TP-007-smart-web-access-orchestrator/.DONE",
+    "reviewsDir": "/home/yanek/Projects/pi-kagi/.worktrees/yanek-20260412T184523/lane-1/taskplane-tasks/TP-007-smart-web-access-orchestrator/.reviews",
+    "taskFolder": "/home/yanek/Projects/pi-kagi/.worktrees/yanek-20260412T184523/lane-1/taskplane-tasks/TP-007-smart-web-access-orchestrator"
+  }
+}

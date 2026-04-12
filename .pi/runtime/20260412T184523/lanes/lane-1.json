@@ -1,0 +1,45 @@
+{
+  "batchId": "20260412T184523",
+  "laneNumber": 1,
+  "laneId": "lane-1",
+  "repoId": "default",
+  "taskId": "TP-007",
+  "segmentId": null,
+  "status": "running",
+  "worker": {
+    "agentId": "orch-yanek-lane-1-worker",
+    "status": "running",
+    "elapsedMs": 0,
+    "toolCalls": 21,
+    "contextPct": 2.0867347717285156,
+    "costUsd": 0,
+    "lastTool": "review_step: code",
+    "inputTokens": 48366,
+    "outputTokens": 6142,
+    "cacheReadTokens": 199415,
+    "cacheWriteTokens": 0
+  },
+  "reviewer": {
+    "agentId": "orch-yanek-lane-1-reviewer",
+    "status": "running",
+    "elapsedMs": 310542,
+    "toolCalls": 6,
+    "contextPct": 0,
+    "costUsd": 0,
+    "lastTool": "read: .pi/extensions/pi-kagi/src/errors.ts",
+    "inputTokens": 21685,
+    "outputTokens": 2285,
+    "cacheReadTokens": 0,
+    "cacheWriteTokens": 0,
+    "reviewType": "code",
+    "reviewStep": 1
+  },
+  "progress": {
+    "currentStep": "Step 0: Preflight",
+    "checked": 5,
+    "total": 16,
+    "iteration": 1,
+    "reviews": 1
+  },
+  "updatedAt": 1776028554538
+}

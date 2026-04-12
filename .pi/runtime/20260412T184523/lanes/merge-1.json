@@ -1,0 +1,21 @@
+{
+  "batchId": "20260412T184523",
+  "mergeNumber": 1,
+  "sessionName": "orch-yanek-merge-1",
+  "waveIndex": 4,
+  "status": "failed",
+  "agent": {
+    "agentId": "orch-yanek-merge-1",
+    "status": "crashed",
+    "elapsedMs": 72247,
+    "toolCalls": 3,
+    "contextPct": 0.2917289733886719,
+    "costUsd": 0,
+    "lastTool": "write: /home/yanek/Projects/pi-kagi/.pi/merge-result-w4-lane1-yanek-20260412T184523.json",
+    "inputTokens": 14358,
+    "outputTokens": 778,
+    "cacheReadTokens": 0,
+    "cacheWriteTokens": 0
+  },
+  "updatedAt": 1776026743604
+}

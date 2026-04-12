@@ -1,0 +1,11 @@
+{
+  "id": "1776017978320-6ae04",
+  "batchId": "20260412T184523",
+  "from": "supervisor",
+  "to": "orch-yanek-lane-1-worker",
+  "timestamp": 1776017978320,
+  "type": "query",
+  "content": "Supervisor check: operator suspects lane may be stuck. Please reply with current activity, whether you saw the wrap-up signal, and whether your current TP-005 changes are safe/checkpointed yet. Keep it brief.",
+  "expectsReply": false,
+  "replyTo": null
+}

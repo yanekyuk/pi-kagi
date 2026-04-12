@@ -1,0 +1,22 @@
+{
+  "exitCode": 0,
+  "exitSignal": null,
+  "tokens": {
+    "input": 234196,
+    "output": 90954,
+    "cacheRead": 16115200,
+    "cacheWrite": 0
+  },
+  "cost": 5.9786,
+  "toolCalls": 179,
+  "retries": 0,
+  "compactions": 0,
+  "durationSec": 5813,
+  "lastToolCall": "read: taskplane-tasks/TP-006-fastgpt-and-summarizer-tools/STATUS.md",
+  "error": null,
+  "contextUsage": {
+    "tokens": 156887,
+    "contextWindow": 272000,
+    "percent": 57.67904411764706
+  }
+}

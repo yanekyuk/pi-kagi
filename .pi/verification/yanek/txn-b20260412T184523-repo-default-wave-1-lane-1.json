@@ -1,0 +1,16 @@
+{
+  "opId": "yanek",
+  "batchId": "20260412T184523",
+  "waveIndex": 1,
+  "laneNumber": 1,
+  "repoId": null,
+  "baseHEAD": "915d7948bd0085b4e3dc56be5c4202cd584bcccc",
+  "laneHEAD": "fcf67ee8ee2672c8e11f538ecb85ee1db929ab26",
+  "mergedHEAD": "bf778fbe6d75fa0394846b4e6da2b8dfaffb50fa",
+  "status": "committed",
+  "rollbackAttempted": false,
+  "rollbackResult": null,
+  "recoveryCommands": [],
+  "startedAt": "2026-04-12T16:06:55.756Z",
+  "completedAt": "2026-04-12T16:07:33.851Z"
+}

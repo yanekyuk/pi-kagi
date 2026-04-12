@@ -18,9 +18,6 @@
 docs/enrich.md
 docs/fastgpt.md
 docs/overview.md
-
-# Environment variables (contains API keys)
-.env
 docs/search.md
 docs/smallweb.md
 docs/summarizer.md

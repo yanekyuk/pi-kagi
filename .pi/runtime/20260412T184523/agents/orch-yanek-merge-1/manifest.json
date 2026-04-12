@@ -1,0 +1,14 @@
+{
+  "batchId": "20260412T184523",
+  "agentId": "orch-yanek-merge-1",
+  "role": "merger",
+  "laneNumber": null,
+  "taskId": null,
+  "repoId": "default",
+  "pid": 2297943,
+  "parentPid": 2006695,
+  "startedAt": 1776026671357,
+  "status": "killed",
+  "cwd": "/home/yanek/Projects/pi-kagi/.worktrees/yanek-20260412T184523/merge",
+  "packet": null
+}

@@ -1,0 +1,22 @@
+{
+  "exitCode": null,
+  "exitSignal": "SIGTERM",
+  "tokens": {
+    "input": 14358,
+    "output": 778,
+    "cacheRead": 0,
+    "cacheWrite": 0
+  },
+  "cost": null,
+  "toolCalls": 3,
+  "retries": 0,
+  "compactions": 0,
+  "durationSec": 72,
+  "lastToolCall": "write: /home/yanek/Projects/pi-kagi/.pi/merge-result-w4-lane1-yanek-20260412T184523.json",
+  "error": null,
+  "contextUsage": {
+    "tokens": 3059,
+    "contextWindow": 1048576,
+    "percent": 0.2917289733886719
+  }
+}
