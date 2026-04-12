@@ -1,7 +1,7 @@
 # TP-004: Implement Core Kagi Client, Config, and Error Handling — Status
 
-**Current Step:** Step 0: Preflight
-**Status:** 🟡 In Progress
+**Current Step:** Step 1: Project structure + config contract
+**Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
 **Review Counter:** 0
@@ -17,10 +17,13 @@
 ---
 
 ### Step 1: Project structure + config contract
-**Status:** ⬜ Not Started
-- [ ] `src/` structure and scripts set
-- [ ] Config loader implemented
-- [ ] Missing-key errors implemented
+**Status:** 🟨 In Progress
+- [ ] Create `src/` directory structure under `.pi/extensions/pi-kagi/`
+- [ ] Add package.json scripts for testing (bun test)
+- [ ] Implement `src/config.ts` with Kagi API key resolver (KAGI_API_KEY env var, with helpful error when missing)
+- [ ] Implement `src/errors.ts` with KagiError class and error normalization
+- [ ] Update `index.ts` entry point to import and use config on session_start
+- [ ] Install test runner dependency (bun test built-in, but verify)
 
 ---
 
