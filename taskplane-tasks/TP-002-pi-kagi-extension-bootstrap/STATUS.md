@@ -1,10 +1,10 @@
 # TP-002: Bootstrap `pi-kagi` Extension and Capture Extension Authoring Notes — Status
 
-**Current Step:** Step 2: Scaffold pi-kagi extension
+**Current Step:** Step 3: Testing &amp; Verification
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 1
-**Review Counter:** 1
+**Review Counter:** 2
 **Iteration:** 1
 **Size:** S
 
@@ -31,12 +31,12 @@
 ---
 
 ### Step 2: Scaffold `pi-kagi` extension
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 
-- [ ] `.pi/extensions/pi-kagi/package.json` created with exact description string
-- [ ] `.pi/extensions/pi-kagi/index.ts` created with valid extension export
-- [ ] Minimal load-proof behavior implemented (command/status)
-- [ ] `.pi/extensions/pi-kagi/README.md` created
+- [x] `.pi/extensions/pi-kagi/package.json` created with exact description string
+- [x] `.pi/extensions/pi-kagi/index.ts` created with valid extension export
+- [x] Minimal load-proof behavior implemented (command/status)
+- [x] `.pi/extensions/pi-kagi/README.md` created
 
 ---
 
@@ -92,3 +92,4 @@
 
 *Reserved for execution notes*
 | 2026-04-12 15:57 | Review R001 | plan Step 1: APPROVE |
+| 2026-04-12 16:02 | Review R002 | plan Step 2: APPROVE |
