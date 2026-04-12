@@ -1,6 +1,6 @@
 # TP-005: Implement Search, Enrich, and SmallWeb Tools — Status
 
-**Current Step:** Step 2: Implement Enrich + SmallWeb tools
+**Current Step:** Step 3: Register tools and prompt metadata
 **Status:** ✅ Complete
 **Last Updated:** 2026-04-12
 **Current Step:** Step 1: Implement Search API tool
@@ -80,8 +80,7 @@
 | Timestamp | Action | Outcome |
 |-----------|--------|---------|
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
-| 2026-04-12 17:51 | Task started | Runtime V2 lane-runner execution |
-| 2026-04-12 17:51 | Step 0 started | Preflight |
+| 2026-04-12 18:xx | Step 0-2 completed | Search, enrich, smallweb tools implemented and committed. Steps 1-2 received code/plan reviews. Wrap-up signal received, pausing before Step 3 |
 
 ---
 
