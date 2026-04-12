@@ -1,10 +1,10 @@
 # TP-006: Implement FastGPT and Summarizer Tools — Status
 
-**Current Step:** Step 2: Implement Summarizer tool
+**Current Step:** Step 3: Register tools and UX guidance
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 5
+**Review Counter:** 6
 **Iteration:** 1
 **Size:** M
 
@@ -36,10 +36,10 @@
 ---
 
 ### Step 3: Register tools and UX guidance
-**Status:** ⬜ Not Started
-- [ ] Tool registration completed
-- [ ] Prompt guidance added
-- [ ] Output compactness validated
+**Status:** 🟨 In Progress
+- [ ] FastGPT and Summarizer tools are registered in the extension entrypoint
+- [ ] Prompt snippets/guidelines help the model choose FastGPT vs Summarizer appropriately
+- [ ] Registered tool output remains compact while preserving answer/summary metadata in tests
 
 ---
 
@@ -67,6 +67,7 @@
 | 3 | Code | 1 | REVISE | `.reviews/R003-code-step1.md` |
 | 4 | Code | 1 | UNAVAILABLE | reviewer tool returned no output |
 | 5 | Plan | 2 | UNAVAILABLE | reviewer tool returned no output |
+| 6 | Code | 2 | UNAVAILABLE | reviewer tool returned no output |
 
 ---
 
@@ -106,6 +107,8 @@
 | 2026-04-12 23:12 | Summarizer mapping added | Summarizer responses now include token metadata in content plus option/input details for engine, summary type, language, cache, and source input kind. |
 | 2026-04-12 23:16 | Summarizer validation hardened | Added actionable URL/language/1MB text errors and normalization for target language codes; targeted Summarizer tests remain green. |
 | 2026-04-12 23:16 | Step 2 completed | Summarizer implementation is ready for registration work and step-level review. |
+| 2026-04-12 23:18 | Review R006 | Step 2 code review was unavailable, so work proceeds with targeted coverage and documented constraints. |
+| 2026-04-12 23:19 | Step 3 started | Hydrated registration work around entrypoint wiring, tool-choice guidance, and compact output validation. |
 
 ---
 
