@@ -37,12 +37,12 @@
 ---
 
 ### Step 3: Register tools and prompt metadata
-**Status:** 🟨 In Progress
+**Status:** ✅ Complete
 - [x] Audit tool registration wiring and keep extension entrypoint messaging aligned
 - [x] Add concise prompt snippets/guidelines to TP-005 tool definitions
 - [x] Verify truncation remains applied across search, enrich, and smallweb outputs
-- [ ] Bound shared truncation helpers so final output (including notices) stays within pi limits
-- [ ] Derive `kagi-about` tool help from registered tool metadata to avoid drift
+- [x] Bound shared truncation helpers so final output (including notices) stays within pi limits
+- [x] Derive `kagi-about` tool help from registered tool metadata to avoid drift
 
 ---
 

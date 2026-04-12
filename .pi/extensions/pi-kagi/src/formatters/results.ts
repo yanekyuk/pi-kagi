@@ -157,36 +157,72 @@ export function truncationNotice(shown: number, total: number): string {
 	return `\n\n[Showing ${shown} of ${total} results. Use a more specific query to narrow results.]`;
 }
 
+const utf8Encoder = new TextEncoder();
+
+function countLines(text: string): number {
+	return text === "" ? 0 : text.split("\n").length;
+}
+
+function countBytes(text: string): number {
+	return utf8Encoder.encode(text).length;
+}
+
+function truncateHeadWithNotice(
+	formatted: string,
+	countShown: (content: string) => number,
+	buildNotice: (shown: number) => string,
+): string {
+	let maxLines = DEFAULT_MAX_LINES;
+	let maxBytes = DEFAULT_MAX_BYTES;
+
+	for (let attempt = 0; attempt < 3; attempt++) {
+		const truncation = truncateHead(formatted, {
+			maxLines,
+			maxBytes,
+		});
+
+		if (!truncation.truncated) {
+			return truncation.content;
+		}
+
+		const shown = countShown(truncation.content);
+		const notice = buildNotice(shown);
+		const finalOutput = truncation.content + notice;
+
+		if (countLines(finalOutput) <= DEFAULT_MAX_LINES && countBytes(finalOutput) <= DEFAULT_MAX_BYTES) {
+			return finalOutput;
+		}
+
+		maxLines = Math.max(1, DEFAULT_MAX_LINES - countLines(notice));
+		maxBytes = Math.max(1, DEFAULT_MAX_BYTES - countBytes(notice));
+	}
+
+	const truncation = truncateHead(formatted, {
+		maxLines,
+		maxBytes,
+	});
+	const shown = countShown(truncation.content);
+	return truncation.content + buildNotice(shown);
+}
+
 /**
  * Apply the standard head-truncation strategy for search/enrich result text.
  */
 export function truncateSearchOutput(formatted: string, totalResults: number): string {
-	const truncation = truncateHead(formatted, {
-		maxLines: DEFAULT_MAX_LINES,
-		maxBytes: DEFAULT_MAX_BYTES,
-	});
-
-	if (!truncation.truncated) {
-		return truncation.content;
-	}
-
-	const shownResults = (truncation.content.match(/^\[\d+\]\(/gm) || []).length;
-	return truncation.content + truncationNotice(shownResults, totalResults);
+	return truncateHeadWithNotice(
+		formatted,
+		(content) => (content.match(/^\[\d+\]\(/gm) || []).length,
+		(shown) => truncationNotice(shown, totalResults),
+	);
 }
 
 /**
  * Apply the standard head-truncation strategy for Small Web output.
  */
 export function truncateSmallWebOutput(formatted: string, totalEntries: number): string {
-	const truncation = truncateHead(formatted, {
-		maxLines: DEFAULT_MAX_LINES,
-		maxBytes: DEFAULT_MAX_BYTES,
-	});
-
-	if (!truncation.truncated) {
-		return truncation.content;
-	}
-
-	const shownEntries = (truncation.content.match(/^• /gm) || []).length;
-	return truncation.content + `\n\n[Showing ${shownEntries} of ${totalEntries} Small Web entries.]`;
+	return truncateHeadWithNotice(
+		formatted,
+		(content) => (content.match(/^• /gm) || []).length,
+		(shown) => `\n\n[Showing ${shown} of ${totalEntries} Small Web entries.]`,
+	);
 }
