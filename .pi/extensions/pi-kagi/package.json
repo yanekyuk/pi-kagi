@@ -4,6 +4,10 @@
   "private": true,
   "description": "Pi skill for using Kagi API",
   "type": "module",
+  "scripts": {
+    "test": "bun test",
+    "test:watch": "bun test --watch"
+  },
   "pi": {
     "extensions": ["./index.ts"]
   },

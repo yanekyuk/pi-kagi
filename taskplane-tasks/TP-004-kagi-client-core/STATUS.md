@@ -4,7 +4,7 @@
 **Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 2
-**Review Counter:** 0
+**Review Counter:** 1
 **Iteration:** 1
 **Size:** M
 
@@ -17,13 +17,13 @@
 ---
 
 ### Step 1: Project structure + config contract
-**Status:** 🟨 In Progress
-- [ ] Create `src/` directory structure under `.pi/extensions/pi-kagi/`
-- [ ] Add package.json scripts for testing (bun test)
-- [ ] Implement `src/config.ts` with Kagi API key resolver (KAGI_API_KEY env var, with helpful error when missing)
-- [ ] Implement `src/errors.ts` with KagiError class and error normalization
-- [ ] Update `index.ts` entry point to import and use config on session_start
-- [ ] Install test runner dependency (bun test built-in, but verify)
+**Status:** ✅ Complete
+- [x] Create `src/` directory structure under `.pi/extensions/pi-kagi/`
+- [x] Add package.json scripts for testing (bun test)
+- [x] Implement `src/config.ts` with Kagi API key resolver (KAGI_API_KEY env var, with helpful error when missing)
+- [x] Implement `src/errors.ts` with KagiError class and error normalization
+- [x] Update `index.ts` entry point to import and use config on session_start
+- [x] Install test runner dependency (bun test built-in, verified)
 
 ---
 
@@ -84,3 +84,4 @@
 ## Blockers
 
 *None*
+| 2026-04-12 16:45 | Review R001 | plan Step 1: APPROVE |
