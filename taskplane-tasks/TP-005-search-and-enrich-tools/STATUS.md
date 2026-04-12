@@ -1,9 +1,9 @@
 # TP-005: Implement Search, Enrich, and SmallWeb Tools — Status
 
 **Current Step:** Step 3: Register tools and prompt metadata
-**Status:** ✅ Complete
+**Iteration:** 2
+**Status:** 🟨 In Progress
 **Last Updated:** 2026-04-12
-**Current Step:** Step 1: Implement Search API tool
 
 ---
 
@@ -37,10 +37,10 @@
 ---
 
 ### Step 3: Register tools and prompt metadata
-**Status:** ⬜ Not Started
-- [ ] Tool registration completed
-- [ ] Prompt snippets/guidelines added
-- [ ] Truncation strategy applied
+**Status:** 🟨 In Progress
+- [ ] Audit tool registration wiring and keep extension entrypoint messaging aligned
+- [ ] Add concise prompt snippets/guidelines to TP-005 tool definitions
+- [ ] Verify truncation remains applied across search, enrich, and smallweb outputs
 
 ---
 
@@ -65,6 +65,7 @@
 |---|------|------|---------|------|
 | R001 | plan | Step 1 | ✅ Proceed | .reviews/R001-plan-step1.md |
 | R001 | code | Step 1 | REVISE → fixed | .reviews/R001-code-step1.md |
+| R001 | plan | Step 3 | ✅ Proceed with qualifications | .reviews/R001-plan-step3.md |
 
 ---
 
@@ -81,6 +82,11 @@
 |-----------|--------|---------|
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
 | 2026-04-12 18:xx | Step 0-2 completed | Search, enrich, smallweb tools implemented and committed. Steps 1-2 received code/plan reviews. Wrap-up signal received, pausing before Step 3 |
+| 2026-04-12 18:21 | Agent reply | Status report for TP-005: /  / **Completed:** / - ✅ Step 0: Preflight / - ✅ Step 1: Search API tool (with code review fixes applied) / - ✅ Step 2: Enrich + SmallWeb tools (just committed) /  / **In pr |
+| 2026-04-12 18:21 | ⚠️ Steering | Supervisor check: operator suspects lane may be stuck. Please reply with current activity, whether you saw the wrap-up signal, and whether your current TP-005 changes are safe/checkpointed yet. Keep i |
+| 2026-04-12 18:21 | Worker iter 1 | done in 1817s, tools: 75 |
+| 2026-04-12 18:21 | Step 3 started | Register tools and prompt metadata |
+| 2026-04-12 18:xx | Review R001 | plan Step 3 approved with qualifications: focus on prompt metadata, registration audit, and truncation regression check |
 
 ---
 
@@ -90,3 +96,4 @@
 | 2026-04-12 18:05 | Review R001 | plan Step 1: UNKNOWN |
 | 2026-04-12 18:12 | Review R001 | code Step 1: REVISE |
 | 2026-04-12 18:17 | Review R001 | plan Step 2: UNKNOWN |
+| 2026-04-12 18:27 | Review R001 | plan Step 3: UNKNOWN |
