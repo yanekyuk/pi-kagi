@@ -132,6 +132,8 @@
 | 2026-04-12 23:41 | Caveats documented | README now calls out FastGPT's forced `web_search=true`, Summarizer exclusivity/1MB limit, target language codes, and `daphne` compatibility status. |
 | 2026-04-12 23:41 | Review R011 | Step 4 code review approved the verification updates. |
 | 2026-04-12 23:41 | Task completed | All TP-006 steps are checked off and documented. |
+| 2026-04-12 20:44 | Worker iter 1 | done in 5813s, tools: 179 |
+| 2026-04-12 20:44 | Task complete | .DONE created |
 
 ---
 
