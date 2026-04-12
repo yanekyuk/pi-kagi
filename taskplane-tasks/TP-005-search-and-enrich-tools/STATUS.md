@@ -17,10 +17,12 @@
 ---
 
 ### Step 1: Implement Search API tool
-**Status:** ⬜ Not Started
-- [ ] Tool schema added
-- [ ] Search response normalization implemented
-- [ ] Related-search handling added
+**Status:** 🟨 In Progress
+- [ ] Create src/tools/search.ts with kagi_search tool definition
+- [ ] Create src/formatters/results.ts with shared formatting logic
+- [ ] Implement search response formatter: numbered citation list with title/snippet/url/date
+- [ ] Handle related searches in formatter without overwhelming context
+- [ ] Apply truncation using truncateHead for large result sets
 
 ---
 
