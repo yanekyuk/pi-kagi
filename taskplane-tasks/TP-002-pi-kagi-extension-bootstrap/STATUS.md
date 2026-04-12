@@ -1,10 +1,10 @@
 # TP-002: Bootstrap `pi-kagi` Extension and Capture Extension Authoring Notes — Status
 
-**Current Step:** Step 1: Research and summarize extension creation flow
+**Current Step:** Step 2: Scaffold pi-kagi extension
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-12
 **Review Level:** 1
-**Review Counter:** 0
+**Review Counter:** 1
 **Iteration:** 1
 **Size:** S
 
@@ -22,11 +22,11 @@
 ---
 
 ### Step 1: Research and summarize extension creation flow
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 
-- [ ] Core extension creation workflow extracted from docs
-- [ ] Example-driven conventions captured
-- [ ] `docs/pi-extension-creation-notes.md` written
+- [x] Core extension creation workflow extracted from docs
+- [x] Example-driven conventions captured
+- [x] `docs/pi-extension-creation-notes.md` written
 
 ---
 
@@ -91,3 +91,4 @@
 ## Notes
 
 *Reserved for execution notes*
+| 2026-04-12 15:57 | Review R001 | plan Step 1: APPROVE |
