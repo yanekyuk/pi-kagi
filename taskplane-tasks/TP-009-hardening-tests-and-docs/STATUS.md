@@ -20,6 +20,7 @@
 
 ### Step 1: Integration and regression coverage
 **Status:** 🟨 In Progress
+- [ ] Scope guidance for missing TP-007/TP-008 outputs applied
 - [ ] Smart-routing integration scenarios added
 - [ ] Failure-path regression tests added
 - [ ] Cost-reporting consistency checks added
