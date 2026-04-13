@@ -1,7 +1,6 @@
 {
   "name": "pi-kagi",
   "version": "0.1.0",
-  "private": true,
   "description": "Pi skill for using Kagi API",
   "type": "module",
   "scripts": {
