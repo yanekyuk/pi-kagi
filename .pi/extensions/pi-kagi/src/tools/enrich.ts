@@ -10,6 +10,7 @@ import { Type } from "@sinclair/typebox";
 import { KagiClient } from "../kagi-client.ts";
 import { KagiError } from "../config.ts";
 import { formatSearchResponse, countResults, truncateSearchOutput } from "../formatters/results.ts";
+import { appendEstimatedCost, estimatedEnrichCost } from "../tool-costs.ts";
 
 /**
  * Register the kagi_enrich_web tool.
@@ -50,24 +51,27 @@ export function registerEnrichWebTool(pi: ExtensionAPI, getClient: () => KagiCli
 
 				// Handle empty results with a friendly message
 				if (totalResults === 0) {
+					const estimatedCost = estimatedEnrichCost(totalResults, "kagi_enrich_web");
 					return {
 						content: [{
 							type: "text" as const,
-							text: `No enrich web results found for "${params.query}".`,
+							text: appendEstimatedCost(`No enrich web results found for "${params.query}".`, estimatedCost),
 						}],
-						details: { query: params.query, totalResults: 0 },
+						details: { query: params.query, totalResults: 0, estimatedCost },
 					};
 				}
 
 				const formatted = formatSearchResponse(response, { includeRank: true });
 				const result = truncateSearchOutput(formatted, totalResults);
+				const estimatedCost = estimatedEnrichCost(totalResults, "kagi_enrich_web");
 
 				return {
-					content: [{ type: "text" as const, text: result }],
+					content: [{ type: "text" as const, text: appendEstimatedCost(result, estimatedCost) }],
 					details: {
 						query: params.query,
 						totalResults,
 						meta: response.meta,
+						estimatedCost,
 					},
 				};
 			} catch (err) {
@@ -118,24 +122,27 @@ export function registerEnrichNewsTool(pi: ExtensionAPI, getClient: () => KagiCl
 				const totalResults = countResults(response);
 
 				if (totalResults === 0) {
+					const estimatedCost = estimatedEnrichCost(totalResults, "kagi_enrich_news");
 					return {
 						content: [{
 							type: "text" as const,
-							text: `No enrich news results found for "${params.query}".`,
+							text: appendEstimatedCost(`No enrich news results found for "${params.query}".`, estimatedCost),
 						}],
-						details: { query: params.query, totalResults: 0 },
+						details: { query: params.query, totalResults: 0, estimatedCost },
 					};
 				}
 
 				const formatted = formatSearchResponse(response, { includeRank: true });
 				const result = truncateSearchOutput(formatted, totalResults);
+				const estimatedCost = estimatedEnrichCost(totalResults, "kagi_enrich_news");
 
 				return {
-					content: [{ type: "text" as const, text: result }],
+					content: [{ type: "text" as const, text: appendEstimatedCost(result, estimatedCost) }],
 					details: {
 						query: params.query,
 						totalResults,
 						meta: response.meta,
+						estimatedCost,
 					},
 				};
 			} catch (err) {

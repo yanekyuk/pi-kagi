@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-13
 **Review Level:** 2
-**Review Counter:** 2
+**Review Counter:** 3
 **Iteration:** 2
 **Size:** M
 
@@ -19,12 +19,12 @@
 ---
 
 ### Step 1: Integration and regression coverage
-**Status:** 🟨 In Progress
-- [ ] Re-scope Step 1 to current TP-005/TP-006 tool surfaces and defer TP-007/TP-008-dependent assertions
-- [ ] Offline integration harness added for extension registration + tool execution with fixtures
-- [ ] Manual-routing scenario matrix added for search/enrich, FastGPT, summarizer URL/text, and Small Web flows
-- [ ] Failure-path regressions added for missing key, API errors, and sparse-result/manual-fallback guidance
-- [ ] Current-surface cost metadata/guidance consistency checks added; TP-008 per-call reporting deferred
+**Status:** ✅ Complete
+- [x] Re-scope Step 1 to current TP-005/TP-006 tool surfaces and defer TP-007/TP-008-dependent assertions
+- [x] Offline integration harness added for extension registration + tool execution with fixtures
+- [x] Manual-routing scenario matrix added for search/enrich, FastGPT, summarizer URL/text, and Small Web flows
+- [x] Failure-path regressions added for missing key, API errors, and sparse-result/manual-fallback guidance
+- [x] Current-surface cost metadata/guidance consistency checks added; TP-008 per-call reporting deferred
 
 ---
 
@@ -57,6 +57,7 @@
 |---|------|------|---------|------|
 | R001 | Plan | 1 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R001-plan-step1.md` |
 | R002 | Plan | 1 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R002-plan-step1.md` |
+| R003 | Plan | 1 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R003-plan-step1.md` |
 
 ---
 
@@ -86,6 +87,8 @@
 | 2026-04-13 02:48 | Worker iter 1 | done in 216s, tools: 38 |
 | 2026-04-13 02:52 | Review R001 | Plan review requested a concrete Step 1 decision gate and deterministic fixture-backed matrix before implementation. |
 | 2026-04-13 02:56 | Review R002 | Plan review requested an explicit re-scope/defer statement, harness boundary, and named current-surface scenario matrix before implementation. |
+| 2026-04-13 02:58 | Review R003 | Revised Step 1 plan approved for implementation against current TP-005/TP-006 surfaces. |
+| 2026-04-13 03:1x | Step 1 targeted tests | `bun test tests/integration/manual-routing.test.ts tests/search-enrich.test.ts tests/fastgpt-summarizer.test.ts` passed (28 tests). |
 
 ---
 

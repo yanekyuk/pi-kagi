@@ -7,6 +7,7 @@ import { Type } from "@sinclair/typebox";
 import { KagiClient } from "../kagi-client.ts";
 import { KagiError } from "../config.ts";
 import { truncateFastGPTOutput } from "../formatters/answers.ts";
+import { appendEstimatedCost, estimatedFastgptCost } from "../tool-costs.ts";
 
 /**
  * Register the kagi_fastgpt tool.
@@ -51,14 +52,20 @@ export function registerFastGPTTool(pi: ExtensionAPI, getClient: () => KagiClien
 					throw new Error("Request was cancelled");
 				}
 
+				const estimatedCost = estimatedFastgptCost(params.cache);
+
 				return {
-					content: [{ type: "text" as const, text: truncateFastGPTOutput(response) }],
+					content: [{
+						type: "text" as const,
+						text: appendEstimatedCost(truncateFastGPTOutput(response), estimatedCost),
+					}],
 					details: {
 						query: params.query,
 						tokens: response.tokens,
 						referenceCount: response.references.length,
 						references: response.references,
 						meta: response.meta,
+						estimatedCost,
 					},
 				};
 			} catch (err) {

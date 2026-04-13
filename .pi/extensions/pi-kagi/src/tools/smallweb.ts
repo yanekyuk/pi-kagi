@@ -10,6 +10,7 @@ import { Type } from "@sinclair/typebox";
 import { KagiClient } from "../kagi-client.ts";
 import { KagiError } from "../config.ts";
 import { formatSmallWebResponse, truncateSmallWebOutput } from "../formatters/results.ts";
+import { TOOL_COST_GUIDANCE, appendEstimatedCost } from "../tool-costs.ts";
 
 /**
  * Register the kagi_smallweb tool.
@@ -53,9 +54,13 @@ export function registerSmallWebTool(pi: ExtensionAPI, getClient: () => KagiClie
 				const result = truncateSmallWebOutput(formatted, response.entries.length);
 
 				return {
-					content: [{ type: "text" as const, text: result }],
+					content: [{
+						type: "text" as const,
+						text: appendEstimatedCost(result, TOOL_COST_GUIDANCE.kagi_smallweb),
+					}],
 					details: {
 						totalEntries: response.entries.length,
+						estimatedCost: TOOL_COST_GUIDANCE.kagi_smallweb,
 					},
 				};
 			} catch (err) {

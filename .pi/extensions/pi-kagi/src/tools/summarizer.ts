@@ -8,6 +8,7 @@ import { Type } from "@sinclair/typebox";
 import { KagiClient } from "../kagi-client.ts";
 import { KagiError } from "../config.ts";
 import { truncateSummarizeOutput } from "../formatters/answers.ts";
+import { appendEstimatedCost, estimatedSummarizeCost } from "../tool-costs.ts";
 
 const SUMMARIZER_ENGINES = ["cecil", "agnes", "daphne", "muriel"] as const;
 const SUMMARY_TYPES = ["summary", "takeaway"] as const;
@@ -160,8 +161,13 @@ export function registerSummarizerTool(pi: ExtensionAPI, getClient: () => KagiCl
 					throw new Error("Request was cancelled");
 				}
 
+				const estimatedCost = estimatedSummarizeCost(validated.cache);
+
 				return {
-					content: [{ type: "text" as const, text: truncateSummarizeOutput(response) }],
+					content: [{
+						type: "text" as const,
+						text: appendEstimatedCost(truncateSummarizeOutput(response), estimatedCost),
+					}],
 					details: {
 						input: validated.url
 							? { type: "url" as const, value: validated.url }
@@ -172,6 +178,7 @@ export function registerSummarizerTool(pi: ExtensionAPI, getClient: () => KagiCl
 						cache: validated.cache,
 						tokens: response.tokens,
 						meta: response.meta,
+						estimatedCost,
 					},
 				};
 			} catch (err) {

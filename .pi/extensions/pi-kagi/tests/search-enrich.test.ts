@@ -341,10 +341,12 @@ describe("TP-005 tool execute paths", () => {
 
 		expect(result.content[0].text).toContain("[1](https://example.com/search) — Search Result (Feb 1, 2024)");
 		expect(result.content[0].text).toContain("Related searches: query alt");
+		expect(result.content[0].text).toContain("[Estimated cost: ~$0.025/query]");
 		expect(result.details).toEqual({
 			query: "test query",
 			totalResults: 1,
 			meta: response.meta,
+			estimatedCost: "~$0.025/query",
 		});
 	});
 
@@ -361,8 +363,14 @@ describe("TP-005 tool execute paths", () => {
 			{} as any,
 		);
 
-		expect(result.content[0].text).toBe('No enrich web results found for "quiet topic".');
-		expect(result.details).toEqual({ query: "quiet topic", totalResults: 0 });
+		expect(result.content[0].text).toBe(
+			'No enrich web results found for "quiet topic".\n\n[Estimated cost: $0.00 (no results)]',
+		);
+		expect(result.details).toEqual({
+			query: "quiet topic",
+			totalResults: 0,
+			estimatedCost: "$0.00 (no results)",
+		});
 	});
 
 	it("rethrows KagiError values from the smallweb tool", async () => {

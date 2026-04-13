@@ -279,7 +279,8 @@ describe("TP-006 FastGPT execute path", () => {
 					"Python 3.11 improved performance [1].\n\n" +
 					"Sources:\n" +
 					"[1](https://docs.python.org/3/whatsnew/3.11.html) — What's New In Python 3.11\n\n" +
-					"[Tokens processed: 757 | Sources: 1]",
+					"[Tokens processed: 757 | Sources: 1]\n\n" +
+					"[Estimated cost: ~$0.015/query]",
 			},
 		]);
 		expect(result.details).toEqual({
@@ -288,6 +289,7 @@ describe("TP-006 FastGPT execute path", () => {
 			referenceCount: 1,
 			references: response.references,
 			meta: response.meta,
+			estimatedCost: "~$0.015/query",
 		});
 	});
 });
@@ -396,6 +398,7 @@ describe("TP-006 Summarizer schema and validation", () => {
 		});
 		expect(result.content[0].text).toContain("• Key takeaway one");
 		expect(result.content[0].text).toContain("[Tokens processed: 500]");
+		expect(result.content[0].text).toContain("[Estimated cost: $0.03-$1/call depending on engine]");
 		expect(result.details).toEqual({
 			input: { type: "url", value: "https://example.com/article" },
 			engine: "agnes",
@@ -404,6 +407,7 @@ describe("TP-006 Summarizer schema and validation", () => {
 			cache: false,
 			tokens: 500,
 			meta: response.meta,
+			estimatedCost: "$0.03-$1/call depending on engine",
 		});
 	});
 

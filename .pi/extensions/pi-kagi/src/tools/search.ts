@@ -10,6 +10,7 @@ import { Type } from "@sinclair/typebox";
 import { KagiClient } from "../kagi-client.ts";
 import { KagiError } from "../config.ts";
 import { formatSearchResponse, countResults, truncateSearchOutput } from "../formatters/results.ts";
+import { TOOL_COST_GUIDANCE, appendEstimatedCost } from "../tool-costs.ts";
 
 /**
  * Register the kagi_search tool with the pi extension API.
@@ -62,9 +63,17 @@ export function registerSearchTool(pi: ExtensionAPI, getClient: () => KagiClient
 					return {
 						content: [{
 							type: "text" as const,
-							text: `No search results found for "${params.query}".`,
+							text: appendEstimatedCost(
+								`No search results found for "${params.query}".`,
+								TOOL_COST_GUIDANCE.kagi_search,
+							),
 						}],
-						details: { query: params.query, totalResults: 0, meta: response.meta },
+						details: {
+							query: params.query,
+							totalResults: 0,
+							meta: response.meta,
+							estimatedCost: TOOL_COST_GUIDANCE.kagi_search,
+						},
 					};
 				}
 
@@ -74,11 +83,15 @@ export function registerSearchTool(pi: ExtensionAPI, getClient: () => KagiClient
 				const result = truncateSearchOutput(formatted, totalResults);
 
 				return {
-					content: [{ type: "text" as const, text: result }],
+					content: [{
+						type: "text" as const,
+						text: appendEstimatedCost(result, TOOL_COST_GUIDANCE.kagi_search),
+					}],
 					details: {
 						query: params.query,
 						totalResults,
 						meta: response.meta,
+						estimatedCost: TOOL_COST_GUIDANCE.kagi_search,
 					},
 				};
 			} catch (err) {
