@@ -1,19 +1,20 @@
 # TP-009: Production Hardening — Integration Tests, Docs, and Release Readiness — Status
 
-**Current Step:** Not Started
-**Status:** 🔵 Ready for Execution
-**Last Updated:** 2026-04-12
+**Current Step:** Step 0: Preflight
+**Status:** 🟡 In Progress
+**Last Updated:** 2026-04-13
 **Review Level:** 2
 **Review Counter:** 0
-**Iteration:** 0
+**Iteration:** 1
 **Size:** M
 
 ---
 
 ### Step 0: Preflight
-**Status:** ⬜ Not Started
+**Status:** 🟨 In Progress
 - [ ] TP-007 and TP-008 outputs verified
 - [ ] Test/doc coverage gaps identified
+- [ ] Dependency gap documented and escalated
 
 ---
 
@@ -67,6 +68,8 @@
 | Timestamp | Action | Outcome |
 |-----------|--------|---------|
 | 2026-04-12 | Task staged | PROMPT.md and STATUS.md created |
+| 2026-04-13 02:45 | Task started | Runtime V2 lane-runner execution |
+| 2026-04-13 02:45 | Step 0 started | Preflight |
 
 ---
 
