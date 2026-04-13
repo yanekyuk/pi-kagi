@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-13
 **Review Level:** 2
-**Review Counter:** 1
+**Review Counter:** 2
 **Iteration:** 2
 **Size:** M
 
@@ -20,11 +20,11 @@
 
 ### Step 1: Integration and regression coverage
 **Status:** 🟨 In Progress
-- [ ] Scope decision for missing TP-007/TP-008 outputs recorded and applied
-- [ ] Fixture-backed integration harness added for current worktree surfaces
-- [ ] Representative manual-routing integration scenarios added
-- [ ] Failure-path regression tests added
-- [ ] Cost guidance / estimate consistency checks added
+- [ ] Re-scope Step 1 to current TP-005/TP-006 tool surfaces and defer TP-007/TP-008-dependent assertions
+- [ ] Offline integration harness added for extension registration + tool execution with fixtures
+- [ ] Manual-routing scenario matrix added for search/enrich, FastGPT, summarizer URL/text, and Small Web flows
+- [ ] Failure-path regressions added for missing key, API errors, and sparse-result/manual-fallback guidance
+- [ ] Current-surface cost metadata/guidance consistency checks added; TP-008 per-call reporting deferred
 
 ---
 
@@ -56,6 +56,7 @@
 | # | Type | Step | Verdict | File |
 |---|------|------|---------|------|
 | R001 | Plan | 1 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R001-plan-step1.md` |
+| R002 | Plan | 1 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R002-plan-step1.md` |
 
 ---
 
@@ -66,6 +67,7 @@
 | TP-007/TP-008 outputs are not present in this worktree: `.pi/extensions/pi-kagi/` has no router/pricing modules or smart-web/cost tests, and the dependency task STATUS files remain at Ready/Not Started. | Logged as dependency blocker and escalated before Step 1 work. | `.pi/extensions/pi-kagi/src`, `.pi/extensions/pi-kagi/tests`, `taskplane-tasks/TP-007-smart-web-access-orchestrator/STATUS.md`, `taskplane-tasks/TP-008-usage-cost-tracking/STATUS.md` |
 | Current coverage is limited to TP-005/TP-006 unit-style tests (`client`, `config`, `errors`, `search-enrich`, `fastgpt-summarizer`) and README docs. Missing items for TP-009 include `tests/integration/*`, failure-path regressions around orchestrated/fallback behavior, cost-reporting checks, and operator-facing `docs/pi-kagi-usage.md` + `docs/pi-kagi-troubleshooting.md`. | Use this inventory to scope Step 1/2 once dependency guidance is resolved. | `.pi/extensions/pi-kagi/tests/*.test.ts`, `.pi/extensions/pi-kagi/README.md`, `docs/` |
 | Plan review R001 required an explicit Step 1 decision gate plus a deterministic fixture-backed matrix. Until TP-007/TP-008 land here, Step 1 should re-scope to current TP-005/TP-006 surfaces instead of inventing fake orchestrator/cost-tracker coverage. | Hydrated Step 1 so implementation can record the scope choice, add fixture-backed integration tests, cover manual tool-routing scenarios, and verify cost-estimate consistency on shipped tools. | `taskplane-tasks/TP-009-hardening-tests-and-docs/STATUS.md`, `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R001-plan-step1.md` |
+| Plan review R002 further narrowed the acceptance boundary: Step 1 must explicitly defer TP-007 routing/fallback and TP-008 per-call cost reporting, define the harness around `index.ts` + tool execute paths, and name the current-surface scenario matrix. | Hydrated Step 1 again so implementation will stay on extension/tool wiring with offline fixtures instead of adding more unit-style formatter/client tests. | `taskplane-tasks/TP-009-hardening-tests-and-docs/STATUS.md`, `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R002-plan-step1.md` |
 
 ---
 
@@ -83,9 +85,10 @@
 | 2026-04-13 02:48 | Agent reply | TP-009 Step 0 is complete and committed (`e6521a1`). I hydrated Step 1 with a leading checkbox for scope guidance and committed that (`97ee551`). Currently blocked on Step 1 because TP-007/TP-008 outp |
 | 2026-04-13 02:48 | Worker iter 1 | done in 216s, tools: 38 |
 | 2026-04-13 02:52 | Review R001 | Plan review requested a concrete Step 1 decision gate and deterministic fixture-backed matrix before implementation. |
+| 2026-04-13 02:56 | Review R002 | Plan review requested an explicit re-scope/defer statement, harness boundary, and named current-surface scenario matrix before implementation. |
 
 ---
 
 ## Blockers
 
-- TP-009 depends on TP-007 smart-routing and TP-008 cost-tracking outputs, but this worktree only contains TP-005/TP-006 tooling (`kagi_search`, `kagi_enrich_*`, `kagi_fastgpt`, `kagi_summarize`, `kagi_smallweb`). Missing dependency outputs block the original Step 1 wording, so this iteration must either wait or re-scope coverage to currently shipped surfaces.
+- TP-009 depends on TP-007 smart-routing and TP-008 cost-tracking outputs, but this worktree only contains TP-005/TP-006 tooling (`kagi_search`, `kagi_enrich_*`, `kagi_fastgpt`, `kagi_summarize`, `kagi_smallweb`). Missing dependency outputs block the original Step 1 wording, so this iteration re-scopes coverage to currently shipped surfaces and explicitly defers TP-007/TP-008-specific assertions.
