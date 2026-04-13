@@ -107,6 +107,8 @@
 | 2026-04-13 03:27 | Step 3 manual/doc smoke | Recorded offline manual smoke outcomes and docs example verification in STATUS.md; live API smoke skipped because `KAGI_API_KEY` is unset. |
 | 2026-04-13 03:33 | Review R009 | Step 3 code review approved after `3eb5798` commit. |
 | 2026-04-13 03:3x | Step 4 delivery | Linked the extension README to the new operator docs and captured remaining TP-007/TP-008 limitations/backlog. |
+| 2026-04-13 03:34 | Worker iter 2 | done in 2737s, tools: 152 |
+| 2026-04-13 03:34 | Task complete | .DONE created |
 
 ---
 
