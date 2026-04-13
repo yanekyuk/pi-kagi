@@ -1,10 +1,10 @@
 # TP-009: Production Hardening — Integration Tests, Docs, and Release Readiness — Status
 
-**Current Step:** Step 1: Integration and regression coverage
+**Current Step:** Step 2: Operator documentation
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-13
 **Review Level:** 2
-**Review Counter:** 3
+**Review Counter:** 5
 **Iteration:** 2
 **Size:** M
 
@@ -29,10 +29,11 @@
 ---
 
 ### Step 2: Operator documentation
-**Status:** ⬜ Not Started
-- [ ] Setup + quick-start guide written
-- [ ] Troubleshooting guide written
-- [ ] Tool-selection cheat sheet added
+**Status:** 🟨 In Progress
+- [ ] README/doc split and README linkage plan recorded for operator docs
+- [ ] Setup + quick-start guide written in `docs/pi-kagi-usage.md` with manual-routing patterns
+- [ ] Troubleshooting guide written with auth, beta access, credits, and timeout diagnostics
+- [ ] Tool-selection cheat sheet added in `docs/pi-kagi-usage.md`
 
 ---
 
@@ -58,6 +59,8 @@
 | R001 | Plan | 1 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R001-plan-step1.md` |
 | R002 | Plan | 1 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R002-plan-step1.md` |
 | R003 | Plan | 1 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R003-plan-step1.md` |
+| R004 | Code | 1 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R004-code-step1.md` |
+| R005 | Plan | 2 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R005-plan-step2.md` |
 
 ---
 
@@ -69,6 +72,7 @@
 | Current coverage is limited to TP-005/TP-006 unit-style tests (`client`, `config`, `errors`, `search-enrich`, `fastgpt-summarizer`) and README docs. Missing items for TP-009 include `tests/integration/*`, failure-path regressions around orchestrated/fallback behavior, cost-reporting checks, and operator-facing `docs/pi-kagi-usage.md` + `docs/pi-kagi-troubleshooting.md`. | Use this inventory to scope Step 1/2 once dependency guidance is resolved. | `.pi/extensions/pi-kagi/tests/*.test.ts`, `.pi/extensions/pi-kagi/README.md`, `docs/` |
 | Plan review R001 required an explicit Step 1 decision gate plus a deterministic fixture-backed matrix. Until TP-007/TP-008 land here, Step 1 should re-scope to current TP-005/TP-006 surfaces instead of inventing fake orchestrator/cost-tracker coverage. | Hydrated Step 1 so implementation can record the scope choice, add fixture-backed integration tests, cover manual tool-routing scenarios, and verify cost-estimate consistency on shipped tools. | `taskplane-tasks/TP-009-hardening-tests-and-docs/STATUS.md`, `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R001-plan-step1.md` |
 | Plan review R002 further narrowed the acceptance boundary: Step 1 must explicitly defer TP-007 routing/fallback and TP-008 per-call cost reporting, define the harness around `index.ts` + tool execute paths, and name the current-surface scenario matrix. | Hydrated Step 1 again so implementation will stay on extension/tool wiring with offline fixtures instead of adding more unit-style formatter/client tests. | `taskplane-tasks/TP-009-hardening-tests-and-docs/STATUS.md`, `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R002-plan-step1.md` |
+| README already contains baseline setup, usage, error, and tool-selection material, so Step 2 must split content deliberately instead of copying it wholesale. The new docs should extend the README with operator workflows, diagnostics, and a cheat sheet, while Step 4 handles final README cross-links. | Hydrated Step 2 to record the README/doc boundary decision, add net-new troubleshooting diagnostics, and place the cheat sheet in `docs/pi-kagi-usage.md`. | `.pi/extensions/pi-kagi/README.md`, `docs/pi-kagi-usage.md`, `docs/pi-kagi-troubleshooting.md`, `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R005-plan-step2.md` |
 
 ---
 
@@ -89,6 +93,8 @@
 | 2026-04-13 02:56 | Review R002 | Plan review requested an explicit re-scope/defer statement, harness boundary, and named current-surface scenario matrix before implementation. |
 | 2026-04-13 02:58 | Review R003 | Revised Step 1 plan approved for implementation against current TP-005/TP-006 surfaces. |
 | 2026-04-13 03:1x | Step 1 targeted tests | `bun test tests/integration/manual-routing.test.ts tests/search-enrich.test.ts tests/fastgpt-summarizer.test.ts` passed (28 tests). |
+| 2026-04-13 03:11 | Review R004 | Step 1 code review approved after `53ca029` commit. |
+| 2026-04-13 03:14 | Review R005 | Step 2 plan review requested explicit README/doc boundaries, troubleshooting diagnostics, and cheat-sheet placement before writing docs. |
 
 ---
 
