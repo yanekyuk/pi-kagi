@@ -1,10 +1,10 @@
 # TP-009: Production Hardening — Integration Tests, Docs, and Release Readiness — Status
 
-**Current Step:** Step 2: Operator documentation
+**Current Step:** Step 4: Documentation & Delivery
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-13
 **Review Level:** 2
-**Review Counter:** 6
+**Review Counter:** 8
 **Iteration:** 2
 **Size:** M
 
@@ -38,15 +38,15 @@
 ---
 
 ### Step 3: Testing & Verification
-**Status:** ⬜ Not Started
-- [ ] `npm --prefix .pi/extensions/pi-kagi test` passes
-- [ ] Manual smoke checklist completed
-- [ ] Docs examples verified executable
+**Status:** ✅ Complete
+- [x] `npm --prefix .pi/extensions/pi-kagi test` passes
+- [x] Manual smoke checklist completed
+- [x] Docs examples verified executable
 
 ---
 
 ### Step 4: Documentation & Delivery
-**Status:** ⬜ Not Started
+**Status:** 🟨 In Progress
 - [ ] README links updated
 - [ ] Remaining limitations/backlog captured
 
@@ -62,6 +62,8 @@
 | R004 | Code | 1 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R004-code-step1.md` |
 | R005 | Plan | 2 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R005-plan-step2.md` |
 | R006 | Plan | 2 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R006-plan-step2.md` |
+| R007 | Code | 2 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R007-code-step2.md` |
+| R008 | Plan | 3 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R008-plan-step3.md` |
 
 ---
 
@@ -98,6 +100,28 @@
 | 2026-04-13 03:14 | Review R005 | Step 2 plan review requested explicit README/doc boundaries, troubleshooting diagnostics, and cheat-sheet placement before writing docs. |
 | 2026-04-13 03:17 | Review R006 | Revised Step 2 plan approved for implementation. |
 | 2026-04-13 03:2x | Step 2 docs authored | Added `docs/pi-kagi-usage.md` and `docs/pi-kagi-troubleshooting.md` with quick-start, workflow, diagnostics, and cheat-sheet content. |
+| 2026-04-13 03:23 | Review R007 | Step 2 code review approved after `a9fe75d` commit. |
+| 2026-04-13 03:26 | Review R008 | Step 3 plan approved for full-suite verification and doc-command checks. |
+| 2026-04-13 03:27 | Step 3 full suite | `npm --prefix .pi/extensions/pi-kagi test` passed (113 tests). |
+| 2026-04-13 03:27 | Step 3 manual/doc smoke | Recorded offline manual smoke outcomes and docs example verification in STATUS.md; live API smoke skipped because `KAGI_API_KEY` is unset. |
+
+---
+
+## Manual Smoke Checklist
+
+- [x] Offline extension surface smoke — re-ran `bun test tests/integration/manual-routing.test.ts` and confirmed `/kagi-about`, all six shipped `kagi_*` tools, missing-key handling, and current-surface cost guidance still pass together.
+- [x] Operator-doc presence smoke — verified `docs/pi-kagi-usage.md` contains setup, quick-start, cheat-sheet, workflow, and Small Web sections.
+- [x] Troubleshooting-doc presence smoke — verified `docs/pi-kagi-troubleshooting.md` contains auth, beta access, insufficient credits, timeout behavior, and verification-path sections.
+- [x] Live API smoke applicability — `KAGI_API_KEY` is unset in this worker environment, so no live Kagi request was attempted; operator must run a live smoke later if desired.
+
+---
+
+## Docs Example Verification
+
+- Parsed all fenced JSON examples successfully with Node: `docs/pi-kagi-usage.md` (7 blocks) and `.pi/extensions/pi-kagi/README.md` (6 blocks).
+- Verified the `pi` launcher exists in this environment via `command -v pi`.
+- Verified the documented export pattern is shell-valid with `bash -lc 'export KAGI_API_KEY=your_key_here; printenv KAGI_API_KEY'`.
+- `/kagi-about` remains a valid in-Pi command path based on the Step 1 integration/manual-smoke harness.
 
 ---
 
