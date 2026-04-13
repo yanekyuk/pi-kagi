@@ -4,7 +4,7 @@
 **Status:** 🟡 In Progress
 **Last Updated:** 2026-04-13
 **Review Level:** 2
-**Review Counter:** 5
+**Review Counter:** 6
 **Iteration:** 2
 **Size:** M
 
@@ -29,11 +29,11 @@
 ---
 
 ### Step 2: Operator documentation
-**Status:** 🟨 In Progress
-- [ ] README/doc split and README linkage plan recorded for operator docs
-- [ ] Setup + quick-start guide written in `docs/pi-kagi-usage.md` with manual-routing patterns
-- [ ] Troubleshooting guide written with auth, beta access, credits, and timeout diagnostics
-- [ ] Tool-selection cheat sheet added in `docs/pi-kagi-usage.md`
+**Status:** ✅ Complete
+- [x] README/doc split and README linkage plan recorded for operator docs
+- [x] Setup + quick-start guide written in `docs/pi-kagi-usage.md` with manual-routing patterns
+- [x] Troubleshooting guide written with auth, beta access, credits, and timeout diagnostics
+- [x] Tool-selection cheat sheet added in `docs/pi-kagi-usage.md`
 
 ---
 
@@ -61,6 +61,7 @@
 | R003 | Plan | 1 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R003-plan-step1.md` |
 | R004 | Code | 1 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R004-code-step1.md` |
 | R005 | Plan | 2 | REVISE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R005-plan-step2.md` |
+| R006 | Plan | 2 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R006-plan-step2.md` |
 
 ---
 
@@ -95,6 +96,8 @@
 | 2026-04-13 03:1x | Step 1 targeted tests | `bun test tests/integration/manual-routing.test.ts tests/search-enrich.test.ts tests/fastgpt-summarizer.test.ts` passed (28 tests). |
 | 2026-04-13 03:11 | Review R004 | Step 1 code review approved after `53ca029` commit. |
 | 2026-04-13 03:14 | Review R005 | Step 2 plan review requested explicit README/doc boundaries, troubleshooting diagnostics, and cheat-sheet placement before writing docs. |
+| 2026-04-13 03:17 | Review R006 | Revised Step 2 plan approved for implementation. |
+| 2026-04-13 03:2x | Step 2 docs authored | Added `docs/pi-kagi-usage.md` and `docs/pi-kagi-troubleshooting.md` with quick-start, workflow, diagnostics, and cheat-sheet content. |
 
 ---
 
