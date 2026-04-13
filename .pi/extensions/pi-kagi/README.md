@@ -39,6 +39,11 @@ pi
 /kagi-about
 ```
 
+## Operator Guides
+
+- [`../../../docs/pi-kagi-usage.md`](../../../docs/pi-kagi-usage.md) — setup checklist, quick-start workflow, manual-routing patterns, and the tool-selection cheat sheet
+- [`../../../docs/pi-kagi-troubleshooting.md`](../../../docs/pi-kagi-troubleshooting.md) — auth, beta-access, credits, and timeout diagnostics
+
 ## Available Commands
 
 | Command | Description |
@@ -151,13 +156,19 @@ Current tools are designed for downstream LLM use:
 
 ## Known Constraints
 
-- **Search API beta access:** `kagi_search` depends on Kagi's premium Search API, which is currently invite-only / closed beta. Even with a valid `KAGI_API_KEY`, the endpoint may still return an access error until Search API access is enabled for the account.
+- **Search API beta access:** `kagi_search` depends on Kagi's premium Search API, which is currently invite-only / closed beta. Even with a valid `KAGI_API_KEY`, the endpoint may still return an access error until Search API access is enabled for the account. See [`../../../docs/pi-kagi-troubleshooting.md`](../../../docs/pi-kagi-troubleshooting.md) for fallback guidance and next steps.
 - **FastGPT web search cannot be disabled:** Kagi currently requires `web_search=true` for FastGPT. The extension keeps that flag internal and does not expose a `web_search=false` path because the API errors on any non-true value.
 - **Summarizer input rules are strict:** `kagi_summarize` requires exactly one of `url` or `text`. Pasted `text` should use POST semantics and is capped by Kagi's 1MB request limit, so large documents should be provided as a URL instead.
 - **Summarizer options are constrained by Kagi docs:** `target_language` must use one of Kagi's documented codes (for example `EN`, `ES`, `FR`, `JA`, `ZH`, `ZH-HANT`). `daphne` is accepted for compatibility but is effectively a legacy alias of `agnes`.
 - **Kagi API is still beta:** The extension targets Kagi API v0/v1 beta endpoints and should be treated as a defensive integration. Response formats and availability may change.
 - **Enrich indexes are intentionally niche:** `kagi_enrich_web` and `kagi_enrich_news` prioritize non-commercial and non-mainstream sources. They are best for perspective gathering, not exhaustive coverage.
 - **Small Web is curated discovery, not exhaustive search:** `kagi_smallweb` is great for browsing and serendipity, but it should not be treated as breaking-news coverage or a complete search index.
+
+## Remaining Gaps / Backlog
+
+- **TP-007 smart router is still pending in this worktree:** operators must choose tools manually using the usage guide instead of relying on an automatic `kagi_web_access` orchestrator.
+- **TP-008 usage accounting is still pending in this worktree:** current `[Estimated cost: ...]` footers are planning guidance, not authoritative per-call or cumulative billing records.
+- **Live smoke still depends on operator-provided credentials:** this repo can run offline tests without a key, but any live verification still requires `KAGI_API_KEY` and (for `kagi_search`) Search API beta access.
 
 ## Configuration
 
@@ -224,6 +235,11 @@ All errors inherit from the `KagiError` base class.
     ├── config.test.ts
     ├── errors.test.ts
     ├── fastgpt-summarizer.test.ts
+    ├── integration/
+    │   ├── harness.ts
+    │   └── manual-routing.test.ts
+    ├── fixtures/
+    │   └── integration-fixtures.ts
     └── search-enrich.test.ts
 ```
 
@@ -243,7 +259,7 @@ bun test --cwd .pi/extensions/pi-kagi
 
 ### Test Coverage
 
-- **107 tests across 5 files**
+- **113 tests across 6 files**
 - Config resolution and missing-key behavior
 - Error class hierarchy and status code mapping
 - Client request construction, auth headers, URL building, retry behavior, FastGPT, and Summarizer request mapping
@@ -251,6 +267,7 @@ bun test --cwd .pi/extensions/pi-kagi
 - FastGPT citation alignment, token preservation, and pathological truncation fallbacks
 - Summarizer exclusivity, URL/language/size validation, option mapping, and summary truncation behavior
 - Tool registration metadata (`promptSnippet` / `promptGuidelines`) and extension wiring
+- Offline integration coverage for `/kagi-about`, manual tool routing, missing-key handling, endpoint errors, and cost-guidance consistency
 
 ## License
 

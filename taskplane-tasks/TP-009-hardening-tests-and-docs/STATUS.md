@@ -1,10 +1,10 @@
 # TP-009: Production Hardening — Integration Tests, Docs, and Release Readiness — Status
 
 **Current Step:** Step 4: Documentation & Delivery
-**Status:** 🟡 In Progress
+**Status:** ✅ Complete
 **Last Updated:** 2026-04-13
 **Review Level:** 2
-**Review Counter:** 8
+**Review Counter:** 9
 **Iteration:** 2
 **Size:** M
 
@@ -46,9 +46,9 @@
 ---
 
 ### Step 4: Documentation & Delivery
-**Status:** 🟨 In Progress
-- [ ] README links updated
-- [ ] Remaining limitations/backlog captured
+**Status:** ✅ Complete
+- [x] README links updated
+- [x] Remaining limitations/backlog captured
 
 ---
 
@@ -64,6 +64,7 @@
 | R006 | Plan | 2 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R006-plan-step2.md` |
 | R007 | Code | 2 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R007-code-step2.md` |
 | R008 | Plan | 3 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R008-plan-step3.md` |
+| R009 | Code | 3 | APPROVE | `taskplane-tasks/TP-009-hardening-tests-and-docs/.reviews/R009-code-step3.md` |
 
 ---
 
@@ -104,6 +105,8 @@
 | 2026-04-13 03:26 | Review R008 | Step 3 plan approved for full-suite verification and doc-command checks. |
 | 2026-04-13 03:27 | Step 3 full suite | `npm --prefix .pi/extensions/pi-kagi test` passed (113 tests). |
 | 2026-04-13 03:27 | Step 3 manual/doc smoke | Recorded offline manual smoke outcomes and docs example verification in STATUS.md; live API smoke skipped because `KAGI_API_KEY` is unset. |
+| 2026-04-13 03:33 | Review R009 | Step 3 code review approved after `3eb5798` commit. |
+| 2026-04-13 03:3x | Step 4 delivery | Linked the extension README to the new operator docs and captured remaining TP-007/TP-008 limitations/backlog. |
 
 ---
 
